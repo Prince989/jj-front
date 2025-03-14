@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('../src/assets/fonts/YekanBakh-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('../src/assets/fonts/YekanBakh-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('../src/assets/fonts/YekanBakh-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('../src/assets/fonts/YekanBakh-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('../src/assets/fonts/YekanBakh-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('../src/assets/fonts/YekanBakh-Black.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+#__next {
+  height: 100%;
+}
+
+code {
+  font-family: 'YekanBakh', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  padding: 0.1rem 0.4rem;
+  font-size: 90%;
+  color: #d400ff;
+  border-radius: 0.1335rem;
+}
+code:not([class*='language-']):before,
+code:not([class*='language-']):after {
+  content: '`';
+}
+code[class*='language-'] {
+  padding: 0;
+}
