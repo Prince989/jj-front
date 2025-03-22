@@ -14,15 +14,15 @@ module.exports = {
         protocol: 'http',
         hostname: 'localhost',
         port: '8080',
-        pathname: '/apps/**',
+        pathname: '/apps/**'
       },
       {
         protocol: 'https',
         hostname: 'api.mass-message.ir',
         port: '',
-        pathname: '/apps/**',
+        pathname: '/apps/**'
       }
-    ],
+    ]
   },
   webpack: config => {
     config.resolve.alias = {
