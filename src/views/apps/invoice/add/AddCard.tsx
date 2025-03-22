@@ -361,7 +361,7 @@ const AddCard = (props: Props) => {
                   <RepeatingContent item xs={12}>
                     <Grid container sx={{ py: 4, width: '100%', pr: { lg: 0, xs: 4 } }}>
                       <Grid item lg={6} md={5} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
-                        <Typography className='col-title' sx={{ mb: { md: 2, xs: 0 }, color: 'text.secondary' }}>
+                        <Typography className='col-title' sx={{ mb: { lg: 2, xs: 0 }, color: 'text.secondary' }}>
                           Item
                         </Typography>
                         <CustomTextField fullWidth select defaultValue='App Design'>
@@ -379,7 +379,7 @@ const AddCard = (props: Props) => {
                         />
                       </Grid>
                       <Grid item lg={2} md={3} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
-                        <Typography className='col-title' sx={{ mb: { md: 2, xs: 0 }, color: 'text.secondary' }}>
+                        <Typography className='col-title' sx={{ mb: { lg: 2, xs: 0 }, color: 'text.secondary' }}>
                           Cost
                         </Typography>
                         <CustomTextField
@@ -400,7 +400,7 @@ const AddCard = (props: Props) => {
                         </Box>
                       </Grid>
                       <Grid item lg={2} md={2} xs={12} sx={{ px: 4, my: { lg: 0, xs: 4 } }}>
-                        <Typography className='col-title' sx={{ mb: { md: 2, xs: 0 }, color: 'text.secondary' }}>
+                        <Typography className='col-title' sx={{ mb: { lg: 2, xs: 0 }, color: 'text.secondary' }}>
                           Hours
                         </Typography>
                         <CustomTextField
@@ -411,7 +411,7 @@ const AddCard = (props: Props) => {
                         />
                       </Grid>
                       <Grid item lg={2} md={1} xs={12} sx={{ px: 4, my: { lg: 0 }, mt: 2 }}>
-                        <Typography className='col-title' sx={{ mb: { md: 2, xs: 0 }, color: 'text.secondary' }}>
+                        <Typography className='col-title' sx={{ mb: { lg: 2, xs: 0 }, color: 'text.secondary' }}>
                           Price
                         </Typography>
                         <Typography sx={{ color: 'text.secondary' }}>$24.00</Typography>

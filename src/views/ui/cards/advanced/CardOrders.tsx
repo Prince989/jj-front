@@ -42,7 +42,7 @@ const data: Data = {
       },
       receiver: {
         name: 'Daisy Coleman',
-        address: '939 Orange, California (CA), 910614'
+        address: '939 orangee, California (CA), 910614'
       }
     },
     {
