@@ -14,5 +14,5 @@ COPY --from=builder /my-space/public ./public
 COPY --from=builder /my-space/.next ./.next
 
 EXPOSE 3000
-RUN npm install --omit=dev
+RUN npm install --force --omit=dev
 CMD ["node", "./node_modules/.bin/next", "start"]
