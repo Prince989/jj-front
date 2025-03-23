@@ -33,11 +33,10 @@ const Header = () => {
 
             {/* Mobile View */}
             <div className="lg:hidden flex justify-between items-center">
-
                 <ColoredText
-                    firstText="Jey"
+                    firstText="Line"
                     middleText="Jey"
-                    lastText="Line"
+                    lastText="Jey"
                     className="mb-2"
                     textClassName="text-2xl font-[900]"
                 />
@@ -57,6 +56,8 @@ const Header = () => {
                         horizontal: 'right',
                     }}
                     slotProps={{
+
+                        // @ts-ignore
                         paper: {
                             sx: {
                                 mt: 1.5,
@@ -98,9 +99,9 @@ const Header = () => {
             <div className="hidden lg:flex justify-between items-center">
                 <div className="flex items-center gap-12">
                     <ColoredText
-                        firstText="Jey"
+                        firstText="Line"
                         middleText="Jey"
-                        lastText="Line"
+                        lastText="Jey"
                         className="mb-2"
                         textClassName="text-2xl font-[900]"
                     />

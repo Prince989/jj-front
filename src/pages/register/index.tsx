@@ -263,9 +263,9 @@ const RegisterV2 = () => {
             <Image src="/logo.png" unoptimized width={60} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
             <Box sx={{ my: 6 }}>
               <Typography variant='h3' sx={{ mb: 1.5 }}>
-                برای استفاده از خدمات ثبت نام کنید
+                برای استفاده از خدمات و اعتبارسنجی ثبت نام کنید
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>پیام های تبلیغاتی خود را در پلتفرم های متعدد و به تعداد انبوه بفرستید</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>دقت کنید شماره تلفن همراه به نام خودتان باشد</Typography>
             </Box>
             {
               showToken ?
