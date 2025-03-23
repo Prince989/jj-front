@@ -369,7 +369,7 @@ const RegisterV2 = () => {
                       </Box>
                     }
                   />
-                  <Button fullWidth type='submit' disabled={!agree} variant='contained' sx={{ mb: 4 }}>
+                  <Button className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1" fullWidth type='submit' disabled={!agree} variant='contained' sx={{ mb: 4 }}>
                     ثبت نام
                   </Button>
                   <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -396,7 +396,7 @@ const RegisterV2 = () => {
                     sx={{ display: 'flex', mb: 4 }}
                     placeholder='091234567890'
                   />
-                  <Button fullWidth type='submit' disabled={disableSendCode} variant='contained' sx={{ mb: 4 }}>
+                  <Button className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1" fullWidth type='submit' disabled={disableSendCode} variant='contained' sx={{ mb: 4 }}>
                     ارسال کد تایید
                   </Button>
                   <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
