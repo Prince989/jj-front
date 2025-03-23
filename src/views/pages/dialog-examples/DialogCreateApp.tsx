@@ -179,7 +179,7 @@ const DialogCreateApp = () => {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Provide data with this form to create your app.</Typography>
           </Box>
-          <Box sx={{ display: 'flex', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+          <Box sx={{ display: 'flex', flexWrap: { xs: 'wrap', lg: 'nowrap' } }}>
             <TabContext value={activeTab}>
               <TabList
                 orientation='vertical'

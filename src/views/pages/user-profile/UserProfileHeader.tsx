@@ -48,7 +48,7 @@ const UserProfileHeader = () => {
         alt='profile-header'
         image={data.coverImg}
         sx={{
-          height: { xs: 150, md: 250 }
+          height: { xs: 150, lg: 250 }
         }}
       />
       <CardContent
@@ -57,8 +57,8 @@ const UserProfileHeader = () => {
           mt: -8,
           display: 'flex',
           alignItems: 'flex-end',
-          flexWrap: { xs: 'wrap', md: 'nowrap' },
-          justifyContent: { xs: 'center', md: 'flex-start' }
+          flexWrap: { xs: 'wrap', lg: 'nowrap' },
+          justifyContent: { xs: 'center', lg: 'flex-start' }
         }}
       >
         <ProfilePicture src={data.profileImg} alt='profile-picture' />
@@ -66,7 +66,7 @@ const UserProfileHeader = () => {
           sx={{
             width: '100%',
             display: 'flex',
-            ml: { xs: 0, md: 6 },
+            ml: { xs: 0, lg: 6 },
             alignItems: 'flex-end',
             flexWrap: ['wrap', 'nowrap'],
             justifyContent: ['center', 'space-between']

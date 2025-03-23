@@ -119,7 +119,7 @@ const StepCart = ({ handleNext }: { handleNext: () => void }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    alignItems: { xs: 'flex-start', md: 'flex-end' }
+                    alignItems: { xs: 'flex-start', lg: 'flex-end' }
                   }}
                 >
                   <Box sx={{ display: 'flex' }}>
@@ -166,7 +166,7 @@ const StepCart = ({ handleNext }: { handleNext: () => void }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    alignItems: { xs: 'flex-start', md: 'flex-end' }
+                    alignItems: { xs: 'flex-start', lg: 'flex-end' }
                   }}
                 >
                   <Box sx={{ display: 'flex' }}>

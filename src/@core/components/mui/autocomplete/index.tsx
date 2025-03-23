@@ -2,7 +2,7 @@
 import { ElementType, forwardRef } from 'react'
 
 // ** MUI Import
-import Paper from '@mui/material/Paper'
+import Paper, { PaperProps } from '@mui/material/Paper'
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
 
 const CustomAutocomplete = forwardRef(
@@ -17,12 +17,10 @@ const CustomAutocomplete = forwardRef(
     ref: any
   ) => {
     return (
-      // eslint-disable-next-line lines-around-comment
-      // @ts-expect-error - AutocompleteProps is not compatible with PaperProps
       <Autocomplete
         {...props}
         ref={ref}
-        PaperComponent={props => <Paper {...props} className='custom-autocomplete-paper' />}
+        PaperComponent={(props: PaperProps) => <Paper {...props} className='custom-autocomplete-paper' />}
       />
     )
   }

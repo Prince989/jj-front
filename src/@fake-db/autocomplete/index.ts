@@ -83,7 +83,7 @@ export const top100Films: AutocompleteType[] = [
   { title: 'M', year: 1931 },
   { title: 'Requiem for a Dream', year: 2000 },
   { title: 'Amélie', year: 2001 },
-  { title: 'A Clockwork Orange', year: 1971 },
+  { title: 'A Clockwork orange', year: 1971 },
   { title: 'Like Stars on Earth', year: 2007 },
   { title: 'Taxi Driver', year: 1976 },
   { title: 'Lawrence of Arabia', year: 1962 },

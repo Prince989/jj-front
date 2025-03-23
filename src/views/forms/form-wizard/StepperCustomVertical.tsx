@@ -378,7 +378,7 @@ const StepperCustomVertical = () => {
   }
 
   return (
-    <Card sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+    <Card sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' } }}>
       <StepperHeaderContainer>
         <StepperWrapper sx={{ height: '100%' }}>
           <Stepper

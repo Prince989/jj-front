@@ -134,7 +134,7 @@ const Faqs = ({ data, activeTab, handleChange }: Props) => {
               mt: 5.5,
               display: 'flex',
               justifyContent: 'center',
-              '& img': { maxWidth: '100%', display: { xs: 'none', md: 'block' } }
+              '& img': { maxWidth: '100%', display: { xs: 'none', lg: 'block' } }
             }}
           >
             <img src='/images/pages/faq-illustration.png' alt='illustration' width='230' />
