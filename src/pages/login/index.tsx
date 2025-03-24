@@ -81,11 +81,11 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 
 const defaultValues = {
   password: '',
-  phone_number: ''
+  phoneNumber: ''
 }
 
 interface FormData {
-  phone_number: string
+  phoneNumber: string
   password: string
 }
 
@@ -109,8 +109,8 @@ const LoginPage = () => {
   })
 
   const onSubmit = (data: FormData) => {
-    const { phone_number, password } = data
-    auth.login({ phone_number, password, rememberMe }, (err) => {
+    const { phoneNumber, password } = data
+    auth.login({ phoneNumber, password }, (err) => {
       setProblems(err.response.data.problem)
       if (err.response?.data?.message)
         toast.error(err.response?.data?.message, {
@@ -162,7 +162,7 @@ const LoginPage = () => {
             <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
               <Box sx={{ mb: 4 }}>
                 <Controller
-                  name='phone_number'
+                  name='phoneNumber'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange, onBlur } }) => (
@@ -174,8 +174,8 @@ const LoginPage = () => {
                       onBlur={onBlur}
                       onChange={onChange}
                       placeholder='09123456789'
-                      helperText={problems['phone_number']}
-                      error={problems['phone_number'] && problems['phone_number'].length > 0}
+                      helperText={problems['phoneNumber']}
+                      error={problems['phoneNumber'] && problems['phoneNumber'].length > 0}
                     />
                   )}
                 />

@@ -36,7 +36,9 @@ interface State {
   showPassword: boolean
   confirmPassword: string
   showConfirmPassword: boolean
-  name: string
+  fname: string
+  lname: string
+  nationalCode: string
   phoneNumber: string
 }
 
@@ -91,7 +93,9 @@ const RegisterV2 = () => {
     showPassword: false,
     confirmPassword: '',
     showConfirmPassword: false,
-    name: '',
+    fname: '',
+    lname: '',
+    nationalCode: '',
     phoneNumber: ''
   })
 
@@ -146,9 +150,11 @@ const RegisterV2 = () => {
     }
 
     mAxios.post("/auth/signup", {
-      phone_number: values.phoneNumber,
+      phoneNumber: values.phoneNumber,
       password: values.password,
-      name: values.name,
+      fname: values.fname,
+      lname: values.lname,
+      nationalCode: values.nationalCode,
       token: token
     })
       .then(() => {
@@ -192,8 +198,8 @@ const RegisterV2 = () => {
       return;
     }
 
-    mAxios.post("/send_code", {
-      phone_number: values.phoneNumber,
+    mAxios.post("/auth/otp", {
+      phoneNumber: values.phoneNumber,
     })
       .then(() => {
         setTimer(75);
@@ -273,13 +279,38 @@ const RegisterV2 = () => {
                   <CustomTextField
                     fullWidth
                     autoFocus
-                    value={values.name}
-                    id='name'
-                    label='نام و نام خانوادگی'
-                    onChange={handleChange('name')}
-                    placeholder='John.doe'
-                    helperText={problems['name']}
-                    error={problems['name'] && problems['name'].length > 0}
+                    value={values.fname}
+                    id='fname'
+                    label='نام'
+                    onChange={handleChange('fname')}
+                    placeholder='John'
+                    helperText={problems['fname']}
+                    error={problems['fname'] && problems['fname'].length > 0}
+                    sx={{ display: 'flex', mb: 4 }}
+                  />
+                  <CustomTextField
+                    fullWidth
+                    autoFocus
+                    value={values.lname}
+                    id='lname'
+                    label='نام خانوادگی'
+                    onChange={handleChange('lname')}
+                    placeholder='doe'
+                    helperText={problems['lname']}
+                    error={problems['lname'] && problems['lname'].length > 0}
+                    sx={{ display: 'flex', mb: 4 }}
+                  />
+                  <CustomTextField
+                    fullWidth
+                    autoFocus
+                    type='number'
+                    value={values.nationalCode}
+                    id='nationalCode'
+                    label='کدملی'
+                    onChange={handleChange('nationalCode')}
+                    placeholder='doe'
+                    helperText={problems['nationalCode']}
+                    error={problems['nationalCode'] && problems['nationalCode'].length > 0}
                     sx={{ display: 'flex', mb: 4 }}
                   />
                   <CustomTextField
