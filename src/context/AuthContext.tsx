@@ -52,6 +52,8 @@ const AuthProvider = ({ children }: Props) => {
           })
           .then(async response => {
             setLoading(false)
+            console.log("Comming here")
+            setLoading(false)
             setUser({ ...response.data.data })
           })
           .catch(() => {
@@ -95,6 +97,10 @@ const AuthProvider = ({ children }: Props) => {
         if (errorCallback) errorCallback(err)
       })
   }
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
 
   const handleLogout = () => {
     setUser(null)

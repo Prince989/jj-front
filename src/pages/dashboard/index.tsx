@@ -48,7 +48,7 @@ export default function Dashboard() {
   }, [])
 
   const fetchData = () => {
-    mAxios.get<APIResponse<ResultData>>("/get/results").then(res => {
+    /*mAxios.get<APIResponse<ResultData>>("/get/results").then(res => {
       setData(res.data?.data);
     })
       .catch(err => {
@@ -56,7 +56,7 @@ export default function Dashboard() {
           toast.error(err.response?.data?.message, {
             position: "bottom-left",
           })
-      })
+      })*/
   }
 
   const chartData = useMemo(() => {
@@ -96,3 +96,4 @@ function convertToJalali(dateString: string): string {
 
   return format(date, 'yyyy/MM/dd');
 }
+

@@ -1,5 +1,5 @@
 export default {
-  meEndpoint: '/get/profile',
+  meEndpoint: '/auth/profile',
   loginEndpoint: '/auth/login',
   registerEndpoint: '/get/profile',
   storageTokenKeyName: 'accessToken',
