@@ -13,27 +13,38 @@ const WhyChooseUsSection = () => {
     ]
 
     return (
-        <section className="relative flex flex-col lg:flex-row w-full bg-gradient-to-b from-sky-50 to-primary-blue-2 rounded-3xl my-20 p-7">
+        <section className="relative flex flex-col lg:flex-row w-full bg-gradient-to-b from-sky-50 to-primary-blue-2 rounded-3xl p-7">
+            <style>{`
+                @keyframes twinkleOrange {
+                    0% { opacity: 0.2; transform: rotate(0deg); }
+                    50% { opacity: 1; transform: rotate(180deg); }
+                    100% { opacity: 0.2; transform: rotate(360deg); }
+                }
+                .twinkleOrange-1 {
+                    animation: twinkleOrange 3s ease-in-out infinite;
+                    animation-delay: 0s;
+                }
+            `}</style>
             {/* left side with benefits */}
             <div className="w-full lg:w-1/2 lg:p-8">
                 <ColoredText
                     firstText="چرا جی"
                     middleText="جی"
                     lastText="لاین را انتخاب کنیم؟"
-                    className="lg:mb-3 mb-6 justify-center"
-                    textClassName="lg:text-4xl text-2xl font-[900]"
+                    className="mb-6"
+                    textClassName="lg:text-3xl text-lg font-[900]"
                 />
 
-                <div className="relative z-10">
+                <div className="flex flex-col z-10 gap-2">
                     {benefits.map((benefit, index) => (
                         <div
                             key={index}
                             className="flex items-start mb-2 gap-1"
                         >
-                            <span className="inline-block w-2 h-2 min-w-[8px] rounded-full bg-primary-blue m-0 mt-2" />
+                            <span className="inline-block w-2 h-2 min-w-[8px] rounded-full bg-primary-blue m-0 mt-2 lg:mt-3" />
                             <Typography
                                 variant="body1"
-                                className="text-primary-blue text-base lg:text-xl font-normal"
+                                className="text-primary-blue text-sm lg:text-lg font-normal"
                             >
                                 {benefit}
                             </Typography>
@@ -52,8 +63,12 @@ const WhyChooseUsSection = () => {
                     />
                 </div>
             </div>
-            <img src="/images/dentistry/orange-star.svg" alt="orange-star" className="hidden lg:block absolute bottom-[5%] right-[5%] object-cover" />
 
+            <img
+                src="/images/dentistry/orange-star.svg"
+                alt="orange-star"
+                className="absolute bottom-[2%] left-[5%] object-cover twinkleOrange-1"
+            />
         </section>
     )
 }

@@ -25,34 +25,34 @@ const Footer = () => {
         <footer className="w-full bg-gray-100 pt-12">
 
             <div className="w-full flex flex-col lg:flex-row gap-8 justify-between p-4 lg:px-24">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 items-center lg:items-start mb-5 lg:mb-0">
 
                     <ColoredText
-                        firstText="Jey"
+                        firstText="Line"
                         middleText="Jey"
-                        lastText="Line"
+                        lastText="Jey"
                         className="mb-2"
                         textClassName="lg:text-4xl text-2xl font-[900]"
                     />
 
                     <div className="flex items-center">
                         <p className="text-sm m-0 text-primary-gray direction-ltr">
-                            پشتیبانی: 021-12345678
+                            پشتیبانی: ۷۳۶۵۱۸۲-۰۲۱
                         </p>
                     </div>
 
                     <div className="flex items-center">
                         <AccessTimeIcon className="text-primary-orange ml-2 text-base" />
                         <p className="text-sm m-0 text-primary-gray">
-                            ساعت پاسخگویی از 9 تا 13 میباشد
+                            ساعت پاسخگویی از ۹ تا ۱۳ میباشد
                         </p>
                     </div>
                 </div>
 
-                <div className="flex lg:w-1/3 gap-8 justify-between">
+                <div className="flex w-full lg:w-1/3 gap-1 lg:gap-8 justify-between">
 
-                    <div>
-                        <h3 className="text-xl font-bold m-0 mb-4 text-primary-gray">
+                    <div className="w-full lg:w-1/2">
+                        <h3 className="text-base lg:text-xl font-bold m-0 mb-4 text-primary-gray">
                             خدمات مشتریان
                         </h3>
 
@@ -70,8 +70,8 @@ const Footer = () => {
                         </nav>
                     </div>
 
-                    <div>
-                        <h3 className="text-xl font-bold m-0 mb-4 text-primary-gray">
+                    <div className="w-full lg:w-1/2">
+                        <h3 className="text-base lg:text-xl font-bold m-0 mb-4 text-primary-gray">
                             خدمات مشتریان
                         </h3>
 
@@ -92,9 +92,13 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col">
-                    <h3 className="text-xl font-bold m-0 mb-4 text-primary-gray">
-                        چرا جی جی لاین؟
-                    </h3>
+                    <ColoredText
+                        firstText="چرا جی"
+                        middleText="جی"
+                        lastText="لاین"
+                        className="mb-3 justify-center lg:justify-start"
+                        textClassName="text-xl font-[700]"
+                    />
 
                     <div className="flex justify-start items-center gap-4">
                         {customerServices.map((service, index) => (
@@ -103,11 +107,11 @@ const Footer = () => {
                     </div>
 
                     <div className="mt-8">
-                        <p className="text-sm text-primary-gray mb-4">
+                        <p className="text-sm text-primary-gray mb-4 lg:text-start text-center">
                             ما را در شبکه های اجتماعی دنبال کنید
                         </p>
 
-                        <div className="flex justify-start">
+                        <div className="flex justify-center lg:justify-start">
                             {socialLinks.map((social, index) => (
                                 <a
                                     key={index}
@@ -124,7 +128,7 @@ const Footer = () => {
 
             <div className="w-full flex justify-center items-center bg-primary-blue py-4">
                 <p className="text-sm text-white">
-                    کلیه حقوق این وبسایت به جی جی لاین میباشد
+                    کلیه حقوق این وبسایت به جی جی لاین تعلق دارد
                 </p>
             </div>
         </footer>

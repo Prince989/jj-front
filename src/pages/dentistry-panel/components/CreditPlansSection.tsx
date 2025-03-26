@@ -28,7 +28,7 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText }) 
             <Typography
                 variant="h4"
                 component="h3"
-                className="text-[31px] font-extrabold text-center text-white mb-10"
+                className="text-lg lg:text-2xl font-extrabold text-center text-white mb-10"
             >
                 {title}
             </Typography>
@@ -48,7 +48,7 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText }) 
                         />
                         <Typography
                             variant="body1"
-                            className="text-xl text-white font-semibold"
+                            className="text-lg lg:text-xl text-white font-semibold"
                         >
                             {feature}
                         </Typography>
@@ -94,7 +94,7 @@ const CreditPlansSection = () => {
     ]
 
     return (
-        <section className="py-4 lg:py-6 mt-6 w-full bg-white">
+        <section className="w-full bg-white">
 
             <ColoredText
                 firstText="طرح های اعتباری جی"
@@ -103,9 +103,9 @@ const CreditPlansSection = () => {
                 className="mb-10 justify-center"
                 textClassName="lg:text-4xl text-2xl font-[900]"
             />
-            <div className="w-full flex flex-col lg:flex-row justify-between gap-12">
+            <div className="w-full flex flex-col lg:flex-row justify-center gap-12">
                 {creditPlans.map((plan, index) => (
-                    <div key={index} className="w-full lg:w-1/2">
+                    <div key={index} className="w-full lg:w-[36%]">
                         <CreditPlan
                             title={plan.title}
                             features={plan.features}

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Typography } from '@mui/material'
-import Carousel from 'react-material-ui-carousel'
-import { useMediaQuery } from '@mui/material'
+import { Typography, IconButton } from '@mui/material'
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 
 interface ServiceItemProps {
     title: string
@@ -10,7 +11,7 @@ interface ServiceItemProps {
 
 const ServiceItem: React.FC<ServiceItemProps> = ({ title, description }) => {
     return (
-        <div className="h-full flex flex-col items-center justify-center px-4 py-10 w-full">
+        <div className="h-full flex flex-col items-center justify-center py-10 w-full">
             <Typography
                 variant="h5"
                 component="h3"
@@ -27,26 +28,7 @@ const ServiceItem: React.FC<ServiceItemProps> = ({ title, description }) => {
     )
 }
 
-const ServiceSlide: React.FC<{ services: Array<{ title: string, description: string }> }> = ({ services }) => {
-    return (
-        <div className="flex flex-row w-full justify-center h-full">
-            {services.map((service, index) => (
-                <ServiceItem
-                    key={index}
-                    title={service.title}
-                    description={service.description}
-                />
-            ))}
-        </div>
-    );
-};
-
 const ServicesSection = () => {
-    const isXs = useMediaQuery('(max-width: 600px)');
-    const isSm = useMediaQuery('(min-width: 601px) and (max-width: 960px)');
-    const isMd = useMediaQuery('(min-width: 961px) and (max-width: 1280px)');
-    const isLg = useMediaQuery('(min-width: 1281px)');
-
     // Service items
     const services = [
         {
@@ -83,54 +65,64 @@ const ServicesSection = () => {
         }
     ]
 
-    // Determine how many items to show per slide based on screen size
-    const getItemsPerSlide = () => {
-        if (isXs) return 1;
-        if (isSm) return 2;
-        if (isMd) return 4;
-        if (isLg) return 5;
+    const [emblaRef, emblaApi] = useEmblaCarousel(
+        {
+            loop: true,
+            align: 'start',
+            direction: 'rtl',
+            dragFree: true,
+            slidesToScroll: 1,
+        },
+        [Autoplay({ delay: 6000, stopOnInteraction: false })]
+    );
 
-        return 1; // Default fallback
-    };
+    const [selectedIndex, setSelectedIndex] = React.useState(0)
 
-    // Group services into slides based on screen size
-    const createServiceSlides = () => {
-        const itemsPerSlide = getItemsPerSlide();
-        const slides = [];
-
-        for (let i = 0; i < services.length; i += itemsPerSlide) {
-            slides.push(services.slice(i, i + itemsPerSlide));
+    React.useEffect(() => {
+        if (emblaApi) {
+            emblaApi.on('select', () => {
+                setSelectedIndex(emblaApi.selectedScrollSnap())
+            })
         }
+    }, [emblaApi])
 
-        return slides;
-    };
-
-    // Create slides based on screen size
-    const serviceSlides = createServiceSlides();
+    const scrollTo = React.useCallback((index: number) => {
+        if (emblaApi) emblaApi.scrollTo(index)
+    }, [emblaApi])
 
     return (
-        <section className="py-16 w-full relative bg-white">
-            <div className="bg-primary-blue-2 py-3">
-                <Carousel
-                    className="bg-transparent"
-                    autoPlay={true}
-                    animation="slide"
-                    indicators={false}
-                    navButtonsAlwaysVisible={true}
-                    navButtonsAlwaysInvisible={false}
-                    cycleNavigation={true}
-                    interval={6000}
-                    duration={1000}
-                    fullHeightHover={false}
-                    swipe={true}
-                >
-                    {serviceSlides.map((slideServices, index) => (
-                        <ServiceSlide key={index} services={slideServices} />
+        <section className="w-full relative bg-white">
+            <div className="bg-primary-blue-2 p-3 relative">
+                <div className="overflow-hidden" ref={emblaRef}>
+                    <div className="flex gap-4">
+                        {services.map((service, index) => (
+                            <div
+                                key={index}
+                                className="flex-[0_0_100%] lg:flex-[0_0_calc(20%-6px)]"
+                            >
+                                <ServiceItem
+                                    title={service.title}
+                                    description={service.description}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="flex justify-center gap-2 mt-4">
+                    {services.map((_, index) => (
+                        <IconButton
+                            key={index}
+                            onClick={() => scrollTo(index)}
+                            className="p-1"
+                            size="small"
+                        >
+                            <FiberManualRecordIcon
+                                className={`text-sm ${selectedIndex === index ? 'text-primary-blue' : 'text-gray-400'}`}
+                            />
+                        </IconButton>
                     ))}
-                </Carousel>
+                </div>
             </div>
-
-
         </section>
     )
 }

@@ -5,6 +5,7 @@ import {
     MenuItem,
 } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { validatePhone, validateFullName, persianToEnglish, englishToPersian } from '../utils/validation'
 
 const serviceTypes = [
     { value: 'implant', label: 'ایمپلنت دندان' },
@@ -20,15 +21,60 @@ const ContactFormSection = () => {
         phoneNumber: '',
         serviceType: ''
     })
+    const [phoneError, setPhoneError] = useState('')
+    const [nameError, setNameError] = useState('')
+    const [displayPhone, setDisplayPhone] = useState('')
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        const englishValue = persianToEnglish(value)
+        setFormData(prev => ({ ...prev, phoneNumber: englishValue }))
+        setDisplayPhone(value)
+        const validation = validatePhone(value)
+        setPhoneError(validation.error)
+    }
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setFormData(prev => ({ ...prev, fullName: value }))
+        const validation = validateFullName(value)
+        setNameError(validation.error)
+    }
+
+    const handlePhoneBlur = () => {
+        if (formData.phoneNumber) {
+            setDisplayPhone(englishToPersian(formData.phoneNumber))
+        }
+    }
+
+    const handlePhoneFocus = () => {
+        if (formData.phoneNumber) {
+            setDisplayPhone(englishToPersian(formData.phoneNumber))
+        }
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+        if (name === 'phoneNumber') {
+            handlePhoneChange(e)
+        } else if (name === 'fullName') {
+            handleNameChange(e)
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }))
+        }
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        console.log('Form submitted:', formData)
+        const phoneValidation = validatePhone(formData.phoneNumber)
+        const nameValidation = validateFullName(formData.fullName)
+
+        setPhoneError(phoneValidation.error)
+        setNameError(nameValidation.error)
+
+        if (phoneValidation.isValid && nameValidation.isValid) {
+            console.log('Form submitted:', formData)
+        }
     }
 
     const inputStyles = {
@@ -52,26 +98,28 @@ const ContactFormSection = () => {
             color: '#949494',
             fontSize: '16px',
             fontWeight: 400,
-            letterSpacing: '0.625%',
-            textAlign: 'right',
             padding: '16px 20px',
             '&::placeholder': {
                 color: '#949494',
                 opacity: 1,
+
             },
         },
     }
 
     return (
-        <section className="w-full bg-gradient-to-b from-sky-50 to-primary-blue-2 rounded-3xl my-20 py-6">            <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-black text-primary-blue text-center mb-10">
+        <section className="w-full bg-gradient-to-b from-sky-50 to-primary-blue-2 rounded-3xl py-6">            <div className="container mx-auto px-4">
+            <h2 className="text-2xl lg:text-3xl font-black text-primary-blue text-center mb-5">
                 فرم دریافت خدمات
             </h2>
+            <h6 className="text-primary-blue text-sm lg:text-lg font-normal text-center mb-10">
+                لطفا اطلاعات خود را در فرم زیر وارد کنید تا با شما تماس بگیریم
+            </h6>
 
             <form onSubmit={handleSubmit} className="lg:p-5">
                 <div className="grid lg:grid-cols-2 gap-6">
                     <div className="mb-3">
-                        <label className="block text-primary-gray text-base font-semibold mb-2">
+                        <label className="block text-primary-gray text-sm lg:text-base font-semibold mb-2">
                             نام و نام خانوادگی
                         </label>
                         <TextField
@@ -81,27 +129,49 @@ const ContactFormSection = () => {
                             onChange={handleChange}
                             placeholder="امیرحسین سانح"
                             variant="outlined"
-                            sx={inputStyles}
+                            error={!!nameError}
+                            helperText={nameError}
+                            sx={{
+                                ...inputStyles,
+                                '& .MuiFormHelperText-root': {
+                                    color: '#d32f2f',
+                                    marginRight: 0,
+                                    marginTop: '4px',
+                                    fontSize: '12px'
+                                }
+                            }}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label className="block text-primary-gray text-base font-semibold mb-2">
+                        <label className="block text-primary-gray text-sm lg:text-base font-semibold mb-2">
                             شماره همراه
                         </label>
                         <TextField
                             fullWidth
                             name="phoneNumber"
-                            value={formData.phoneNumber}
+                            value={displayPhone}
                             onChange={handleChange}
+                            onBlur={handlePhoneBlur}
+                            onFocus={handlePhoneFocus}
                             placeholder="۰۹۱۲۱۲۳۴۵۶۷۸"
                             variant="outlined"
-                            sx={inputStyles}
+                            error={!!phoneError}
+                            helperText={phoneError}
+                            sx={{
+                                ...inputStyles,
+                                '& .MuiFormHelperText-root': {
+                                    color: '#d32f2f',
+                                    marginRight: 0,
+                                    marginTop: '4px',
+                                    fontSize: '12px'
+                                }
+                            }}
                         />
                     </div>
 
                     <div className="mb-5">
-                        <label className="block text-primary-gray text-base font-semibold mb-2">
+                        <label className="block text-primary-gray text-sm lg:text-base font-semibold mb-2">
                             نوع خدمت
                         </label>
                         <TextField
@@ -127,7 +197,19 @@ const ContactFormSection = () => {
                                             borderRadius: '16px',
                                             '& .MuiMenuItem-root': {
                                                 fontSize: '16px',
-                                                py: 1.5
+                                                py: 1.5,
+                                                '&.Mui-selected': {
+                                                    backgroundColor: '#FF6B00 !important',
+                                                    color: '#FFFFFF !important',
+                                                    '&:hover': {
+                                                        backgroundColor: '#FF6B00 !important',
+                                                        color: '#fff !important'
+                                                    }
+                                                },
+                                                '&:hover': {
+                                                    backgroundColor: '#FFF5EB !important',
+                                                    color: '#FF6B00 !important'
+                                                }
                                             }
                                         }
                                     }
@@ -147,7 +229,7 @@ const ContactFormSection = () => {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            className="bg-primary-orange hover:bg-primary-orange text-white rounded-lg h-12 text-base font-semibold"
+                            className="bg-primary-orange hover:bg-primary-orange text-white rounded-lg h-12 text-sm lg:text-base font-semibold"
                         >
                             تایید و ارسال فرم
                         </Button>
