@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode, ReactElement } from 'react'
+import { ReactNode, ReactElement, useMemo } from 'react'
 
 
 // ** Hooks Import
@@ -15,6 +15,10 @@ const AuthGuard = (props: AuthGuardProps) => {
   const auth = useAuth()
 
   // const router = useRouter()
+
+  const loading = useMemo(() => {
+    return auth.loading || auth.user === null;
+  }, [auth.user, auth.loading])
 
   /* 
     useEffect(
@@ -39,7 +43,7 @@ const AuthGuard = (props: AuthGuardProps) => {
     )
    */
 
-  if (auth.loading || auth.user === null) {
+  if (loading) {
     console.log(auth.user);
 
     return fallback

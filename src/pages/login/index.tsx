@@ -26,30 +26,12 @@ import { useForm, Controller } from 'react-hook-form'
 // ** Hooks
 import { useAuth } from 'src/hooks/useAuth'
 
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
-
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
-import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
-
-// ** Styled Components
-const LoginIllustration = styled('img')(({ theme }) => ({
-  zIndex: 2,
-  maxHeight: 680,
-  marginTop: theme.spacing(12),
-  marginBottom: theme.spacing(12),
-  [theme.breakpoints.down(1540)]: {
-    maxHeight: 550
-  },
-  [theme.breakpoints.down('lg')]: {
-    maxHeight: 500
-  }
-}))
 
 const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -129,14 +111,19 @@ const LoginPage = () => {
             display: 'flex',
             position: 'relative',
             alignItems: 'center',
-            borderRadius: '20px',
+            flexDirection: 'column',
+            gap: '45px',
             justifyContent: 'center',
-            backgroundColor: 'customColors.bodyBg',
-            margin: theme => theme.spacing(8, 0, 8, 8)
+            backgroundColor: '#FAFBFF',
           }}
         >
-          <LoginIllustration alt='login-illustration' src={`/images/authentication/login.svg`} />
-          <FooterIllustrationsV2 />
+          {/* <LoginIllustration alt='login-illustration' src={`/images/registry-illustration.svg`} /> */}
+
+          <Image alt='logo' width={0} height={0} sizes='100vw' unoptimized className='max-w-[314px] w-full' src={`/images/logo_en.svg`} />
+          <Image alt='login-illustration' width={0} height={0} sizes='100vw' unoptimized className='max-h-[550px] max-w-[672px] w-full' src={`/images/registry-illustration.svg`} />
+          <p className='max-w-[600px] text-[14px] text-center'>
+            برای استفاده از خدمات جی جی لاین ثبت نام کنبد تا از اعتبار ۵۰ میلیون تا ۲۰۰ میلیون تومان بهره مند شوید.برای استفاده از خدمات جی جی لاین ثبت نام کنید تا از اعتبار ۵۰ میلیون تا ۲۰۰ میلیون تومان بهره مند شوید.
+          </p>
         </Box>
       ) : null}
       <RightWrapper>
@@ -149,14 +136,13 @@ const LoginPage = () => {
             justifyContent: 'center'
           }}
         >
-          <Box sx={{ width: '100%', maxWidth: 400 }}>
-            <Image src="/logo.png" unoptimized width={60} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
+          <Box sx={{ width: '100%', maxWidth: 400, textAlign: "center" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: "16px" }}>
+              <Image src="/images/logo_fa.svg" unoptimized width={201} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
+            </Box>
             <Box sx={{ my: 6 }}>
-              <Typography variant='h3' sx={{ mb: 1.5 }}>
-                {`خوش آمدید به ${themeConfig.templateName}! 👋🏻`}
-              </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>
-                برای استفاده از خدمات لطفا وارد شوید
+              <Typography variant='h3' sx={{ mb: 1.5, fontSize: "16px" }}>
+                جهت ورود اطلاعات خود را وارد نمایید
               </Typography>
             </Box>
             <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>

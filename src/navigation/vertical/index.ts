@@ -35,7 +35,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'اعتبارسنجی',
       icon: 'tabler:messages',
-      path: '/verification'
+      path: '/validation'
     },
     {
       sectionTitle: "اعتبار"
