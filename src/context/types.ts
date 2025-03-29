@@ -1,7 +1,7 @@
 export type ErrCallbackType = (err: { [key: string]: any }) => void
 
 export type LoginParams = {
-  phone_number: string
+  phoneNumber: string
   password: string
   rememberMe?: boolean
 }
@@ -13,7 +13,7 @@ export type UserDataType = {
   }
   email: string
   name: string
-  phone_number: string
+  phoneNumber: string
   activePlan: {
     text: string,
     app: {

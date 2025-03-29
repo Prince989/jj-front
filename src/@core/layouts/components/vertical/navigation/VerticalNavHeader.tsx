@@ -5,7 +5,6 @@ import Link from 'next/link'
 import IconButton from '@mui/material/IconButton'
 import Box, { BoxProps } from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import Typography, { TypographyProps } from '@mui/material/Typography'
 
 // ** Type Import
 import { LayoutProps } from 'src/@core/layouts/types'
@@ -13,8 +12,6 @@ import { LayoutProps } from 'src/@core/layouts/types'
 // ** Custom Icon Import
 import Icon from 'src/@core/components/icon'
 
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
 import Image from 'next/image'
 
 interface Props {
@@ -39,12 +36,6 @@ const MenuHeaderWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   transition: 'padding .25s ease-in-out',
   minHeight: theme.mixins.toolbar.minHeight
 }))
-
-const HeaderTitle = styled(Typography)<TypographyProps>({
-  fontWeight: 700,
-  lineHeight: '24px',
-  transition: 'opacity .25s ease-in-out, margin .25s ease-in-out'
-})
 
 const LinkStyled = styled(Link)({
   display: 'flex',
@@ -94,10 +85,7 @@ const VerticalNavHeader = (props: Props) => {
         userNavMenuBranding(props)
       ) : (
         <LinkStyled href='/'>
-          <Image src="/logo.png" unoptimized width={50} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
-          <HeaderTitle variant='h4' sx={{ ...menuCollapsedStyles, ...(navCollapsed && !navHover ? {} : { ml: 2.5 }) }}>
-            {themeConfig.templateName}
-          </HeaderTitle>
+          <Image src="/images/logo_en.svg" unoptimized width={127} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
         </LinkStyled>
       )}
 

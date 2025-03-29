@@ -20,11 +20,7 @@ interface TransactionType {
     id: number
     referenceId: string
     amount: number
-    isSuccessfull: string
-    plan: {
-        text: string
-        durationText: string
-    }
+    status: "completed" | "pending" | "failed"
 }
 
 interface APIResponse<T> {
@@ -79,22 +75,9 @@ const columns: GridColDef[] = [
         }
     },
     {
-        flex: 0.10,
-        minWidth: 100,
-        field: 'plan',
-        headerName: 'اشتراک',
-        renderCell: ({ row }: CellType) => {
-            return (
-                <Typography noWrap sx={{ fontWeight: 500, color: 'text.secondary', textTransform: 'capitalize' }}>
-                    {row.plan.text + " " + row.plan.durationText}
-                </Typography>
-            )
-        }
-    },
-    {
         flex: 0.1,
         minWidth: 110,
-        field: 'isSuccessfull',
+        field: 'status',
         headerName: 'وضعیت',
         renderCell: ({ row }: CellType) => {
             return (
@@ -102,8 +85,8 @@ const columns: GridColDef[] = [
                     rounded
                     skin='light'
                     size='small'
-                    label={(row.isSuccessfull ? "موفق" : "ناموفق")}
-                    color={row.isSuccessfull ? "success" : "error"}
+                    label={(row.status === "completed" ? "موفق" : (row.status == "failed" ? "ناموفق" : "در انتظار"))}
+                    color={row.status == "completed" ? "success" : (row.status == "failed" ? "error" : "warning")}
                     sx={{ textTransform: 'capitalize' }}
                 />
             )

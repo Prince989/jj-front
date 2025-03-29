@@ -52,6 +52,8 @@ const AuthProvider = ({ children }: Props) => {
           })
           .then(async response => {
             setLoading(false)
+            console.log("Comming here")
+            setLoading(false)
             setUser({ ...response.data.data })
           })
           .catch(() => {
@@ -78,15 +80,13 @@ const AuthProvider = ({ children }: Props) => {
     mAxios
       .post(authConfig.loginEndpoint, params)
       .then(async response => {
-        params.rememberMe
-          ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.data.token)
-          : null
+        window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.data.token)
         const returnUrl = router.query.returnUrl
 
         setUser({ ...response.data.data.userData })
-        params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.data.userData)) : null
+        window.localStorage.setItem('userData', JSON.stringify(response.data.data.userData))
 
-        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/dashboard'
 
         window.location.href = redirectURL?.[0] ?? redirectURL
       })
@@ -95,6 +95,10 @@ const AuthProvider = ({ children }: Props) => {
         if (errorCallback) errorCallback(err)
       })
   }
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
 
   const handleLogout = () => {
     setUser(null)

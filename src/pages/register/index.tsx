@@ -25,7 +25,6 @@ import Icon from 'src/@core/components/icon'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
-import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import mAxios from 'src/configs/axios'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
@@ -36,7 +35,9 @@ interface State {
   showPassword: boolean
   confirmPassword: string
   showConfirmPassword: boolean
-  name: string
+  fname: string
+  lname: string
+  nationalCode: string
   phoneNumber: string
 }
 
@@ -45,18 +46,6 @@ type IProblem = {
 }
 
 // ** Styled Components
-const LoginIllustration = styled('img')(({ theme }) => ({
-  zIndex: 2,
-  maxHeight: 680,
-  marginTop: theme.spacing(12),
-  marginBottom: theme.spacing(12),
-  [theme.breakpoints.down(1540)]: {
-    maxHeight: 550
-  },
-  [theme.breakpoints.down('lg')]: {
-    maxHeight: 500
-  }
-}))
 
 const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -91,7 +80,9 @@ const RegisterV2 = () => {
     showPassword: false,
     confirmPassword: '',
     showConfirmPassword: false,
-    name: '',
+    fname: '',
+    lname: '',
+    nationalCode: '',
     phoneNumber: ''
   })
 
@@ -146,9 +137,11 @@ const RegisterV2 = () => {
     }
 
     mAxios.post("/auth/signup", {
-      phone_number: values.phoneNumber,
+      phoneNumber: values.phoneNumber,
       password: values.password,
-      name: values.name,
+      fname: values.fname,
+      lname: values.lname,
+      nationalCode: values.nationalCode,
       token: token
     })
       .then(() => {
@@ -192,8 +185,8 @@ const RegisterV2 = () => {
       return;
     }
 
-    mAxios.post("/send_code", {
-      phone_number: values.phoneNumber,
+    mAxios.post("/auth/otp", {
+      phoneNumber: values.phoneNumber,
     })
       .then(() => {
         setTimer(75);
@@ -239,14 +232,19 @@ const RegisterV2 = () => {
             display: 'flex',
             position: 'relative',
             alignItems: 'center',
-            borderRadius: '20px',
+            flexDirection: 'column',
+            gap: '45px',
             justifyContent: 'center',
-            backgroundColor: 'customColors.bodyBg',
-            margin: theme => theme.spacing(8, 0, 8, 8)
+            backgroundColor: '#FAFBFF',
           }}
         >
-          <LoginIllustration alt='login-illustration' src={`/images/authentication/login.svg`} />
-          <FooterIllustrationsV2 />
+          {/* <LoginIllustration alt='login-illustration' src={`/images/registry-illustration.svg`} /> */}
+
+          <Image alt='logo' width={0} height={0} sizes='100vw' unoptimized className='max-w-[314px] w-full' src={`/images/logo_en.svg`} />
+          <Image alt='login-illustration' width={0} height={0} sizes='100vw' unoptimized className='max-h-[550px] max-w-[672px] w-full' src={`/images/registry-illustration.svg`} />
+          <p className='max-w-[600px] text-[14px] text-center'>
+            برای استفاده از خدمات جی جی لاین ثبت نام کنبد تا از اعتبار ۵۰ میلیون تا ۲۰۰ میلیون تومان بهره مند شوید.برای استفاده از خدمات جی جی لاین ثبت نام کنید تا از اعتبار ۵۰ میلیون تا ۲۰۰ میلیون تومان بهره مند شوید.
+          </p>
         </Box>
       ) : null}
       <RightWrapper>
@@ -259,13 +257,14 @@ const RegisterV2 = () => {
             justifyContent: 'center'
           }}
         >
-          <Box sx={{ width: '100%', maxWidth: 400 }}>
-            <Image src="/logo.png" unoptimized width={60} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
+          <Box sx={{ width: '100%', maxWidth: 400, textAlign: "center" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: "16px" }}>
+              <Image src="/images/logo_fa.svg" unoptimized width={201} height={0} sizes='100vw' style={{ height: "auto" }} alt='Logo' />
+            </Box>
             <Box sx={{ my: 6 }}>
-              <Typography variant='h3' sx={{ mb: 1.5 }}>
-                برای استفاده از خدمات ثبت نام کنید
+              <Typography variant='h3' sx={{ mb: 1.5, fontSize: "16px" }}>
+                برای ثبت نام اطلاعات خود را تکمیل نمایید
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>پیام های تبلیغاتی خود را در پلتفرم های متعدد و به تعداد انبوه بفرستید</Typography>
             </Box>
             {
               showToken ?
@@ -273,13 +272,38 @@ const RegisterV2 = () => {
                   <CustomTextField
                     fullWidth
                     autoFocus
-                    value={values.name}
-                    id='name'
-                    label='نام و نام خانوادگی'
-                    onChange={handleChange('name')}
-                    placeholder='John.doe'
-                    helperText={problems['name']}
-                    error={problems['name'] && problems['name'].length > 0}
+                    value={values.fname}
+                    id='fname'
+                    label='نام'
+                    onChange={handleChange('fname')}
+                    placeholder='John'
+                    helperText={problems['fname']}
+                    error={problems['fname'] && problems['fname'].length > 0}
+                    sx={{ display: 'flex', mb: 4 }}
+                  />
+                  <CustomTextField
+                    fullWidth
+                    autoFocus
+                    value={values.lname}
+                    id='lname'
+                    label='نام خانوادگی'
+                    onChange={handleChange('lname')}
+                    placeholder='doe'
+                    helperText={problems['lname']}
+                    error={problems['lname'] && problems['lname'].length > 0}
+                    sx={{ display: 'flex', mb: 4 }}
+                  />
+                  <CustomTextField
+                    fullWidth
+                    autoFocus
+                    type='number'
+                    value={values.nationalCode}
+                    id='nationalCode'
+                    label='کدملی'
+                    onChange={handleChange('nationalCode')}
+                    placeholder='doe'
+                    helperText={problems['nationalCode']}
+                    error={problems['nationalCode'] && problems['nationalCode'].length > 0}
                     sx={{ display: 'flex', mb: 4 }}
                   />
                   <CustomTextField
@@ -369,7 +393,7 @@ const RegisterV2 = () => {
                       </Box>
                     }
                   />
-                  <Button fullWidth type='submit' disabled={!agree} variant='contained' sx={{ mb: 4 }}>
+                  <Button className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1" fullWidth type='submit' disabled={!agree} variant='contained' sx={{ mb: 4 }}>
                     ثبت نام
                   </Button>
                   <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -389,14 +413,14 @@ const RegisterV2 = () => {
                     fullWidth
                     type='text'
                     value={values.phoneNumber}
-                    label='شماره همراه'
+                    label='شماره همراه ( به نام خودتان)'
                     helperText={problems['phone_number']}
                     error={problems['phone_number'] && problems['phone_number'].length > 0}
                     onChange={handleChange('phoneNumber')}
                     sx={{ display: 'flex', mb: 4 }}
                     placeholder='091234567890'
                   />
-                  <Button fullWidth type='submit' disabled={disableSendCode} variant='contained' sx={{ mb: 4 }}>
+                  <Button className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1" fullWidth type='submit' disabled={disableSendCode} variant='contained' sx={{ mb: 4 }}>
                     ارسال کد تایید
                   </Button>
                   <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

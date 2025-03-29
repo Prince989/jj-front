@@ -5,6 +5,7 @@ import { ElementType, forwardRef } from 'react'
 import Paper, { PaperProps } from '@mui/material/Paper'
 import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
 
+
 const CustomAutocomplete = forwardRef(
   <
     T,
@@ -17,6 +18,8 @@ const CustomAutocomplete = forwardRef(
     ref: any
   ) => {
     return (
+
+      // @ts-ignore
       <Autocomplete
         {...props}
         ref={ref}

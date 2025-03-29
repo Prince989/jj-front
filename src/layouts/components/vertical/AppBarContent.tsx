@@ -25,6 +25,7 @@ import { Button, Typography } from '@mui/material'
 import { useMemo } from 'react'
 import { color } from '@mui/system'
 import Link from 'next/link'
+import CustomTextField from 'src/@core/components/mui/text-field'
 
 interface Props {
   hidden: boolean
@@ -193,23 +194,7 @@ const AppBarContent = (props: Props) => {
           : <></>
       }
       <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
-        <Typography noWrap variant='h6' sx={{ fontWeight: "700" }}>
-          اشتراک من:
-        </Typography>
-        <Typography noWrap variant='h6' sx={{ fontWeight: "400" }}>
-          {plan.title}
-        </Typography>
-        {
-          plan.title.includes("رایگان") || plan.title.includes("اتمام اشتراک") ?
-            <Link href={'/plans'}>
-              <Button variant='contained' size='small' color='primary'>
-                خرید اشتراک
-              </Button>
-            </Link>
-            :
-            <></>
-        }
-        <Icon icon={"tabler:diamond"} color={plan.color} />
+        <CustomTextField sx={{ "& .MuiInputBase-root": { border: "none", borderStyle: "none" } }} variant='standard' />
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <ModeToggler settings={settings} saveSettings={saveSettings} />

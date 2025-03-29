@@ -33,25 +33,20 @@ const navigation = (): VerticalNavItemsType => {
       sectionTitle: 'خدمات'
     },
     {
-      title: 'ارسال پیام انبوه',
+      title: 'اعتبارسنجی',
       icon: 'tabler:messages',
-      path: '/messages'
+      path: '/validation'
     },
     {
-      sectionTitle: "اشتراک"
+      sectionTitle: "اعتبار"
     },
     {
-      title: "خرید اشتراک",
+      title: "خرید اعتبار",
       icon: "tabler:vip",
-      path: "/plans"
+      path: "/cards"
     },
     {
       sectionTitle: 'سایر'
-    },
-    {
-      title: "دفترچه تلفن",
-      icon: "tabler:address-book",
-      path: "/contacts"
     },
     {
       title: "تراکنش ها",

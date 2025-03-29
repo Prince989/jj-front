@@ -38,9 +38,9 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       white: whiteColor
     },
     primary: {
-      light: '#E2FFFE',
-      main: '#02ABA8',
-      dark: '#02ABA8',
+      light: '#ff6a00',
+      main: '#ff6a00',
+      dark: '#ff6a00',
       contrastText: whiteColor
     },
     secondary: {
@@ -100,7 +100,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       default: defaultBgColor()
     },
     action: {
-      active: `rgba(${mainColor}, 0.54)`,
+      active: `#002B8A`,
       hover: `rgba(${mainColor}, 0.04)`,
       selected: `rgba(${mainColor}, 0.06)`,
       selectedOpacity: 0.06,
