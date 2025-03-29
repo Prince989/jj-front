@@ -131,7 +131,7 @@ const UserDropdown = (props: Props) => {
               <Avatar alt={user?.name} /*src='/images/avatars/1.png'*/ sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', ml: 2.5, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 500 }}>{user?.phone_number}</Typography>
+              <Typography sx={{ fontWeight: 500 }}>{user?.phoneNumber}</Typography>
             </Box>
           </Box>
         </Box>

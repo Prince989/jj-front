@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Button } from '@mui/material'
 import Image from 'next/image'
-import ColoredText from './ColoredText'
+import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
 interface CreditPlanProps {
     title: string

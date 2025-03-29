@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Button } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ColoredText from './ColoredText'
+import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
 const HeroSection = () => {
     return (

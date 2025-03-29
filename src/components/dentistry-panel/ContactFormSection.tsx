@@ -5,7 +5,7 @@ import {
     MenuItem,
 } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import { validatePhone, validateFullName, persianToEnglish, englishToPersian } from '../utils/validation'
+import { validatePhone, validateFullName, persianToEnglish, englishToPersian } from 'src/utils/dentistry-panel/validation'
 
 const serviceTypes = [
     { value: 'implant', label: 'ایمپلنت دندان' },

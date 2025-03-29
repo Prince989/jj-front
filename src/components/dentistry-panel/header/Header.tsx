@@ -1,6 +1,6 @@
 import React from 'react'
-import MobileMenu from './header/MobileMenu'
-import DesktopMenu from './header/DesktopMenu'
+import MobileMenu from './MobileMenu'
+import DesktopMenu from './DesktopMenu'
 
 const Header = () => {
     const [open, setOpen] = React.useState(false)

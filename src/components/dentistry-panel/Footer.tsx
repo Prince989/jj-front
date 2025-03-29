@@ -4,7 +4,7 @@ import TwitterIcon from '@mui/icons-material/Twitter'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import ColoredText from './ColoredText'
+import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
 const Footer = () => {
     const customerServices = [

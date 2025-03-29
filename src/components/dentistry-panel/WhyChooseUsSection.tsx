@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography } from '@mui/material'
-import ColoredText from './ColoredText'
+import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
 const WhyChooseUsSection = () => {
     const benefits = [
