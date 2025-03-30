@@ -170,6 +170,7 @@ const ValidationWizard = () => {
   const {
     control,
     handleSubmit,
+    setValue
   } = useForm({
     defaultValues,
     mode: 'onBlur'
@@ -202,7 +203,7 @@ const ValidationWizard = () => {
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <StepPersonalInfo handleSubmit={handleSubmit} onSubmit={onSubmit} control={control} />
+        return <StepPersonalInfo handleSubmit={handleSubmit} onSubmit={onSubmit} control={control} setValue={setValue} />
       case 1:
         return <StepCardSelection handleNext={handleNext} />
       case 2:
