@@ -1,11 +1,11 @@
 // ** React Imports
-import { Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useEffect } from 'react'
+
 // ** MUI Imports
 import Button from '@mui/material/Button'
 import InputAdornment from '@mui/material/InputAdornment'
 import Grid from '@mui/material/Grid'
-import { UseFormSetValue } from 'react-hook-form'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -16,6 +16,7 @@ import Box from '@mui/material/Box'
 
 // ** Custom Hooks
 import { useProfile } from 'src/hooks/useProfile'
+import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
 // ** Components
 import CircularProgress from '@mui/material/CircularProgress'
@@ -29,15 +30,21 @@ interface FormData {
     address: string
 }
 
-interface StepPersonalInfoProps {
-    handleSubmit: (onValid: (data: FormData) => void) => (e: React.FormEvent) => void
-    onSubmit: (data: FormData) => void
-    control: any
-    setValue: UseFormSetValue<FormData>
-}
-
-const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPersonalInfoProps) => {
+const StepPersonalInfo = () => {
     const { profileData, loading } = useProfile()
+    const setPersonalInfo = usePersonalInfoStore(state => state.setPersonalInfo)
+    const { setActiveStep, activeStep } = usePersonalInfoStore()
+
+    const { handleSubmit, control, setValue, formState: { errors } } = useForm<FormData>({
+        defaultValues: {
+            fullName: '',
+            nationalId: '',
+            phoneNumber: '',
+            birthDate: '',
+            postalCode: '',
+            address: ''
+        }
+    })
 
     useEffect(() => {
         if (profileData) {
@@ -45,10 +52,23 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
             setValue('nationalId', profileData.nationalCode)
             setValue('phoneNumber', profileData.phoneNumber)
             setValue('birthDate', profileData.birthDate || '')
-            // Note: postalCode and address are not in the API response, 
-            // so we're not setting them here
         }
     }, [profileData, setValue])
+
+    const handleNext = () => {
+        setActiveStep(activeStep + 1)
+    }
+
+    const handleFormSubmit = (data: FormData) => {
+        console.log("Form submission attempted")
+        console.log("Form data:", data)
+        setPersonalInfo(data)
+        handleNext()
+    }
+
+    const onError = (errors: any) => {
+        console.log("Form validation errors:", errors)
+    }
 
     if (loading) {
         return (
@@ -59,13 +79,13 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
     }
 
     return (
-        <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='h-full flex flex-col justify-between'>
+        <form noValidate autoComplete='off' onSubmit={handleSubmit(handleFormSubmit, onError)} className='h-full flex flex-col justify-between'>
             <Grid container spacing={6}>
                 <Grid item xs={12} md={6}>
                     <Controller
                         name='fullName'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'نام و نام خانوادگی الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
@@ -75,6 +95,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                                 onChange={onChange}
                                 placeholder='علی محمدی'
                                 disabled
+                                error={Boolean(errors.fullName)}
+                                helperText={errors.fullName?.message}
                             />
                         )}
                     />
@@ -83,7 +105,7 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                     <Controller
                         name='nationalId'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'شماره ملی الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
@@ -93,6 +115,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                                 onChange={onChange}
                                 placeholder='0023455422'
                                 disabled
+                                error={Boolean(errors.nationalId)}
+                                helperText={errors.nationalId?.message}
                             />
                         )}
                     />
@@ -101,7 +125,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                     <Controller
                         name='birthDate'
                         control={control}
-                        rules={{ required: true }}
+
+                        // rules={{ required: 'تاریخ تولد الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
@@ -111,6 +136,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                                 onChange={onChange}
                                 placeholder='1345/09/19'
                                 disabled
+                                error={Boolean(errors.birthDate)}
+                                helperText={errors.birthDate?.message}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position='end'>
@@ -126,7 +153,7 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                     <Controller
                         name='phoneNumber'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'شماره همراه الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
@@ -136,6 +163,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                                 onChange={onChange}
                                 placeholder='09123456788'
                                 disabled
+                                error={Boolean(errors.phoneNumber)}
+                                helperText={errors.phoneNumber?.message}
                             />
                         )}
                     />
@@ -144,7 +173,7 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                     <Controller
                         name='postalCode'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'کد پستی الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
@@ -153,6 +182,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 placeholder='1234567898'
+                                error={Boolean(errors.postalCode)}
+                                helperText={errors.postalCode?.message}
                             />
                         )}
                     />
@@ -161,7 +192,7 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                     <Controller
                         name='address'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'آدرس الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
@@ -170,6 +201,8 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control, setValue }: StepPer
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 placeholder='تهران، تهران'
+                                error={Boolean(errors.address)}
+                                helperText={errors.address?.message}
                             />
                         )}
                     />

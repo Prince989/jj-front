@@ -12,18 +12,15 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Link from '@mui/material/Link'
 import { Grid } from '@mui/material'
 
-// ** Types
-interface Props {
-    handleNext: () => void
-}
+// ** Types & Data
+import { creditCardsData } from '../../../../configs/credit-cards'
 
-interface CardData {
-    id: string
-    image: string
-    title: string
-    price: string
-    description: string
-}
+import { CardInfo } from 'src/store/usePersonalInfoStore'
+
+
+// ** Store Import
+import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+
 
 // ** Styled Components
 const CardImage = styled('img')({
@@ -54,26 +51,8 @@ const StyledLink = styled(Link)({
     }
 })
 
-// Card data
-const cardsData: CardData[] = [
-    {
-        id: '50mil',
-        image: '/images/dentistry/50mil.png',
-        title: 'کارت اعتبار ۵۰ میلیون تومانی',
-        price: 'قیمت: ۱,۰۰۰,۰۰۰ تومان',
-        description: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در...'
-    },
-    {
-        id: '200mil',
-        image: '/images/dentistry/200mil.png',
-        title: 'کارت اعتبار ۲۰۰میلیون تومانی',
-        price: 'قیمت: ۴,۰۰۰,۰۰۰ تومان',
-        description: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در...'
-    }
-]
-
 // Card Component
-const CreditCard = ({ data, selectedCard, onChange }: { data: CardData, selectedCard: string, onChange: (value: string) => void }) => (
+const CreditCard = ({ data, selectedCard, onChange }: { data: CardInfo, selectedCard: string, onChange: (value: string) => void }) => (
     <Box sx={{ flex: 1, maxWidth: '500px' }}>
         <CardImage src={data.image} alt={data.title} />
         <Box sx={{ mt: 2 }}>
@@ -99,11 +78,40 @@ const CreditCard = ({ data, selectedCard, onChange }: { data: CardData, selected
     </Box>
 )
 
-const StepCardSelection = ({ handleNext }: Props) => {
+const StepCardSelection = () => {
     const [selectedCard, setSelectedCard] = useState<string>('')
+
+    const { setActiveStep, activeStep, setCardInfo } = usePersonalInfoStore()
+
+
+    const handleNext = () => {
+        setActiveStep(activeStep + 1)
+    }
 
     const handleCardChange = (value: string) => {
         setSelectedCard(value)
+        const selectedCardData = creditCardsData.find(card => card.id === value)
+        if (selectedCardData) {
+            setCardInfo({
+                id: selectedCardData.id,
+                title: selectedCardData.title,
+                description: selectedCardData.description,
+                price: selectedCardData.price,
+                status: 'پرداخت شده',
+                image: selectedCardData.image,
+                amount: selectedCardData.amount
+            })
+        } else {
+            setCardInfo({
+                id: '',
+                title: '',
+                description: '',
+                price: '',
+                status: '',
+                image: '',
+                amount: ''
+            })
+        }
     }
 
     return (
@@ -114,7 +122,7 @@ const StepCardSelection = ({ handleNext }: Props) => {
                 sx={{ gap: 4 }}
             >
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, justifyContent: 'center' }}>
-                    {cardsData.map((card) => (
+                    {creditCardsData.map((card) => (
                         <CreditCard
                             key={card.id}
                             data={card}
@@ -131,6 +139,7 @@ const StepCardSelection = ({ handleNext }: Props) => {
                     variant='contained'
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
                     onClick={handleNext}
+                    disabled={!selectedCard}
                 >
                     پرداخت
                 </Button>

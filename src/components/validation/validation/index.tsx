@@ -1,6 +1,3 @@
-// ** React Imports
-import { useState } from 'react'
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -19,8 +16,6 @@ import Icon from 'src/@core/components/icon'
 // ** Custom Components Imports
 import CustomAvatar from 'src/@core/components/mui/avatar'
 
-// ** Third Party Imports
-import { useForm } from 'react-hook-form'
 
 // ** Styled Components
 import StepperWrapper from 'src/@core/styles/mui/stepper'
@@ -30,6 +25,10 @@ import StepPersonalInfo from './steps/StepPersonalInfo'
 import StepCardSelection from './steps/StepCardSelection'
 import CardInfo from './steps/CardInfo'
 import StepFinalCredit from './steps/StepFinalCredit'
+
+// ** Store Import
+import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+
 
 const steps = [
   {
@@ -144,70 +143,18 @@ const StepperConnector = styled(StepConnector)(({ theme }) => ({
   }
 }))
 
-interface FormData {
-  fullName: string
-  nationalId: string
-  phoneNumber: string
-  birthDate: string
-  postalCode: string
-  address: string
-}
-
-const defaultValues = {
-  fullName: '',
-  nationalId: '',
-  phoneNumber: '',
-  birthDate: '',
-  postalCode: '',
-  address: ''
-}
-
 const ValidationWizard = () => {
-  // ** States
-  const [activeStep, setActiveStep] = useState<number>(0)
-
-  // ** Hooks
-  const {
-    control,
-    handleSubmit,
-    setValue
-  } = useForm({
-    defaultValues,
-    mode: 'onBlur'
-  })
-
-  // Handle Stepper
-  const handleNext = () => {
-    setActiveStep(activeStep + 1)
-  }
-
-  const onSubmit = (data: FormData) => {
-    console.log(data)
-    handleNext()
-  }
-
-  const cardInfo = {
-    price: '1,000,000 تومان',
-    status: 'پرداخت شده',
-    image: '/images/dentistry/50mil.png'
-  }
-  const userData = {
-    name: 'علی محمدی',
-    nationalId: '0034343678',
-    birthDate: '1354/08/07',
-    address: 'تهران',
-    postalCode: '9850098765',
-    phone: '09123456765'
-  }
+  // ** Store
+  const { activeStep, setActiveStep } = usePersonalInfoStore()
 
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <StepPersonalInfo handleSubmit={handleSubmit} onSubmit={onSubmit} control={control} setValue={setValue} />
+        return <StepPersonalInfo />
       case 1:
-        return <StepCardSelection handleNext={handleNext} />
+        return <StepCardSelection />
       case 2:
-        return <CardInfo userInfo={userData} cardInfo={cardInfo} />
+        return <CardInfo />
       case 3:
         return <StepFinalCredit />
       default:
@@ -288,7 +235,6 @@ const ValidationWizard = () => {
         <CardContent sx={{ pt: theme => `${theme.spacing(6)} !important`, flex: 1 }}>
           {renderContent()}
         </CardContent>
-
       </Card>
     </>
   )

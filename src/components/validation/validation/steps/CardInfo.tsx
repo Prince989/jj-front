@@ -1,5 +1,7 @@
 import { Box, Typography, Button, styled, Grid } from '@mui/material'
+import { useEffect } from 'react'
 import CustomTextField from 'src/@core/components/mui/text-field'
+import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
 // Styled components
 const CardContainer = styled(Box)(({ theme }) => ({
@@ -21,23 +23,19 @@ const CardImage = styled('img')({
     maxWidth: '400px'
 })
 
-interface CardInfoProps {
-    userInfo: {
-        name: string;
-        nationalId: string;
-        birthDate: string;
-        address: string;
-        postalCode: string;
-        phone: string;
-    };
-    cardInfo: {
-        price: string;
-        status: string;
-        image: string;
-    };
-}
+const CardInfo = () => {
+    const personalInfo = usePersonalInfoStore(state => state.personalInfo)
+    const cardInfo = usePersonalInfoStore(state => state.cardInfo)
 
-const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
+    useEffect(() => {
+        console.log("personalInfo", personalInfo)
+        console.log("cardInfo", cardInfo)
+    }, [personalInfo, cardInfo])
+
+    if (!personalInfo || !cardInfo) {
+        return null // or some loading state/error message
+    }
+
     return (
         <Box>
             {/* User Information Grid */}
@@ -45,7 +43,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={userInfo.name}
+                        value={personalInfo.fullName}
                         label="نام و نام خانوادگی"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -54,7 +52,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={userInfo.nationalId}
+                        value={personalInfo.nationalId}
                         label="شماره ملی"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -63,7 +61,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={userInfo.birthDate}
+                        value={personalInfo.birthDate}
                         label="تاریخ تولد"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -72,7 +70,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={userInfo.address}
+                        value={personalInfo.address}
                         label="آدرس"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -81,7 +79,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={userInfo.postalCode}
+                        value={personalInfo.postalCode}
                         label="کد پستی"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -90,7 +88,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={userInfo.phone}
+                        value={personalInfo.phoneNumber}
                         label="شماره همراه"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -107,7 +105,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 9 }}>
                                 <Typography sx={{ fontSize: '14px', color: '#2E2E2E', fontWeight: '600' }}>کارت اعتبار ۵۰ میلیون تومانی</Typography>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                    <StatusChip>پرداخت شده</StatusChip>
+                                    <StatusChip>{cardInfo.status}</StatusChip>
                                     <Typography sx={{ fontSize: '14px', color: '#002B8A', fontWeight: '600' }}>قیمت: {cardInfo.price} تومان</Typography>
                                 </Box>
                             </Box>
@@ -119,7 +117,7 @@ const CardInfo = ({ userInfo, cardInfo }: CardInfoProps) => {
                     </Grid>
                     {/* Right Column - Content */}
                     <Grid item xs={12} md={5}>
-                        <CardImage src={cardInfo?.image} alt={cardInfo?.status} />
+                        <CardImage src={cardInfo.image} alt={cardInfo.status} />
                     </Grid>
                 </Grid>
             </CardContainer>
