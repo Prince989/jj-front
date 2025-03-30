@@ -79,10 +79,11 @@ const Step = styled(MuiStep)<StepProps>(({ theme }) => ({
     paddingTop: 0
   },
   '&:not(:last-of-type) .MuiStepLabel-root': {
-    paddingBottom: theme.spacing(6)
+    paddingBottom: theme.spacing(6),
+
   },
   '&:last-of-type .MuiStepLabel-root': {
-    paddingBottom: 0
+    paddingBottom: "0 !important"
   },
   '& .MuiStepLabel-iconContainer': {
     display: 'none'
@@ -137,9 +138,9 @@ const StepperConnector = styled(StepConnector)(({ theme }) => ({
     padding: 0
   },
   '.MuiStepper-vertical &': {
-    marginRight: '23px',
+    marginLeft: '23px !important',
     height: '100%',
-    marginLeft: 0
+    marginRight: 0,
   }
 }))
 

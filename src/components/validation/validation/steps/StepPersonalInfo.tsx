@@ -11,6 +11,7 @@ import Icon from 'src/@core/components/icon'
 
 // ** Custom Components Imports
 import CustomTextField from 'src/@core/components/mui/text-field'
+import Box from '@mui/material/Box'
 
 interface FormData {
     fullName: string
@@ -29,7 +30,7 @@ interface StepPersonalInfoProps {
 
 const StepPersonalInfo = ({ handleSubmit, onSubmit, control }: StepPersonalInfoProps) => {
     return (
-        <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+        <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='h-full flex flex-col justify-between'>
             <Grid container spacing={6}>
                 <Grid item xs={12} md={6}>
                     <Controller
@@ -140,15 +141,15 @@ const StepPersonalInfo = ({ handleSubmit, onSubmit, control }: StepPersonalInfoP
                         )}
                     />
                 </Grid>
-                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
-                    >
-                        ثبت اطلاعات
-                    </Button>
-                </Grid>
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                    type='submit'
+                    variant='contained'
+                    className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
+                >
+                    ثبت اطلاعات
+                </Button>
             </Grid>
         </form>
     )
