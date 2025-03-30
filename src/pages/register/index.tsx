@@ -194,13 +194,13 @@ const RegisterV2 = () => {
 
       })
       .catch(err => {
-        const status = err.response.status;
-        const data = err.response.data;
+        const status = err?.response?.status;
+        const data = err?.response?.data;
         if (status == 400) {
           setProblems(data.problem);
         }
         if (err.response?.data?.message)
-          toast.error(err.response?.data?.message, {
+          toast.error(err?.response?.data?.message, {
             position: "bottom-left",
           })
       })

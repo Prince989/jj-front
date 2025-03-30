@@ -3,11 +3,9 @@ import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
 
 // ** Hooks Imports
-import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
 
 const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => {
   // ** Hook
-  const bgColors: UseBgColorType = useBgColor()
 
   return {
     [theme.breakpoints.down('md')]: {
@@ -52,17 +50,18 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => {
       }
     },
     '& .MuiStepConnector-root': {
+      marginLeft: theme.spacing(2.05),
       '& .MuiStepConnector-line': {
-        borderWidth: 3,
-        borderRadius: 3
+        borderWidth: 2,
+        borderStyle: 'dashed',
+        borderRadius: 1,
+        borderColor: theme.palette.divider
       },
       '&.Mui-active, &.Mui-completed': {
         '& .MuiStepConnector-line': {
-          borderColor: theme.palette.primary.main
+          borderColor: "#000",
+          borderStyle: 'dashed'
         }
-      },
-      '&.Mui-disabled .MuiStepConnector-line': {
-        borderColor: bgColors.primaryLight.backgroundColor
       }
     },
     '& .MuiStepper-alternativeLabel': {
@@ -80,11 +79,12 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => {
     },
     '& .MuiStepper-vertical': {
       '& .MuiStep-root': {
+        marginBottom: theme.spacing(4),
         '& .step-label': {
           justifyContent: 'flex-start'
         },
         '& .MuiStepContent-root': {
-          borderWidth: 3,
+          borderWidth: 2,
           marginLeft: theme.spacing(2.25),
           borderColor: theme.palette.primary.main
         },
@@ -93,12 +93,21 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => {
         },
         '&.active + .MuiStepConnector-root .MuiStepConnector-line': {
           borderColor: theme.palette.primary.main
+        },
+        '& .MuiStepLabel-root': {
+          paddingBottom: theme.spacing(10)
         }
       },
       '& .MuiStepConnector-root': {
         marginLeft: theme.spacing(2.25),
+        height: '100%',
         '& .MuiStepConnector-line': {
-          borderRadius: 0
+          borderRadius: 0,
+          minHeight: theme.spacing(12),
+          borderStyle: 'dashed',
+          borderWidth: 2,
+          borderColor: theme.palette.divider,
+          height: '100%'
         }
       }
     }

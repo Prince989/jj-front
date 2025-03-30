@@ -160,8 +160,8 @@ const LoginPage = () => {
                       onBlur={onBlur}
                       onChange={onChange}
                       placeholder='09123456789'
-                      helperText={problems['phoneNumber']}
-                      error={problems['phoneNumber'] && problems['phoneNumber'].length > 0}
+                      helperText={problems?.phoneNumber}
+                      error={problems?.phoneNumber && problems?.phoneNumber?.length > 0}
                     />
                   )}
                 />
@@ -179,8 +179,8 @@ const LoginPage = () => {
                       label='رمز عبور'
                       onChange={onChange}
                       id='auth-login-v2-password'
-                      helperText={problems['password']}
-                      error={problems['password'] && problems['password'].length > 0}
+                      helperText={problems?.password}
+                      error={problems?.password && problems?.password?.length > 0}
                       type={showPassword ? 'text' : 'password'}
                       InputProps={{
                         endAdornment: (
