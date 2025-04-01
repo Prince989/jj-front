@@ -2,6 +2,7 @@
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import MuiListSubheader, { ListSubheaderProps } from '@mui/material/ListSubheader'
+import Box from '@mui/material/Box'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -59,9 +60,12 @@ const VerticalNavSectionTitle = (props: Props) => {
         {navCollapsed && !navHover ? (
           <Icon icon='tabler:separator' />
         ) : (
-          <Typography noWrap variant='caption' sx={{ textTransform: 'uppercase' }}>
-            <Translations text={item.sectionTitle} />
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <Typography noWrap variant='caption' sx={{ textTransform: 'uppercase' }}>
+              <Translations text={item.sectionTitle} />
+            </Typography>
+            <Box sx={{ flexGrow: 1, ml: 3, borderBottom: theme => `1px solid ${theme.palette.divider}` }} />
+          </Box>
         )}
       </ListSubheader>
     </CanViewNavSectionTitle>

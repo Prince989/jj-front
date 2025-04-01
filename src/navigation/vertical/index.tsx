@@ -1,7 +1,12 @@
 // ** Type import
+import { BillIcon, ChartIcon, DashboardIcon, GuideIcon, LetterIcon, ProfileIcon, ProtectionIcon, ServicesIcon, WalletIcon } from 'src/@core/components/IconV2'
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
+// ** Example of importing a custom icon component
+// import CustomIcon from 'path/to/your/CustomIcon'
+
 const navigation = (): VerticalNavItemsType => {
+
   return [
     /*  {
         title: 'Dashboards',
@@ -25,42 +30,72 @@ const navigation = (): VerticalNavItemsType => {
       },*/
     {
       title: 'داشبورد',
-      icon: 'tabler:smart-home',
+
+      // icon: 'tabler:smart-home', // String icon example
+      icon: <DashboardIcon />,
       badgeColor: 'error',
       path: "/dashboard"
+    },
+    {
+      title: 'اطلاعات هویتی',
+      icon: <ProfileIcon />,
+      badgeColor: 'error',
+      path: "/profile"
+    },
+    {
+      sectionTitle: 'اعتبار'
+    },
+    {
+      title: 'اعتبارسنجی',
+
+      // icon: 'tabler:messages', // String icon example
+      icon: <ChartIcon />,
+      path: '/validation'
+    },
+    {
+      title: "خرید اعتبار",
+
+      // icon: "tabler:vip", // String icon example
+      icon: <WalletIcon />,
+      path: "/cards"
     },
     {
       sectionTitle: 'خدمات'
     },
     {
-      title: 'اعتبارسنجی',
-      icon: 'tabler:messages',
-      path: '/validation'
-    },
-    {
-      sectionTitle: "اعتبار"
-    },
-    {
-      title: "خرید اعتبار",
-      icon: "tabler:vip",
-      path: "/cards"
+      title: "خدمات",
+      icon: <ServicesIcon />,
+      path: "/services"
     },
     {
       sectionTitle: 'سایر'
     },
     {
       title: "تراکنش ها",
-      icon: "tabler:file-dollar",
+
+      // icon: "tabler:file-dollar",
+      icon: <BillIcon />,
       path: "/transactions"
     },
     {
+      title: "پیام ها",
+
+      // icon: "tabler:file-dollar",
+      icon: <LetterIcon />,
+      path: "/messages"
+    },
+    {
       title: "راهنما و آموزش",
-      icon: "tabler:help-circle",
+
+      // icon: "tabler:help-circle",
+      icon: <GuideIcon />,
       path: "/help"
     },
     {
       title: "قوانین و مقررات",
-      icon: "tabler:lock-square",
+
+      // icon: "tabler:lock-square",
+      icon: <ProtectionIcon />,
       path: "/privacy"
     },
 

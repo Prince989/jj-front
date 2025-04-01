@@ -1,5 +1,5 @@
 // ** React Imports
-import { ElementType } from 'react'
+import { ElementType, cloneElement, isValidElement, ReactElement } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -110,6 +110,23 @@ const VerticalNavLink = ({
     }
   }
 
+  const isActive = isNavLinkActive()
+
+  // ** Handle Icon rendering
+  const renderIcon = () => {
+    if (isValidElement(icon)) {
+      // If icon is a JSX element (React component), clone it with additional props
+      return cloneElement(icon as ReactElement<{ className?: string; style?: React.CSSProperties }>, {
+        style: {
+          color: isActive ? '#fff' : 'inherit'
+        }
+      })
+    }
+
+    // If icon is a string, use UserIcon component
+    return <UserIcon icon={icon as string} />
+  }
+
   return (
     <CanViewNavLink navLink={item}>
       <ListItem
@@ -121,7 +138,7 @@ const VerticalNavLink = ({
         <MenuNavLink
           component={Link}
           {...(item.disabled && { tabIndex: -1 })}
-          className={isNavLinkActive() ? 'active' : ''}
+          className={isActive ? 'active' : ''}
           href={item.path === undefined ? '/' : `${item.path}`}
           {...(item.openInNewTab ? { target: '_blank' } : null)}
           onClick={e => {
@@ -139,6 +156,11 @@ const VerticalNavLink = ({
             px: navCollapsed && !navHover ? (collapsedNavWidth - navigationBorderWidth - 22 - 28) / 8 : 4,
             '& .MuiTypography-root, & svg': {
               color: 'text.secondary'
+            },
+            '&.active': {
+              '& .active-icon': {
+                color: 'inherit !important'
+              }
             }
           }}
         >
@@ -146,7 +168,7 @@ const VerticalNavLink = ({
             sx={{
               transition: 'margin .25s ease-in-out',
               ...(navCollapsed && !navHover ? { mr: 0 } : { mr: 2 }),
-              ...(parent ? { ml: 1.5, mr: 3.5 } : {}), // This line should be after (navCollapsed && !navHover) condition for proper styling
+              ...(parent ? { ml: 1.5, mr: 3.5 } : {}),
               '& svg': {
                 fontSize: '0.625rem',
                 ...(!parent ? { fontSize: '1.375rem' } : {}),
@@ -154,7 +176,7 @@ const VerticalNavLink = ({
               }
             }}
           >
-            <UserIcon icon={icon as string} />
+            {renderIcon()}
           </ListItemIcon>
 
           <MenuItemTextMetaWrapper
