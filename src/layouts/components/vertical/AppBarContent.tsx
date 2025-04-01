@@ -26,6 +26,7 @@ import { useMemo } from 'react'
 import { color } from '@mui/system'
 import Link from 'next/link'
 import CustomTextField from 'src/@core/components/mui/text-field'
+import { MagnifierIcon } from 'src/@core/components/IconV2'
 
 interface Props {
   hidden: boolean
@@ -194,10 +195,32 @@ const AppBarContent = (props: Props) => {
           : <></>
       }
       <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
-        <CustomTextField sx={{ "& .MuiInputBase-root": { border: "none", borderStyle: "none" } }} variant='standard' />
+        <CustomTextField
+          placeholder='جستجو کنید'
+          InputProps={{
+            startAdornment: <MagnifierIcon />
+          }}
+          sx={{
+            minWidth: '300px',
+            "& .MuiInputBase-root": {
+              paddingRight: 2,
+              width: "100%",
+              border: "none",
+              borderStyle: "none",
+              boxShadow: "none",
+              "&:hover, &:focus, &.Mui-focused": {
+                boxShadow: "none"
+              }
+            },
+            "& .MuiInputBase-root input": {
+              paddingLeft: "10px !important",
+            }
+          }}
+          variant='standard'
+        />
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-        <ModeToggler settings={settings} saveSettings={saveSettings} />
+        {/* <ModeToggler settings={settings} saveSettings={saveSettings} /> */}
         {auth.user && (
           <>
             {/* <ShortcutsDropdown settings={settings} shortcuts={shortcuts} /> */}
