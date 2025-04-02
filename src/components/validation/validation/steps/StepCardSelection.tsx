@@ -18,6 +18,7 @@ import { CardInfo } from 'src/store/usePersonalInfoStore'
 // ** Store Import
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import useCards from 'src/hooks/useCards'
+import { usePurchase } from 'src/hooks/usePurchase'
 
 // ** Styled Components
 const CardImage = styled('img')({
@@ -87,11 +88,8 @@ const CreditCard = ({ data, selectedCard, onChange }: { data: CardInfo, selected
 const StepCardSelection = () => {
     const [selectedCard, setSelectedCard] = useState<string>('')
     const { cards, loading, error } = useCards()
-    const { setActiveStep, activeStep, setCardInfo } = usePersonalInfoStore()
-
-    const handleNext = () => {
-        setActiveStep(activeStep + 1)
-    }
+    const { setCardInfo } = usePersonalInfoStore()
+    const { isPaymentLoading, handlePayment } = usePurchase({ selectedCard })
 
     const handleCardChange = (value: string) => {
         setSelectedCard(value)
@@ -175,10 +173,15 @@ const StepCardSelection = () => {
                     type='submit'
                     variant='contained'
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
-                    onClick={handleNext}
-                    disabled={!selectedCard}
+                    onClick={handlePayment}
+                    disabled={!selectedCard || isPaymentLoading}
                 >
-                    پرداخت
+                    {isPaymentLoading ? (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircularProgress size={20} color="inherit" />
+                            <span>در حال پردازش...</span>
+                        </Box>
+                    ) : 'پرداخت'}
                 </Button>
             </Grid>
         </Box>
