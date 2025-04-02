@@ -10,6 +10,7 @@ import { SelectChangeEvent } from '@mui/material/Select'
 import { Grid } from '@mui/material'
 import FinalCreditDialog from './FinalCreditDialog'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+import useFinalCredit from 'src/hooks/useFinalCredit'
 
 const StyledSelect = styled(Select)(() => ({
     backgroundColor: '#E0EFFF',
@@ -77,14 +78,18 @@ const StepFinalCredit = () => {
     const cardInfo = usePersonalInfoStore(state => state.cardInfo)
     const [paymentPeriod, setPaymentPeriod] = useState('12')
     const [dialogOpen, setDialogOpen] = useState(false)
+    const { submitFinalCredit, loading } = useFinalCredit()
 
     const periods = [
         { value: '6', label: '۶ ماهه' },
         { value: '12', label: '۱۲ ماهه' },
     ]
 
-    const handleFinalRequest = () => {
-        setDialogOpen(true)
+    const handleFinalRequest = async () => {
+        const success = await submitFinalCredit(Number(paymentPeriod))
+        if (success) {
+            setDialogOpen(true)
+        }
     }
 
     if (!cardInfo) {
@@ -152,9 +157,10 @@ const StepFinalCredit = () => {
                         type='submit'
                         variant='contained'
                         onClick={handleFinalRequest}
+                        disabled={loading}
                         className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
                     >
-                        درخواست نهایی کسب اعتبار جی جی لاین
+                        {loading ? 'در حال ثبت درخواست...' : 'درخواست نهایی کسب اعتبار جی جی لاین'}
                     </Button>
                 </Grid>
             </CreditDetailsBox>

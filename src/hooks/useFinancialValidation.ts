@@ -24,11 +24,7 @@ interface ValidationResponse {
 export const useFinancialValidation = () => {
     const validateFinancial = async () => {
         try {
-            const { data } = await mAxios.get<ValidationResponse>('/financial/validate', {
-                headers: {
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1IjoiMDkzOTA2MTQxMTMiLCJwIjoiJDJiJDEwJG9JUGR4a2o1RU5TY1c1ZGg0THZPTE9VN2NXVVJEVU93RGFBUXRsU2xXZHd3LlNNNE5xUnJHIiwiaSI6MywiaWF0IjoxNzQzMzQ1MTk5LCJleHAiOjE3NDg1MjkxOTl9.OcF1UiJ1xabizwW-dvl5TBipJQnj3u1wEWanEnA7XjI'
-                }
-            })
+            const { data } = await mAxios.get<ValidationResponse>('/financial/validate')
 
             return data.data
         } catch (error) {
