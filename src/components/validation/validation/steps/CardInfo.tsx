@@ -105,7 +105,7 @@ const CardInfo = () => {
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 9 }}>
                                 <Typography sx={{ fontSize: '14px', color: '#2E2E2E', fontWeight: '600' }}>کارت اعتبار ۵۰ میلیون تومانی</Typography>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                    <StatusChip>{cardInfo.status}</StatusChip>
+                                    <StatusChip>پرداخت شده</StatusChip>
                                     <Typography sx={{ fontSize: '14px', color: '#002B8A', fontWeight: '600' }}>قیمت: {cardInfo.price} تومان</Typography>
                                 </Box>
                             </Box>
@@ -117,7 +117,7 @@ const CardInfo = () => {
                     </Grid>
                     {/* Right Column - Content */}
                     <Grid item xs={12} md={5}>
-                        <CardImage src={cardInfo.image} alt={cardInfo.status} />
+                        <CardImage src={cardInfo.image} alt="پرداخت شده" />
                     </Grid>
                 </Grid>
             </CardContainer>

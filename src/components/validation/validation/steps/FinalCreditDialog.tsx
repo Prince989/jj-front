@@ -63,7 +63,7 @@ const FinalCreditDialog = ({ open, onClose, selectedCard }: FinalCreditDialogPro
                     >
                         کاربر گرامی!
                         <br />
-                        مبلغ {selectedCard.amount} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
+                        مبلغ {selectedCard.price} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
                     </Typography>
                 </MessageBox>
             </DialogContent>

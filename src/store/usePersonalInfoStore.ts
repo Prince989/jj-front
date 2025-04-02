@@ -10,13 +10,15 @@ export interface PersonalInfo {
 }
 
 export interface CardInfo {
-    id: string
-    image: string
+    id: string | number
     title: string
-    price: string
-    description: string
-    amount: string
-    status?: string
+    credit: number
+    price: number
+    installCount: number
+    subTitle: string[]
+    createdAt?: string
+    updatedAt?: string
+    image?: string
 }
 
 export interface PersonalInfoStore {
