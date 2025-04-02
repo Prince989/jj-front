@@ -28,14 +28,17 @@ export const useFinalCredit = () => {
 
             if (Object.keys(response.data.problem).length === 0 && response.data.data) {
                 toast.success('درخواست با موفقیت ثبت شد')
+
                 return true
             } else {
                 toast.error(response.data.message || 'خطا در ثبت درخواست')
+
                 return false
             }
         } catch (error) {
             console.error('Error submitting final credit:', error)
             toast.error('خطا در ارتباط با سرور')
+
             return false
         } finally {
             setLoading(false)
