@@ -2,6 +2,8 @@ import { Box, Typography, Button, styled, Grid } from '@mui/material'
 import { useEffect } from 'react'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+import { List, ListItem } from '@mui/material'
+import { useFinancialValidation } from 'src/hooks/useFinancialValidation'
 
 // Styled components
 const CardContainer = styled(Box)(({ theme }) => ({
@@ -26,6 +28,8 @@ const CardImage = styled('img')({
 const CardInfo = () => {
     const personalInfo = usePersonalInfoStore(state => state.personalInfo)
     const cardInfo = usePersonalInfoStore(state => state.cardInfo)
+    const { handleValidation } = useFinancialValidation()
+    const { setActiveStep, activeStep } = usePersonalInfoStore()
 
     useEffect(() => {
         console.log("personalInfo", personalInfo)
@@ -34,6 +38,19 @@ const CardInfo = () => {
 
     if (!personalInfo || !cardInfo) {
         return null // or some loading state/error message
+    }
+
+    const handleValidationClick = async () => {
+        try {
+            await handleValidation();
+            handleNext()
+        } catch (error) {
+            console.error('Error in validation:', error)
+        }
+    }
+
+    const handleNext = () => {
+        setActiveStep(activeStep + 1)
     }
 
     return (
@@ -110,9 +127,18 @@ const CardInfo = () => {
                                 </Box>
                             </Box>
 
-                            <Typography sx={{ mb: 3, color: '#666666' }}>
-                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                            </Typography>
+                            <List dense sx={{ fontSize: '12px', color: '#2E2E2E', pl: 4 }}>
+                                {cardInfo.subTitle?.map((item: string, index: number) => (
+                                    <ListItem key={index} sx={{
+                                        display: 'list-item',
+                                        listStyleType: 'disc',
+                                        fontSize: '12px',
+                                        padding: '2px 0'
+                                    }}>
+                                        {item}
+                                    </ListItem>
+                                ))}
+                            </List>
                         </Box>
                     </Grid>
                     {/* Right Column - Content */}
@@ -126,6 +152,7 @@ const CardInfo = () => {
                     type='submit'
                     variant='contained'
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
+                    onClick={handleValidationClick}
                 >
                     درخواست اعتبار سنجی
                 </Button>
