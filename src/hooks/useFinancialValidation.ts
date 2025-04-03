@@ -51,10 +51,7 @@ export const useFinancialValidation = () => {
             const message = getValidationMessage(result.validationStatus)
 
             // Show toast based on validation status
-            toast.success(message, {
-                duration: 4000,
-                position: 'bottom-right'
-            })
+            toast.success(message)
 
             return result
         } catch (error) {
@@ -62,10 +59,7 @@ export const useFinancialValidation = () => {
             const axiosError = error as AxiosError<ValidationResponse>
             const errorMessage = axiosError.response?.data?.message || 'خطا در اعتبارسنجی. لطفا دوباره تلاش کنید'
 
-            toast.error(errorMessage, {
-                duration: 4000,
-                position: 'bottom-right'
-            })
+            toast.error(errorMessage)
             throw error
         }
     }

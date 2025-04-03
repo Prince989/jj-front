@@ -16,6 +16,9 @@ import Icon from 'src/@core/components/icon'
 // ** Custom Components Imports
 import CustomAvatar from 'src/@core/components/mui/avatar'
 
+// ** React Imports
+import { useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 // ** Styled Components
 import StepperWrapper from 'src/@core/styles/mui/stepper'
@@ -146,6 +149,16 @@ const StepperConnector = styled(StepConnector)(({ theme }) => ({
 const ValidationWizard = () => {
   // ** Store
   const { activeStep, setActiveStep } = usePersonalInfoStore()
+
+  // ** Hooks
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const paymentStatus = searchParams.get('payment')
+    if (paymentStatus === 'success') {
+      setActiveStep(2)
+    }
+  }, [searchParams, setActiveStep])
 
   const getStepContent = (step: number) => {
     switch (step) {

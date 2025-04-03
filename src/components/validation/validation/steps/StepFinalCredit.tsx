@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
@@ -11,6 +11,7 @@ import { Grid } from '@mui/material'
 import FinalCreditDialog from './FinalCreditDialog'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import useFinalCredit from 'src/hooks/useFinalCredit'
+import { useAllocatedCredit } from 'src/hooks/useAllocatedCredit'
 
 const StyledSelect = styled(Select)(() => ({
     backgroundColor: '#E0EFFF',
@@ -79,11 +80,19 @@ const StepFinalCredit = () => {
     const [paymentPeriod, setPaymentPeriod] = useState('12')
     const [dialogOpen, setDialogOpen] = useState(false)
     const { submitFinalCredit, loading } = useFinalCredit()
-
+    const { creditAmount, loading: creditLoading, error } = useAllocatedCredit()
+    const { setActiveStep, setCreditAmount } = usePersonalInfoStore()
     const periods = [
         { value: '6', label: '۶ ماهه' },
         { value: '12', label: '۱۲ ماهه' },
     ]
+
+    // Save creditAmount to store when it's received
+    useEffect(() => {
+        if (creditAmount) {
+            setCreditAmount(creditAmount)
+        }
+    }, [creditAmount, setCreditAmount])
 
     const handleFinalRequest = async () => {
         const success = await submitFinalCredit(Number(paymentPeriod))
@@ -92,14 +101,16 @@ const StepFinalCredit = () => {
         }
     }
 
-    if (!cardInfo) {
+    if (!cardInfo || creditLoading || error) {
+        setActiveStep(2)
+
         return null
     }
 
     return (
         <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                <CreditAmount>{cardInfo.price} تومان</CreditAmount>
+                <CreditAmount>{creditAmount?.toLocaleString()} تومان</CreditAmount>
                 <Description2>
                     اعتبار تخصیص یافته به شما برای خدمات درمانی جی جی لاین میباشد.
                 </Description2>
@@ -122,7 +133,7 @@ const StepFinalCredit = () => {
                         وام تخصیص داده شده
                     </Typography>
                     <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        {cardInfo.price} تومان
+                        {creditAmount?.toLocaleString()} تومان
                     </Typography>
                 </Box>
 
@@ -147,7 +158,7 @@ const StepFinalCredit = () => {
                         مبلغ هر قسط
                     </Typography>
                     <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        ۱/۵۴۰/۰۰۰ تومان
+                        {creditAmount && (creditAmount / Number(paymentPeriod)).toLocaleString()} تومان
                     </Typography>
                 </Box>
 
@@ -168,7 +179,6 @@ const StepFinalCredit = () => {
             <FinalCreditDialog
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
-                selectedCard={cardInfo}
             />
         </Box>
     )

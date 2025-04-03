@@ -1,9 +1,12 @@
-import { Box, Typography, Button, styled, Grid } from '@mui/material'
+import { Box, Typography, Button, styled, Grid, CircularProgress } from '@mui/material'
 import { useEffect } from 'react'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import { List, ListItem } from '@mui/material'
 import { useFinancialValidation } from 'src/hooks/useFinancialValidation'
+import usePaymentVerification from 'src/hooks/usePaymentVerification'
+import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
 
 // Styled components
 const CardContainer = styled(Box)(({ theme }) => ({
@@ -25,19 +28,46 @@ const CardImage = styled('img')({
     maxWidth: '400px'
 })
 
+const LoadingContainer = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '400px',
+    gap: '16px'
+})
+
 const CardInfo = () => {
+    const router = useRouter()
     const personalInfo = usePersonalInfoStore(state => state.personalInfo)
     const cardInfo = usePersonalInfoStore(state => state.cardInfo)
     const { handleValidation } = useFinancialValidation()
     const { setActiveStep, activeStep } = usePersonalInfoStore()
+    const { loading, error } = usePaymentVerification()
 
     useEffect(() => {
-        console.log("personalInfo", personalInfo)
-        console.log("cardInfo", cardInfo)
-    }, [personalInfo, cardInfo])
+        if (error) {
+            toast.error('خطا در تایید پرداخت. لطفا مجددا تلاش کنید.')
+            const timer = setTimeout(() => {
+                setActiveStep(0)
+                router.push('/validation', undefined, { shallow: true })
+            }, 3000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [error, setActiveStep, router])
+
+    if (loading) {
+        return (
+            <LoadingContainer>
+                <CircularProgress />
+                <Typography>در حال بررسی وضعیت پرداخت...</Typography>
+            </LoadingContainer>
+        )
+    }
 
     if (!personalInfo || !cardInfo) {
-        return null // or some loading state/error message
+        return null
     }
 
     const handleValidationClick = async () => {

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { CardInfo } from 'src/store/usePersonalInfoStore'
+import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
@@ -37,11 +37,11 @@ const MessageBox = styled(Box)(({ theme }) => ({
 interface FinalCreditDialogProps {
     open: boolean
     onClose: () => void
-    selectedCard: CardInfo | null
 }
 
-const FinalCreditDialog = ({ open, onClose, selectedCard }: FinalCreditDialogProps) => {
-    if (!selectedCard) return null
+const FinalCreditDialog = ({ open, onClose }: FinalCreditDialogProps) => {
+    const { creditAmount } = usePersonalInfoStore()
+    if (!creditAmount) return null
 
     return (
         <StyledDialog
@@ -63,7 +63,7 @@ const FinalCreditDialog = ({ open, onClose, selectedCard }: FinalCreditDialogPro
                     >
                         کاربر گرامی!
                         <br />
-                        مبلغ {selectedCard.price} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
+                        مبلغ {creditAmount} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
                     </Typography>
                 </MessageBox>
             </DialogContent>
