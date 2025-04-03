@@ -40,13 +40,25 @@ interface FinalCreditDialogProps {
 }
 
 const FinalCreditDialog = ({ open, onClose }: FinalCreditDialogProps) => {
-    const { creditAmount } = usePersonalInfoStore()
+    const { creditAmount, reset } = usePersonalInfoStore()
+
     if (!creditAmount) return null
+
+    const handleClose = () => {
+        // Reset store to initial state
+        reset()
+
+        // Close dialog
+        onClose()
+
+        // Refresh the page
+        window.location.reload()
+    }
 
     return (
         <StyledDialog
             open={open}
-            onClose={onClose}
+            onClose={handleClose}
             aria-labelledby="final-credit-dialog"
         >
             <DialogOverlay />

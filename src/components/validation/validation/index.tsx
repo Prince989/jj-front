@@ -204,7 +204,6 @@ const ValidationWizard = () => {
                 return (
                   <Step
                     key={index}
-                    onClick={() => setActiveStep(index)}
                     sx={{ '&.Mui-completed + svg': { color: 'primary.main' }, mb: "0px !important" }}
                   >
                     <StepLabel>

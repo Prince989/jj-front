@@ -36,7 +36,6 @@ export const useFinalCredit = () => {
                 return false
             }
         } catch (error) {
-            console.error('Error submitting final credit:', error)
             toast.error('خطا در ارتباط با سرور')
 
             return false

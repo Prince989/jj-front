@@ -22,6 +22,12 @@ interface PaymentListResponse {
     data: PaymentItem[]
 }
 
+const persianErrorMessages = {
+    noPaymentRecords: 'هیچ سابقه پرداختی یافت نشد',
+    paymentStatus: (status: string) => `پرداخت در وضعیت ${status} است`,
+    generalError: 'خطا در تأیید پرداخت'
+}
+
 export const usePaymentVerification = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -35,7 +41,7 @@ export const usePaymentVerification = () => {
             const paymentListResponse = await mAxios.get<PaymentListResponse>('/payment/list')
 
             if (!paymentListResponse.data.data.length) {
-                throw new Error('No payment records found')
+                throw new Error(persianErrorMessages.noPaymentRecords)
             }
 
             // Get the last payment item
@@ -43,12 +49,12 @@ export const usePaymentVerification = () => {
 
             // Check if the payment status is completed
             if (lastPayment.status.toLowerCase() !== 'completed') {
-                throw new Error(`Payment is ${lastPayment.status.toLowerCase()}`)
+                throw new Error(persianErrorMessages.paymentStatus(lastPayment.status))
             }
 
             setLoading(false)
         } catch (err: any) {
-            setError(err.message || 'Error during payment verification')
+            setError(persianErrorMessages.generalError)
             setLoading(false)
         }
     }

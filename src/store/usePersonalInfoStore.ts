@@ -33,25 +33,31 @@ export interface PersonalInfoStore {
     setCreditAmount: (amount: number) => void
     clearPersonalInfo: () => void
     clearCardInfo: () => void
+    reset: () => void
+}
+
+const initialState = {
+    personalInfo: null,
+    cardInfo: null,
+    activeStep: 0,
+    creditAmount: null
 }
 
 export const usePersonalInfoStore = create<PersonalInfoStore>()(
     persist(
         (set) => ({
-            personalInfo: null,
-            cardInfo: null,
-            activeStep: 0,
-            creditAmount: null,
+            ...initialState,
             setPersonalInfo: (info) => set({ personalInfo: info }),
             setCardInfo: (info) => set({ cardInfo: info }),
             setActiveStep: (step) => set({ activeStep: step }),
             setCreditAmount: (amount) => set({ creditAmount: amount }),
             clearPersonalInfo: () => set({ personalInfo: null }),
-            clearCardInfo: () => set({ cardInfo: null })
+            clearCardInfo: () => set({ cardInfo: null }),
+            reset: () => set(initialState)
         }),
         {
-            name: 'personal-info-storage', // unique name for localStorage key
-            storage: createJSONStorage(() => localStorage) // (optional) by default, 'localStorage' is used
+            name: 'personal-info-storage',
+            storage: createJSONStorage(() => localStorage)
         }
     )
 ) 

@@ -26,10 +26,8 @@ export const useProfile = () => {
             setProfileData(response.data.data)
             setError(null)
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Error fetching profile')
-            toast.error(err.response?.data?.message || 'Error fetching profile', {
-                position: "bottom-left",
-            })
+            setError('خطا در دریافت اطلاعات پروفایل')
+            toast.error('خطا در دریافت اطلاعات پروفایل')
         } finally {
             setLoading(false)
         }

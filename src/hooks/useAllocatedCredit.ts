@@ -14,10 +14,9 @@ export const useAllocatedCredit = () => {
             setCreditAmount(response.data.data)
             setError(null)
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Error fetching allocated credit')
-            toast.error(err.response?.data?.message || 'Error fetching allocated credit', {
-                position: "bottom-left",
-            })
+            const persianErrorMessage = 'خطا در دریافت اعتبار تخصیص داده شده'
+            setError(persianErrorMessage)
+            toast.error(persianErrorMessage)
         } finally {
             setLoading(false)
         }

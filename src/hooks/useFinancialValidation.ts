@@ -1,6 +1,5 @@
 import toast from 'react-hot-toast'
 import mAxios from 'src/configs/axios'
-import { AxiosError } from 'axios'
 
 // Validation status type
 export type ValidationStatus = 'veryHighRisk' | 'highRisk' | 'mediumRisk' | 'lowRisk' | 'veryLowRisk'
@@ -55,9 +54,9 @@ export const useFinancialValidation = () => {
 
             return result
         } catch (error) {
+
             // Handle axios error specifically
-            const axiosError = error as AxiosError<ValidationResponse>
-            const errorMessage = axiosError.response?.data?.message || 'خطا در اعتبارسنجی. لطفا دوباره تلاش کنید'
+            const errorMessage = 'خطا در اعتبارسنجی. لطفا دوباره تلاش کنید'
 
             toast.error(errorMessage)
             throw error

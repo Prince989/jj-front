@@ -22,7 +22,7 @@ export const usePurchase = ({ selectedCard }: UsePurchaseProps): UsePurchaseRetu
             const { data: gatewayResponse } = await mAxios.get('/payment/gateway')
 
             if (!gatewayResponse.data?.[0]?.id) {
-                throw new Error('Gateway information not available')
+                throw new Error('اطلاعات درگاه در دسترس نیست')
             }
 
             const gatewayId = gatewayResponse.data[0].id
@@ -35,16 +35,16 @@ export const usePurchase = ({ selectedCard }: UsePurchaseProps): UsePurchaseRetu
 
             const paymentUrl = paymentResponse.data?.data?.url
             if (!paymentUrl) {
-                throw new Error('Payment URL not available')
+                throw new Error('آدرس پرداخت در دسترس نیست')
             }
 
             // Open payment URL in new tab
             window.open(paymentUrl, '_blank')
-            toast.success('Redirecting to payment gateway...')
+            toast.success('در حال انتقال به درگاه پرداخت...')
 
         } catch (error) {
             console.error('Payment error:', error)
-            toast.error('Failed to process payment. Please try again.')
+            toast.error('خطا در پرداخت. لطفا دوباره تلاش کنید')
         } finally {
             setIsPaymentLoading(false)
         }
