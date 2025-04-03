@@ -39,7 +39,7 @@ export type NavSectionTitle = {
 }
 
 export type NavGroup = {
-  icon?: string
+  icon?: string | React.ReactNode
   title: string
   auth?: boolean
   action?: string
@@ -50,7 +50,7 @@ export type NavGroup = {
 }
 
 export type NavLink = {
-  icon?: string
+  icon?: string | React.ReactNode
   path?: string
   title: string
   auth?: boolean

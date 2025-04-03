@@ -9,6 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { SelectChangeEvent } from '@mui/material/Select'
 import { Grid } from '@mui/material'
 import FinalCreditDialog from './FinalCreditDialog'
+import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
 const StyledSelect = styled(Select)(() => ({
     backgroundColor: '#E0EFFF',
@@ -72,8 +73,27 @@ const CreditDetailsBox = styled(Box)(({ theme }) => ({
     boxShadow: '0px 13px 50px -14px rgba(0, 0, 0, 0.1)'
 }))
 
+const CardContainer = styled(Box)(({ theme }) => ({
+    marginTop: theme.spacing(4),
+}))
+
+const StatusChip = styled(Box)(() => ({
+    background: '#4CAF50',
+    color: '#FFFFFF',
+    padding: '4px 10px',
+    borderRadius: '9px',
+    fontSize: '12px',
+    textAlign: 'center',
+}))
+
+const CardImage = styled('img')({
+    width: '100%',
+    height: 'auto',
+    maxWidth: '400px'
+})
 
 const StepFinalCredit = () => {
+    const cardInfo = usePersonalInfoStore(state => state.cardInfo)
     const [paymentPeriod, setPaymentPeriod] = useState('12')
     const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -88,10 +108,29 @@ const StepFinalCredit = () => {
         setDialogOpen(true)
     }
 
+    if (!cardInfo) {
+        return null
+    }
+
     return (
         <Box>
+            <Typography variant='h6' sx={{ mb: 2 }}>
+                کارت اعتباری انتخاب شده
+            </Typography>
+            <CardContainer>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    <StatusChip>
+                        {cardInfo.status}
+                    </StatusChip>
+                    <Typography variant='body1'>
+                        {cardInfo.price} تومان
+                    </Typography>
+                </Box>
+                <CardImage src={cardInfo.image} alt="Selected Credit Card" />
+            </CardContainer>
+
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                <CreditAmount>۴۰,۰۰۰,۰۰۰ تومان</CreditAmount>
+                <CreditAmount>{cardInfo.amount} تومان</CreditAmount>
                 <Description2>
                     اعتبار تخصیص یافته به شما برای خدمات درمانی جی جی لاین میباشد.
                 </Description2>
@@ -114,7 +153,7 @@ const StepFinalCredit = () => {
                         وام تخصیص داده شده
                     </Typography>
                     <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        ۴۰/۰۰۰/۰۰۰ تومان
+                        {cardInfo.amount} تومان
                     </Typography>
                 </Box>
 
@@ -159,7 +198,7 @@ const StepFinalCredit = () => {
             <FinalCreditDialog
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
-                amount="۴۰,۰۰۰,۰۰۰"
+                selectedCard={cardInfo}
             />
         </Box>
     )
