@@ -184,7 +184,7 @@ const CardInfo = () => {
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
                     onClick={handleValidationClick}
                 >
-                    درخواست اعتبار سنجی
+                    درخواست اعتبارسنجی
                 </Button>
             </Grid>
         </Box>
