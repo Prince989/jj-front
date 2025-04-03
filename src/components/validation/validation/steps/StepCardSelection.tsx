@@ -10,17 +10,15 @@ import Radio from '@mui/material/Radio'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import Link from '@mui/material/Link'
-import { Grid } from '@mui/material'
+import { Grid, CircularProgress, List, ListItem } from '@mui/material'
 
 // ** Types & Data
-import { creditCardsData } from '../../../../configs/credit-cards'
-
 import { CardInfo } from 'src/store/usePersonalInfoStore'
-
 
 // ** Store Import
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
-
+import useCards from 'src/hooks/useCards'
+import { usePurchase } from 'src/hooks/usePurchase'
 
 // ** Styled Components
 const CardImage = styled('img')({
@@ -58,17 +56,26 @@ const CreditCard = ({ data, selectedCard, onChange }: { data: CardInfo, selected
         <Box sx={{ mt: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <FormControlLabel
-                    value={data.id}
-                    control={<Radio checked={selectedCard === data.id} onChange={() => onChange(data.id)} />}
+                    value={data.id.toString()}
+                    control={<Radio checked={selectedCard === data.id.toString()} onChange={() => onChange(data.id.toString())} />}
                     label={<Typography sx={{ fontSize: '15px', color: '#2E2E2E', fontWeight: '500' }}>{data.title}</Typography>}
                 />
                 <Typography sx={{ fontSize: '15px', color: '#002B8A' }}>
-                    {data.price}
+                    قیمت: {data.price.toLocaleString()} ریال
                 </Typography>
             </Box>
-            <Typography sx={{ fontSize: '12px', color: '#2E2E2E' }}>
-                {data.description}
-            </Typography>
+            <List dense sx={{ fontSize: '12px', color: '#2E2E2E', pl: 4 }}>
+                {data.subTitle.map((item, index) => (
+                    <ListItem key={index} sx={{
+                        display: 'list-item',
+                        listStyleType: 'disc',
+                        fontSize: '12px',
+                        padding: '2px 0'
+                    }}>
+                        {item}
+                    </ListItem>
+                ))}
+            </List>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 2 }}>
                 <StyledLink>
                     توضیحات بیشتر
@@ -80,38 +87,56 @@ const CreditCard = ({ data, selectedCard, onChange }: { data: CardInfo, selected
 
 const StepCardSelection = () => {
     const [selectedCard, setSelectedCard] = useState<string>('')
-
-    const { setActiveStep, activeStep, setCardInfo } = usePersonalInfoStore()
-
-
-    const handleNext = () => {
-        setActiveStep(activeStep + 1)
-    }
+    const { cards, loading, error } = useCards()
+    const { setCardInfo } = usePersonalInfoStore()
+    const { isPaymentLoading, handlePayment } = usePurchase({ selectedCard })
 
     const handleCardChange = (value: string) => {
         setSelectedCard(value)
-        const selectedCardData = creditCardsData.find(card => card.id === value)
+        const selectedCardData = cards.find(card => card.id.toString() === value)
         if (selectedCardData) {
+            const cardImage = selectedCardData.id === 1
+                ? '/images/validation-forms/50mil.png'
+                : '/images/validation-forms/200mil.png'
+
             setCardInfo({
                 id: selectedCardData.id,
                 title: selectedCardData.title,
-                description: selectedCardData.description,
+                credit: selectedCardData.credit,
                 price: selectedCardData.price,
-                status: 'پرداخت شده',
-                image: selectedCardData.image,
-                amount: selectedCardData.amount
+                installCount: selectedCardData.installCount,
+                subTitle: selectedCardData.subTitle,
+                createdAt: selectedCardData.createdAt,
+                updatedAt: selectedCardData.updatedAt,
+                image: cardImage,
             })
         } else {
             setCardInfo({
                 id: '',
                 title: '',
-                description: '',
-                price: '',
-                status: '',
+                credit: 0,
+                price: 0,
+                installCount: 0,
+                subTitle: [],
                 image: '',
-                amount: ''
             })
         }
+    }
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+                <CircularProgress />
+            </Box>
+        )
+    }
+
+    if (error) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+                <Typography color="error">خطا در دریافت اطلاعات کارت‌ها</Typography>
+            </Box>
+        )
     }
 
     return (
@@ -122,10 +147,20 @@ const StepCardSelection = () => {
                 sx={{ gap: 4 }}
             >
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, justifyContent: 'center' }}>
-                    {creditCardsData.map((card) => (
+                    {cards.map((card) => (
                         <CreditCard
                             key={card.id}
-                            data={card}
+                            data={{
+                                id: card.id,
+                                title: card.title,
+                                credit: card.credit,
+                                price: card.price,
+                                installCount: card.installCount,
+                                subTitle: card.subTitle,
+                                createdAt: card.createdAt,
+                                updatedAt: card.updatedAt,
+                                image: card.id === 1 ? '/images/validation-forms/50mil.png' : '/images/validation-forms/200mil.png',
+                            }}
                             selectedCard={selectedCard}
                             onChange={handleCardChange}
                         />
@@ -138,10 +173,15 @@ const StepCardSelection = () => {
                     type='submit'
                     variant='contained'
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
-                    onClick={handleNext}
-                    disabled={!selectedCard}
+                    onClick={handlePayment}
+                    disabled={!selectedCard || isPaymentLoading}
                 >
-                    پرداخت
+                    {isPaymentLoading ? (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircularProgress size={20} color="inherit" />
+                            <span>در حال پردازش...</span>
+                        </Box>
+                    ) : 'پرداخت'}
                 </Button>
             </Grid>
         </Box>

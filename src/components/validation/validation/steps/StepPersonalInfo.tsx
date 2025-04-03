@@ -60,8 +60,6 @@ const StepPersonalInfo = () => {
     }
 
     const handleFormSubmit = (data: FormData) => {
-        console.log("Form submission attempted")
-        console.log("Form data:", data)
         setPersonalInfo(data)
         handleNext()
     }
