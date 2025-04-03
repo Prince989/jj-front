@@ -94,6 +94,12 @@ const StepFinalCredit = () => {
         }
     }, [creditAmount, setCreditAmount])
 
+    useEffect(() => {
+        if (!cardInfo || error) {
+            setActiveStep(2)
+        }
+    }, [cardInfo, error, setActiveStep])
+
     const handleFinalRequest = async () => {
         const success = await submitFinalCredit(Number(paymentPeriod))
         if (success) {
@@ -101,9 +107,11 @@ const StepFinalCredit = () => {
         }
     }
 
-    if (!cardInfo || creditLoading || error) {
-        setActiveStep(2)
+    if (creditLoading) {
+        return <Box>در حال بارگذاری...</Box>
+    }
 
+    if (!cardInfo || error) {
         return null
     }
 

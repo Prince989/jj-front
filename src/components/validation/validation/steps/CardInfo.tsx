@@ -42,7 +42,7 @@ const CardInfo = () => {
     const personalInfo = usePersonalInfoStore(state => state.personalInfo)
     const cardInfo = usePersonalInfoStore(state => state.cardInfo)
     const { handleValidation } = useFinancialValidation()
-    const { setActiveStep, activeStep } = usePersonalInfoStore()
+    const { setActiveStep } = usePersonalInfoStore()
     const { loading, error } = usePaymentVerification()
 
     useEffect(() => {
@@ -80,7 +80,7 @@ const CardInfo = () => {
     }
 
     const handleNext = () => {
-        setActiveStep(activeStep + 1)
+        setActiveStep(3)
     }
 
     return (

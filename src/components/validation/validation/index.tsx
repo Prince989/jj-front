@@ -154,7 +154,7 @@ const ValidationWizard = () => {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const paymentStatus = searchParams.get('payment')
+    const paymentStatus = searchParams.get('status')
     if (paymentStatus === 'success') {
       setActiveStep(2)
     }

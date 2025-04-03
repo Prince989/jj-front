@@ -9,20 +9,25 @@ export const useAllocatedCredit = () => {
 
     const fetchAllocatedCredit = async () => {
         try {
+            console.log('Starting API call, setting loading to true')
             setLoading(true)
             const response = await mAxios.get('/credit/amount')
+            console.log('API call successful:', response.data)
             setCreditAmount(response.data.data)
             setError(null)
+            console.log('Setting loading to false after success')
+            setLoading(false)
         } catch (err: any) {
+            console.log('API call failed:', err)
+            setLoading(false)
             const persianErrorMessage = 'خطا در دریافت اعتبار تخصیص داده شده'
             setError(persianErrorMessage)
             toast.error(persianErrorMessage)
-        } finally {
-            setLoading(false)
         }
     }
 
     useEffect(() => {
+        console.log('useEffect running, current loading state:', loading)
         fetchAllocatedCredit()
     }, [])
 
