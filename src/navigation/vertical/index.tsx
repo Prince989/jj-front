@@ -92,7 +92,7 @@ const useNavigation = (): VerticalNavItemsType => {
     {
       title: 'پذیرش',
       icon: <ProfileIcon />,
-      path: "/profile"
+      path: "/admission"
     },
   ]
 
