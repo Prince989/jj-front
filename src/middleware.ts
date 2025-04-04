@@ -27,6 +27,7 @@ export function middleware(request: NextRequest) {
     if (!userData) {
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('returnUrl', pathname)
+
         return NextResponse.redirect(loginUrl)
     }
 
@@ -53,8 +54,10 @@ export function middleware(request: NextRequest) {
         return NextResponse.next()
     } catch (error) {
         // If there's any error parsing the userData, redirect to login
+
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('returnUrl', pathname)
+
         return NextResponse.redirect(loginUrl)
     }
 }
