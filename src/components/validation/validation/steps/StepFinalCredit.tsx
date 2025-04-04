@@ -166,7 +166,7 @@ const StepFinalCredit = () => {
                         مبلغ هر قسط
                     </Typography>
                     <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        {creditAmount && (creditAmount / Number(paymentPeriod)).toLocaleString()} تومان
+                        {creditAmount && (Math.ceil(creditAmount / Number(paymentPeriod) / 10)).toLocaleString()} تومان
                     </Typography>
                 </Box>
 

@@ -3,6 +3,7 @@
  */
 const getHomeRoute = (role: string) => {
   if (role === 'client') return '/acl'
+  else if (role === 'businessUser') return 'admission'
   else return '/dashboard'
 }
 
