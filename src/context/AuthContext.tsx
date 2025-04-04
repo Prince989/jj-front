@@ -7,6 +7,9 @@ import { useRouter } from 'next/router'
 // ** Axios
 // import axios from 'axios'
 
+// ** Cookie Import
+import Cookies from 'js-cookie'
+
 // ** Config
 import authConfig from 'src/configs/auth'
 
@@ -22,6 +25,13 @@ const defaultProvider: AuthValuesType = {
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve()
+}
+
+// Cookie options
+const cookieOptions = {
+  expires: 7, // Cookie expires in 7 days
+  secure: process.env.NODE_ENV === 'production', // Secure in production
+  sameSite: 'strict' as const
 }
 
 const AuthContext = createContext(defaultProvider)
@@ -40,7 +50,7 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
-      const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
+      const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName) || Cookies.get(authConfig.storageTokenKeyName)
       if (storedToken) {
         console.log(storedToken, "this is stored");
         setLoading(true)
@@ -52,14 +62,17 @@ const AuthProvider = ({ children }: Props) => {
           })
           .then(async response => {
             setLoading(false)
-            console.log("Comming here")
             setLoading(false)
             setUser({ ...response.data.data })
           })
           .catch(() => {
+            // Clear both localStorage and cookies
             localStorage.removeItem('userData')
             localStorage.removeItem('refreshToken')
             localStorage.removeItem('accessToken')
+            Cookies.remove('userData')
+            Cookies.remove('refreshToken')
+            Cookies.remove('accessToken')
             setUser(null)
             setLoading(false)
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
@@ -80,30 +93,36 @@ const AuthProvider = ({ children }: Props) => {
     mAxios
       .post(authConfig.loginEndpoint, params)
       .then(async response => {
-        window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.data.token)
+        // Store in both localStorage and cookies
+        const token = response.data.data.token
+        const userData = response.data.data.userData
+
+        // Store in localStorage
+        window.localStorage.setItem(authConfig.storageTokenKeyName, token)
+        window.localStorage.setItem('userData', JSON.stringify(userData))
+
+        // Store in cookies
+        Cookies.set(authConfig.storageTokenKeyName, token, cookieOptions)
+        Cookies.set('userData', JSON.stringify(userData), cookieOptions)
+
+        setUser({ ...userData })
+
         const returnUrl = router.query.returnUrl
-
-        setUser({ ...response.data.data.userData })
-        window.localStorage.setItem('userData', JSON.stringify(response.data.data.userData))
-
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/dashboard'
-
         window.location.href = redirectURL?.[0] ?? redirectURL
       })
-
       .catch(err => {
         if (errorCallback) errorCallback(err)
       })
   }
 
-  useEffect(() => {
-    console.log(user);
-  }, [user])
-
   const handleLogout = () => {
     setUser(null)
+    // Clear both localStorage and cookies
     window.localStorage.removeItem('userData')
     window.localStorage.removeItem(authConfig.storageTokenKeyName)
+    Cookies.remove('userData')
+    Cookies.remove(authConfig.storageTokenKeyName)
     router.push('/login')
   }
 
