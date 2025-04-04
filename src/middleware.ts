@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server'
 // Define protected routes and their allowed roles
 const protectedRoutes = {
     '/admission': ['businessUser'],
+
     // Add more protected routes here as needed
     // '/some-route': ['role1', 'role2']
 }
@@ -23,6 +24,7 @@ export function middleware(request: NextRequest) {
     if (!userData) {
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('returnUrl', pathname)
+
         return NextResponse.redirect(loginUrl)
     }
 
@@ -34,7 +36,7 @@ export function middleware(request: NextRequest) {
         const matchedRoute = Object.entries(protectedRoutes).find(([route]) => pathname.startsWith(route))
 
         if (matchedRoute) {
-            const [_, allowedRoles] = matchedRoute
+            const [, allowedRoles] = matchedRoute
 
             // Check if user's role is allowed
             if (!userRole || !allowedRoles.includes(userRole)) {
@@ -45,9 +47,11 @@ export function middleware(request: NextRequest) {
 
         return NextResponse.next()
     } catch (error) {
+
         // If there's any error parsing the userData, redirect to login
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('returnUrl', pathname)
+
         return NextResponse.redirect(loginUrl)
     }
 }
@@ -56,6 +60,7 @@ export function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         '/admission/:path*',
+
         // Add more protected paths here as needed
         // '/some-route/:path*'
     ]
