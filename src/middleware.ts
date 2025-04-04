@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Define protected routes and their allowed roles
-const protectedRoutes = {
-    '/admission': ['businessUser'],
+// Add routes to protectedRoutes to specify the role requirements:
+// Use ['businessUser'] for business-only routes
+// Use [] for routes that just need authentication
 
-    // Add more protected routes here as needed
-    // '/some-route': ['role1', 'role2']
+type RoleType = 'businessUser' | string;
+const protectedRoutes: Record<string, RoleType[]> = {
+    '/admission': ['businessUser'],
+    '/dashboard': [],     // Another example of auth-only route
+    '/validation': []      // Another example of auth-only route
 }
 
 export function middleware(request: NextRequest) {
@@ -24,7 +27,6 @@ export function middleware(request: NextRequest) {
     if (!userData) {
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('returnUrl', pathname)
-
         return NextResponse.redirect(loginUrl)
     }
 
@@ -38,30 +40,33 @@ export function middleware(request: NextRequest) {
         if (matchedRoute) {
             const [, allowedRoles] = matchedRoute
 
-            // Check if user's role is allowed
-            if (!userRole || !allowedRoles.includes(userRole)) {
-                // Redirect to 401 if user's role is not allowed
-                return NextResponse.redirect(new URL('/401', request.url))
+            // If allowedRoles is empty array, any authenticated user can access
+            if (allowedRoles.length > 0) {
+                // Check if user's role is allowed
+                if (!userRole || !allowedRoles.includes(userRole)) {
+                    // Redirect to 401 if user's role is not allowed
+                    return NextResponse.redirect(new URL('/401', request.url))
+                }
             }
         }
 
         return NextResponse.next()
     } catch (error) {
-
         // If there's any error parsing the userData, redirect to login
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('returnUrl', pathname)
-
         return NextResponse.redirect(loginUrl)
     }
 }
 
-// Configure which routes the middleware should run on
+// In config.matcher, I added all the protected paths.
+// This is necessary because the middleware only runs on 
+// paths specified here.
+
 export const config = {
     matcher: [
         '/admission/:path*',
-
-        // Add more protected paths here as needed
-        // '/some-route/:path*'
+        '/dashboard/:path*',
+        "/validation/:path*",
     ]
 } 
