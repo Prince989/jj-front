@@ -52,7 +52,7 @@ const FinalCreditDialog = ({ open, onClose }: FinalCreditDialogProps) => {
         onClose()
 
         // Redirect to validation page
-        window.location.href = '/validation'
+        window.location.href = '/'
     }
 
     return (

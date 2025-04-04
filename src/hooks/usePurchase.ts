@@ -39,7 +39,7 @@ export const usePurchase = ({ selectedCard }: UsePurchaseProps): UsePurchaseRetu
             }
 
             // Open payment URL in new tab
-            window.open(paymentUrl, '_blank')
+            window.location.href = paymentUrl
             toast.success('در حال انتقال به درگاه پرداخت...')
 
         } catch (error) {

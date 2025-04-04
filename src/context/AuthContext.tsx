@@ -106,7 +106,8 @@ const AuthProvider = ({ children }: Props) => {
         Cookies.set('userData', JSON.stringify(userData), cookieOptions)
 
         setUser({ ...userData })
-
+        if (userData.role.name == "businessUser")
+          window.location.href = "/admission"
         const returnUrl = router.query.returnUrl
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/dashboard'
         window.location.href = redirectURL?.[0] ?? redirectURL
