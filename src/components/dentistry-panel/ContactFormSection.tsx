@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     TextField,
     Button,
@@ -6,14 +6,15 @@ import {
 } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { validatePhone, validateFullName, persianToEnglish, englishToPersian } from 'src/utils/dentistry-panel/validation'
+import { IService } from 'src/hooks/useAdmission'
+import mAxios from 'src/configs/axios'
+import { toast } from 'react-hot-toast'
 
-const serviceTypes = [
-    { value: 'implant', label: 'ایمپلنت دندان' },
-    { value: 'root-canal', label: 'عصب کشی' },
-    { value: 'composite', label: 'کامپوزیت' },
-    { value: 'laminate', label: 'لمینیت' },
-    { value: 'surgery', label: 'جراحی دندان' }
-]
+interface IResponse<T> {
+    problem: {},
+    message: "",
+    data: T[]
+}
 
 const ContactFormSection = () => {
     const [formData, setFormData] = useState({
@@ -24,6 +25,13 @@ const ContactFormSection = () => {
     const [phoneError, setPhoneError] = useState('')
     const [nameError, setNameError] = useState('')
     const [displayPhone, setDisplayPhone] = useState('')
+    const [services, setServices] = useState<IService[]>([])
+
+    useEffect(() => {
+        mAxios.get<IResponse<IService>>("business/services/1").then(res => {
+            setServices(res.data.data)
+        })
+    }, [])
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
@@ -73,7 +81,25 @@ const ContactFormSection = () => {
         setNameError(nameValidation.error)
 
         if (phoneValidation.isValid && nameValidation.isValid) {
-            console.log('Form submitted:', formData)
+            mAxios.post("/service-request", {
+                "phone_number": formData.phoneNumber,
+                "name": formData.fullName,
+                "serviceId": formData.serviceType
+            }).then(() => {
+                setFormData({
+                    fullName: '',
+                    phoneNumber: '',
+                    serviceType: ''
+                })
+                toast.success("درخواست با موفقیت ثبت شد منتظر تماس همکاران ما باشید", {
+                    position: "bottom-left"
+                })
+            })
+                .catch(err => {
+                    toast.error(err.response.data.message, {
+                        position: "bottom-left"
+                    })
+                })
         }
     }
 
@@ -216,9 +242,9 @@ const ContactFormSection = () => {
                                 }
                             }}
                         >
-                            {serviceTypes.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
+                            {services.map((option) => (
+                                <MenuItem key={option.title} value={option.id}>
+                                    {option.title}
                                 </MenuItem>
                             ))}
                         </TextField>

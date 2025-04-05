@@ -4,6 +4,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ColoredText from '../ColoredText';
 import { menuItems } from './config';
+import Link from 'next/link';
 
 const DesktopMenu: React.FC = () => {
     return (
@@ -35,13 +36,15 @@ const DesktopMenu: React.FC = () => {
                     ))}
                 </nav>
             </div>
-            <Button
-                variant="contained"
-                startIcon={<PersonOutlineIcon />}
-                className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
-            >
-                ورود به حساب کاربری
-            </Button>
+            <Link href='/validation'>
+                <Button
+                    variant="contained"
+                    startIcon={<PersonOutlineIcon />}
+                    className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
+                >
+                    ورود به حساب کاربری
+                </Button>
+            </Link>
         </div>
     );
 };

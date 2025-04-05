@@ -6,6 +6,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ColoredText from '../ColoredText';
 import { menuItems } from './config';
+import Link from 'next/link';
 
 interface MobileMenuProps {
     open: boolean;
@@ -70,13 +71,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ open, onOpen, onClose }) => {
                             </div>
                         ))}
                     </nav>
-                    <Button
-                        variant="contained"
-                        startIcon={<PersonOutlineIcon />}
-                        className="bg-primary-orange text-white rounded-lg py-2 px-4 normal-case text-sm font-medium w-full justify-center hover:bg-[#E05F00] mt-6"
-                    >
-                        ورود به حساب کاربری
-                    </Button>
+                    <Link href='/validation'>
+                        <Button
+                            variant="contained"
+                            startIcon={<PersonOutlineIcon />}
+                            className="bg-primary-orange text-white rounded-lg py-2 px-4 normal-case text-sm font-medium w-full justify-center hover:bg-[#E05F00] mt-6"
+                        >
+                            ورود به حساب کاربری
+                        </Button>
+                    </Link>
                 </div>
             </Drawer>
         </div>
