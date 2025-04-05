@@ -20,7 +20,7 @@ const MainLanding = () => {
       <div className="flex flex-col bg-white px-3 lg:px-24">
         <Header />
       </div>
-      <div className="flex flex-col bg-[#1a237e] px-3 lg:px-24">
+      <div className="flex flex-col bg-[#1a237e] px-3 lg:px-24 mb-56 max-h-[650px]">
         <Banner />
         <LoanBox />
       </div>

@@ -1,13 +1,5 @@
 import { useState } from 'react'
 import { Typography, Slider, Button } from '@mui/material'
-import { styled } from '@mui/material/styles'
-
-// Styled components for non-layout elements
-const ValueDisplay = styled(Typography)(() => ({
-    color: '#0B389F',
-    fontSize: '24px',
-    fontWeight: 700
-}))
 
 const LoanBox = () => {
     const [loanAmount, setLoanAmount] = useState<number>(100000000) // 100 million tomans
@@ -25,84 +17,98 @@ const LoanBox = () => {
     }
 
     return (
-        <div className="flex flex-col md:flex-row gap-4 p-4 bg-white rounded-2xl shadow-lg">
+        <div className="flex flex-col md:flex-row gap-4 p-4 z-10">
             {/* Right Column - Loan Selection */}
-            <div className="flex-1 flex flex-col gap-6">
+            <div className="flex-1 flex flex-col justify-between gap-0 bg-white p-6 shadow-lg rounded-2xl">
 
                 <div className="flex justify-between items-center mb-4">
-                    <Typography variant="h6" className="text-[#0B389F] font-semibold mb-4">
+                    <Typography variant="h6" className="text-primary-blue text-xl font-bold mb-4">
                         وام درخواستی
                     </Typography>
-                    <ValueDisplay>
+                    <Typography variant="h6" className="text-primary-blue text-lg font-bold mb-4">
                         {loanAmount.toLocaleString()} تومان
-                    </ValueDisplay>
+                    </Typography>
+
                 </div>
                 <div>
-
-                    <Slider
-                        value={loanAmount}
-                        onChange={handleLoanAmountChange}
-                        min={10000000} // 10 million
-                        max={200000000} // 200 million
-                        step={1000000} // 1 million steps
-                        sx={{
-                            color: '#0B389F',
-                            '& .MuiSlider-thumb': {
-                                width: 24,
-                                height: 24,
-                                backgroundColor: '#fff',
-                                border: '2px solid #0B389F',
-                                '&:hover, &.Mui-focusVisible': {
-                                    boxShadow: '0 0 0 8px rgba(11, 56, 159, 0.16)'
+                    <div className="flex items-center justify-between gap-4">
+                        <Typography className="text-[#6F6B7D] text-md fond-semibold">۱۰ میلیون</Typography>
+                        <Slider
+                            value={loanAmount}
+                            onChange={handleLoanAmountChange}
+                            min={10000000} // 10 million
+                            max={200000000} // 200 million
+                            step={1000000} // 1 million steps
+                            sx={{
+                                maxWidth: '68%',
+                                color: '#002b8a',
+                                '& .MuiSlider-thumb': {
+                                    width: 28,
+                                    height: 28,
+                                    backgroundColor: '#002b8a',
+                                    border: '4px solid #fff',
+                                    boxShadow: '0 0 0 1px #002b8a',
+                                    '&:hover, &.Mui-focusVisible': {
+                                        boxShadow: '0 0 0 1px #002b8a',
+                                    },
+                                    '&:before': {
+                                        boxShadow: 'none',
+                                    },
+                                    '&:after': {
+                                        width: 42,
+                                        height: 42,
+                                    }
+                                },
+                                '& .MuiSlider-rail': {
+                                    backgroundColor: '#E0EFFF',
+                                    height: 8
+                                },
+                                '& .MuiSlider-track': {
+                                    height: 8
                                 }
-                            },
-                            '& .MuiSlider-rail': {
-                                backgroundColor: '#E0EFFF'
-                            }
-                        }}
-                    />
-                    <div className="flex justify-between mt-2">
-                        <Typography className="text-[#6F6B7D] text-sm">10 میلیون</Typography>
-                        <Typography className="text-[#6F6B7D] text-sm">200 میلیون</Typography>
+                            }}
+                        />
+                        <Typography className="text-[#6F6B7D] text-md fond-semibold">۲۰۰ میلیون</Typography>
                     </div>
                 </div>
 
-                <div className="mt-8">
-                    <div className="flex justify-center gap-4 mb-8">
-                        {[6, 12, 18].map((value) => (
-                            <Button
-                                key={value}
-                                variant={months === value ? 'contained' : 'outlined'}
-                                onClick={() => setMonths(value)}
-                                className={`border-[#0B389F] ${months === value
-                                    ? 'bg-[#0B389F] text-white hover:bg-[#0B389F]'
-                                    : 'text-[#0B389F] hover:bg-[#0B389F]/5'
-                                    }`}
-                            >
-                                {value} ماهه
-                            </Button>
-                        ))}
-                    </div>
+                <div className="flex justify-center items-center gap-4 mt-8">
+                    {[6, 12, 18].map((value) => (
+                        <Button
+                            key={value}
+                            variant={months === value ? 'contained' : 'outlined'}
+                            onClick={() => setMonths(value)}
+                            className={`border-primary-blue ${months === value
+                                ? 'bg-primary-blue text-white hover:bg-primary-blue'
+                                : 'text-primary-blue hover:bg-primary-blue/5'
+                                }`}
+                        >
+                            {value} ماهه
+                        </Button>
+                    ))}
+
                 </div>
             </div>
 
             {/* Left Column - Calculations */}
-            <div className="flex-1 flex flex-col gap-6">
-                <div className="bg-[#F3F3F3] rounded-lg p-6 flex flex-col gap-4">
+            <div className="flex-1 flex flex-col gap-6 bg-white p-6 shadow-lg rounded-2xl">
+                <div className="p-6 flex flex-col gap-4">
                     <div className="flex justify-between items-center">
-                        <Typography className="text-[#0B389F] font-semibold">
+                        <Typography className="text-primary-blue font-semibold">
                             مبلغ هر قسط
                         </Typography>
-                        <Typography className="text-[#0B389F] font-bold text-xl">
+                        <Typography className="text-primary-blue font-bold text-xl">
                             {calculateMonthlyInstallment().toLocaleString()} تومان
                         </Typography>
                     </div>
 
+                    <div className="h-[1px] w-full bg-gray-200"></div>
+
                     <div className="flex justify-between items-center">
-                        <Typography className="text-[#0B389F] font-semibold">
+                        <Typography className="text-primary-blue font-semibold">
                             اعتبار کیف پول
                         </Typography>
-                        <Typography className="text-[#0B389F] font-bold text-xl">
+                        <Typography className="text-primary-blue font-bold text-xl">
                             9,050,000 تومان
                         </Typography>
                     </div>

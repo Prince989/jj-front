@@ -1,6 +1,8 @@
 import { Button, Typography } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 const Banner = () => {
+
     return (
         <div className="bg-[#1a237e] min-h-[500px] w-full flex items-center">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -14,18 +16,18 @@ const Banner = () => {
                         با جی جی لاین، خدمات و کالای مورد نیاز خود را به صورت اقساطی و بدون بهره دریافت کنید. تا سقف ۲۰۰ میلیون تومان اعتبار، بدون نیاز به ضامن.
                     </Typography>
 
-                    <div className="flex gap-4 justify-start mt-8">
+                    <div className="flex gap-3 mt-6">
                         <Button
                             variant="contained"
-                            color="warning"
-                            className="!rounded-lg !px-8 !py-2"
+                            endIcon={<ArrowBackIcon />}
+                            className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-3 lg:px-6 px-3 text-sm"
                         >
                             دریافت اعتبار
                         </Button>
 
                         <Button
                             variant="outlined"
-                            className="!rounded-lg !px-8 !py-2 !text-white !border-white hover:!bg-white/10"
+                            className="text-white border-white hover:border-white  rounded-md py-3 lg:px-6 px-3 text-sm"
                         >
                             مشاهده فروشگاه ها
                         </Button>
