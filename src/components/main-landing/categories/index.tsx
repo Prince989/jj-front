@@ -11,42 +11,42 @@ interface CategoryItemProps {
 const categories: CategoryItemProps[] = [
     {
         title: 'طلا و جواهر',
-        image: '/images/categories/jewelry.png',
+        image: '/images/main-landing/tala.png',
         href: '/categories/jewelry'
     },
     {
         title: 'لوازم خانگی',
-        image: '/images/categories/home-appliances.png',
+        image: '/images/main-landing/zarf.png',
         href: '/categories/home-appliances'
     },
     {
         title: 'مد و پوشاک',
-        image: '/images/categories/fashion.png',
+        image: '/images/main-landing/hodi.png',
         href: '/categories/fashion'
     },
     {
         title: 'موبایل و تبلت',
-        image: '/images/categories/mobile.png',
+        image: '/images/main-landing/iphone.png',
         href: '/categories/mobile'
     },
     {
         title: 'رستوران و کافه',
-        image: '/images/categories/restaurant.png',
+        image: '/images/main-landing/cofe.png',
         href: '/categories/restaurant'
     },
     {
         title: 'خدمات درمانی',
-        image: '/images/categories/medical.png',
+        image: '/images/main-landing/darman.png',
         href: '/categories/medical'
     },
     {
         title: 'کالای دیجیتال',
-        image: '/images/categories/digital.png',
+        image: '/images/main-landing/tv.png',
         href: '/categories/digital'
     },
     {
         title: 'خودرو و موتورسیکلت',
-        image: '/images/categories/automotive.png',
+        image: '/images/main-landing/bmv.png',
         href: '/categories/automotive'
     }
 ];
@@ -65,7 +65,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href }) => {
                 <Typography
                     variant="h6"
                     component="h3"
-                    className="text-[#212121] text-lg font-medium text-center"
+                    className="text-black text-lg font-medium text-center"
                 >
                     {title}
                 </Typography>
@@ -81,11 +81,11 @@ const CategoriesContainer = () => {
                 <Typography
                     variant="h5"
                     component="h2"
-                    className="text-[#212121] text-2xl font-bold"
+                    className="text-black text-2xl font-bold"
                 >
                     دسته بندی محصولات و خدمات
                 </Typography>
-                <Link href="/categories" className="text-[#0B389F] text-sm no-underline hover:text-[#0B389F]/80">
+                <Link href="/categories" className="text-primary-blue text-sm no-underline hover:text-primary-blue/80">
                     بیشتر
                 </Link>
             </div>
