@@ -61,8 +61,62 @@ export const ConsultationForm = () => {
 
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-4 mb-6">
-                    {/* First row - Category and Phone */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Mobile layout - two rows */}
+                    <div className="grid grid-cols-2 lg:hidden gap-4">
+                        <div className="relative col-span-1">
+                            <select
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                className="w-full p-3 border border-gray-200 rounded-lg text-[10px] lg:text-sm appearance-none text-right pr-4 focus:outline-none focus:border-[#FF5C00]"
+                            >
+                                <option value="">دسته‌بندی</option>
+                                {categories.map((category) => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </select>
+                            <KeyboardArrowDownIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        </div>
+
+                        <div className="relative col-span-1">
+                            <input
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="شماره تماس"
+                                className="w-full p-3 border border-gray-200 rounded-lg text-right text-[10px] lg:text-sm focus:outline-none focus:border-[#FF5C00]"
+                                dir="rtl"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 lg:hidden gap-4">
+                        <div className="relative col-span-1">
+                            <select
+                                value={selectedTime}
+                                onChange={(e) => setSelectedTime(e.target.value)}
+                                className="w-full p-3 border border-gray-200 rounded-lg text-[10px] lg:text-sm appearance-none text-right pr-4 focus:outline-none focus:border-[#FF5C00]"
+                            >
+                                <option value="">ساعت تماس</option>
+                                {timeSlots.map((time) => (
+                                    <option key={time} value={time}>
+                                        {time}
+                                    </option>
+                                ))}
+                            </select>
+                            <KeyboardArrowDownIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        </div>
+
+                        <Button
+                            className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-2 lg:px-6 px-3 text-sm w-full lg:w-auto"
+                        >
+                            ثبت
+                        </Button>
+                    </div>
+
+                    {/* Desktop layout - single row */}
+                    <div className="hidden lg:grid grid-cols-4 gap-4">
                         <div className="relative col-span-1">
                             <select
                                 value={selectedCategory}
@@ -90,12 +144,6 @@ export const ConsultationForm = () => {
                             />
                         </div>
 
-                        {/* Desktop-only spacers */}
-                        <div className="hidden lg:block col-span-2"></div>
-                    </div>
-
-                    {/* Second row - Time and Submit button */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="relative col-span-1">
                             <select
                                 value={selectedTime}
@@ -113,20 +161,17 @@ export const ConsultationForm = () => {
                         </div>
 
                         <Button
-                            className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-2 lg:px-6 px-3 text-sm w-full lg:w-auto"
+                            className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-2 lg:px-6 px-3 text-sm w-full"
                         >
                             ثبت
                         </Button>
-
-                        {/* Desktop-only spacers */}
-                        <div className="hidden lg:block col-span-2"></div>
                     </div>
                 </div>
             </form>
 
             <div className="flex items-center gap-2">
                 <DangerIcon width={12} height={12} className='text-[#E76382]' />
-                <p className="text-[10px] lg:text-base text-gray-500 text-right">
+                <p className="text-[10px] lg:text-sm text-gray-500 text-right">
                     برای مشاورۀ تخصصی شماره تماس خود را وارد کنید تا کارشناسان ما با شما تماس بگیرند.
                 </p>
             </div>
