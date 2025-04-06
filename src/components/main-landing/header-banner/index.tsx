@@ -4,7 +4,7 @@ import { Phone } from '@mui/icons-material';
 
 const HeaderBanner: React.FC = () => {
     return (
-        <div className="w-full h-12 bg-blue-800 flex justify-between items-center px-[120px] text-white">
+        <div className="hidden w-full h-12 bg-blue-800 lg:flex justify-between items-center px-[120px] text-white">
             <div className="flex items-center gap-6">
                 <Button
                     href="/support"

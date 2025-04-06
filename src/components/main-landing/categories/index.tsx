@@ -77,15 +77,15 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href }) => {
 const CategoriesContainer = () => {
     return (
         <section className="py-12 px-4 md:px-8">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-center lg:justify-between mb-8">
                 <Typography
                     variant="h5"
                     component="h2"
-                    className="text-black text-2xl font-bold"
+                    className="text-primary-blue text-center text-lg lg:text-2xl font-bold"
                 >
                     دسته بندی محصولات و خدمات
                 </Typography>
-                <Link href="/categories" className="text-primary-blue text-sm no-underline hover:text-primary-blue/80">
+                <Link href="/categories" className="hidden lg:block text-primary-blue text-sm no-underline hover:text-primary-blue/80">
                     بیشتر
                 </Link>
             </div>

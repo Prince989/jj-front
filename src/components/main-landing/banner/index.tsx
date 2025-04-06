@@ -16,29 +16,29 @@ const Banner = () => {
                     animation-delay: 1s;
                 }
             `}</style>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-10 lg:pt-0">
                 {/* Left Column - Image */}
                 <div className="text-right space-y-6">
-                    <Typography variant="h2" component="h1" className="text-white font-bold">
+                    <Typography variant="h2" component="h1" className="text-white font-bold text-center lg:text-left">
                         کیف پول اعتباری برای تمام نیازهای شما
                     </Typography>
 
-                    <Typography variant="subtitle1" className="text-gray-200">
+                    <Typography variant="subtitle1" className="text-gray-200 text-center lg:text-left">
                         با جی جی لاین، خدمات و کالای مورد نیاز خود را به صورت اقساطی و بدون بهره دریافت کنید. تا سقف ۲۰۰ میلیون تومان اعتبار، بدون نیاز به ضامن.
                     </Typography>
 
-                    <div className="flex gap-3 mt-6">
+                    <div className="flex flex-wrap gap-3 mt-6">
                         <Button
                             variant="contained"
                             endIcon={<ArrowBackIcon />}
-                            className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-3 lg:px-6 px-3 text-sm"
+                            className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-3 lg:px-6 px-3 text-sm w-full lg:w-auto"
                         >
                             دریافت اعتبار
                         </Button>
 
                         <Button
                             variant="outlined"
-                            className="text-white border-white hover:border-white  rounded-md py-3 lg:px-6 px-3 text-sm"
+                            className="text-white border-white hover:border-white  rounded-md py-3 lg:px-6 px-3 text-sm w-full lg:w-auto"
                         >
                             مشاهده فروشگاه ها
                         </Button>

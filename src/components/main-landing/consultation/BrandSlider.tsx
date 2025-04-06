@@ -61,7 +61,7 @@ export const BrandSlider = () => {
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`px-2 py-5 transition-colors text-md font-bold whitespace-nowrap relative
+                        className={`px-2 py-5 transition-colors text-[10px] lg:text-sm font-bold whitespace-nowrap relative
                             ${activeTab === tab.id
                                 ? 'text-primary-orange after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary-orange'
                                 : 'text-black hover:text-primary-orange'
@@ -78,7 +78,7 @@ export const BrandSlider = () => {
                     {brands[activeTab as keyof typeof brands]?.map((brand) => (
                         <div
                             key={brand.id}
-                            className="flex-[0_0_calc(20%-16px)]"
+                            className="flex-[0_0_calc(90%)] lg:flex-[0_0_calc(20%-16px)]"
                         >
                             <div className="w-full h-[85px] flex items-center justify-center p-4 rounded-lg border border-gray-100 hover:border-primary transition-colors cursor-pointer">
                                 <Image
