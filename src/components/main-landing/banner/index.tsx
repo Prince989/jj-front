@@ -48,7 +48,7 @@ const Banner = () => {
                 {/* Right Column - Content */}
                 <div className="relative">
                     <img
-                        src="/images/main-landing/cards.png"
+                        src="/images/main-landing/cards.svg"
                         alt="Credit Cards"
                         className="w-full h-auto transform -rotate-12"
                     />

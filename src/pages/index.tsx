@@ -3,36 +3,54 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // Import components
 import Header from 'src/components/dentistry-panel/header/Header'
-import HeroSection from 'src/components/dentistry-panel/HeroSection'
-import ServicesSection from 'src/components/dentistry-panel/ServicesSection'
-import WhyChooseUsSection from 'src/components/dentistry-panel/WhyChooseUsSection'
-import CreditPlansSection from 'src/components/dentistry-panel/CreditPlansSection'
-import ContactFormSection from 'src/components/dentistry-panel/ContactFormSection'
 import Footer from 'src/components/dentistry-panel/Footer'
+import Banner from 'src/components/main-landing/banner'
+import LoanBox from 'src/components/main-landing/loan'
+import CategoriesContainer from 'src/components/main-landing/categories'
+import BrandBanner from 'src/components/main-landing/brand-banner'
+import BrandConsultation from 'src/components/main-landing/consultation'
+import FeaturedSection from 'src/components/main-landing/featured'
+import Supporters from 'src/components/main-landing/supporters'
+import HeaderBanner from 'src/components/main-landing/header-banner'
+import Comments from 'src/components/main-landing/comments'
 
-const DentistryPanel = () => {
+const MainLanding = () => {
   return (
     <div className="bg-white">
-      <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
+      <HeaderBanner />
+      <div className="flex flex-col bg-white px-3 lg:px-24">
         <Header />
-        <HeroSection />
       </div>
-      <div className="flex flex-col bg-white mb-24">
-        <ServicesSection />
+      <div className="flex flex-col px-3 lg:px-24 lg:mb-56 lg:max-h-[650px]" style={{ background: 'linear-gradient(209.22deg, #002B8A 11.23%, #6E9BFF 91.22%)' }}>
+        <Banner />
+        <LoanBox />
       </div>
-      <div className="flex flex-col bg-white px-3 lg:px-24 gap-y-24 mb-24">
-        <WhyChooseUsSection />
-        <CreditPlansSection />
-        <ContactFormSection />
+      <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
+        <CategoriesContainer />
+      </div>
+      <div className="flex flex-col px-3 lg:px-24 mb-[600px] lg:mb-72 max-h-[380px] bg-[#EEF9FF]">
+        <BrandBanner />
+        <BrandConsultation />
+      </div>
+      <div className="flex flex-col bg-white px-3 lg:px-24">
+        <FeaturedSection />
+      </div>
+      <div className="flex flex-col bg-white my-24">
+        <Comments />
+      </div>
+      <div className="flex flex-col bg-white my-24">
+        <Supporters />
       </div>
       <Footer />
     </div>
   )
 }
 
-DentistryPanel.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+MainLanding.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-DentistryPanel.guestGuard = true
+// Set both guards to false to prevent any auth-related redirects
+MainLanding.authGuard = false
+MainLanding.guestGuard = false
 
-export default DentistryPanel
+export default MainLanding
 
