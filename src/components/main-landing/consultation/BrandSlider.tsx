@@ -14,11 +14,12 @@ const tabs = [
 
 const brands = {
     digital: [
-        { id: 1, name: 'Apple', logo: '/brands/apple.svg' },
-        { id: 2, name: 'Samsung', logo: '/brands/samsung.svg' },
-        { id: 3, name: 'Huawei', logo: '/brands/huawei.svg' },
-        { id: 4, name: 'Xiaomi', logo: '/brands/mi.svg' },
-        { id: 5, name: 'LG', logo: '/brands/lg.svg' },
+        { id: 1, name: 'Apple', logo: '/images/main-landing/apple.svg' },
+        { id: 2, name: 'Samsung', logo: '/images/main-landing/samsung.svg' },
+        { id: 3, name: 'Huawei', logo: '/images/main-landing/huawei.svg' },
+        { id: 4, name: 'Xiaomi', logo: '/images/main-landing/xiaomi.svg' },
+        { id: 5, name: 'LG', logo: '/images/main-landing/lg.svg' },
+        { id: 6, name: 'Samsung', logo: '/images/main-landing/samsung.svg' },
     ],
 
     // Add other categories as needed
@@ -53,16 +54,17 @@ export const BrandSlider = () => {
     }, [emblaApi]);
 
     return (
-        <div className="w-full bg-white rounded-lg p-6">
+        <div className="w-full bg-white rounded-lg px-6 pt-6 pb-4 shadow-lg">
             {/* Tabs */}
-            <div className="flex gap-4 mb-6 overflow-x-auto">
+            <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap scrollbar-hide">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${activeTab === tab.id
-                            ? 'bg-primary text-white'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        className={`px-2 py-5 transition-colors text-md font-bold whitespace-nowrap relative
+                            ${activeTab === tab.id
+                                ? 'text-primary-orange after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary-orange'
+                                : 'text-black hover:text-primary-orange'
                             }`}
                     >
                         {tab.title}
@@ -78,7 +80,7 @@ export const BrandSlider = () => {
                             key={brand.id}
                             className="flex-[0_0_calc(20%-16px)]"
                         >
-                            <div className="flex items-center justify-center p-4 rounded-lg border border-gray-100 hover:border-primary transition-colors cursor-pointer">
+                            <div className="w-full h-[85px] flex items-center justify-center p-4 rounded-lg border border-gray-100 hover:border-primary transition-colors cursor-pointer">
                                 <Image
                                     src={brand.logo}
                                     alt={brand.name}
@@ -109,4 +111,4 @@ export const BrandSlider = () => {
             </div>
         </div>
     );
-}; 
+};

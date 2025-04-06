@@ -4,7 +4,18 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 const Banner = () => {
 
     return (
-        <div className="bg-[#1a237e] min-h-[500px] w-full flex items-center">
+        <div className="min-h-[500px] w-full flex items-center">
+            <style>{`
+                @keyframes twinkle {
+                    0% { opacity: 0.3; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0.3; }
+                }
+                .twinkle-4 {
+                    animation: twinkle 2s ease-in-out infinite;
+                    animation-delay: 1s;
+                }
+            `}</style>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 {/* Left Column - Image */}
                 <div className="text-right space-y-6">
@@ -37,10 +48,11 @@ const Banner = () => {
                 {/* Right Column - Content */}
                 <div className="relative">
                     <img
-                        src="/images/credit-cards.png"
+                        src="/images/main-landing/cards.png"
                         alt="Credit Cards"
                         className="w-full h-auto transform -rotate-12"
                     />
+                    <img src="/images/main-landing/stars.svg" alt="blue-stars" className="absolute top-[5%] lg:top-[27%] left-0 lg:-left-[100px] object-cover twinkle-4" />
                 </div>
             </div>
         </div>

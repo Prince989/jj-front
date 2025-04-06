@@ -9,9 +9,10 @@ import LoanBox from 'src/components/main-landing/loan'
 import CategoriesContainer from 'src/components/main-landing/categories'
 import BrandBanner from 'src/components/main-landing/brand-banner'
 import BrandConsultation from 'src/components/main-landing/consultation'
-import FeaturedBox from 'src/components/main-landing/featured'
+import FeaturedSection from 'src/components/main-landing/featured'
 import Supporters from 'src/components/main-landing/supporters'
 import HeaderBanner from 'src/components/main-landing/header-banner'
+import Comments from 'src/components/main-landing/comments'
 
 const MainLanding = () => {
   return (
@@ -20,21 +21,24 @@ const MainLanding = () => {
       <div className="flex flex-col bg-white px-3 lg:px-24">
         <Header />
       </div>
-      <div className="flex flex-col bg-[#1a237e] px-3 lg:px-24 mb-56 max-h-[650px]">
+      <div className="flex flex-col px-3 lg:px-24 mb-56 max-h-[650px]" style={{ background: 'linear-gradient(209.22deg, #002B8A 11.23%, #6E9BFF 91.22%)' }}>
         <Banner />
         <LoanBox />
       </div>
-      <div className="flex flex-col bg-white px-3 lg:px-24">
+      <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
         <CategoriesContainer />
       </div>
-      <div className="flex flex-col bg-white mb-24">
+      <div className="flex flex-col px-3 lg:px-24 mb-72 max-h-[380px] bg-[#EEF9FF]">
         <BrandBanner />
         <BrandConsultation />
       </div>
       <div className="flex flex-col bg-white px-3 lg:px-24">
-        <FeaturedBox />
+        <FeaturedSection />
       </div>
-      <div className="flex flex-col bg-white mb-24">
+      <div className="flex flex-col bg-white my-24">
+        <Comments />
+      </div>
+      <div className="flex flex-col bg-white my-24">
         <Supporters />
       </div>
       <Footer />

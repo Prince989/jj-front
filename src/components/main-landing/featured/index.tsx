@@ -1,65 +1,123 @@
-import { Typography } from "@mui/material";
+import React from 'react'
+import { Typography, Button } from '@mui/material'
+import Image from 'next/image'
+import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
-const FeaturedBox = () => {
-    const features = [
+interface CreditPlanProps {
+    title: string
+    subTitle: string
+    features: string[]
+
+}
+
+const FeaturedBox: React.FC<CreditPlanProps> = ({ title, features, subTitle }) => {
+    return (
+        <div
+            className='p-4 lg:p-8 h-full rounded-[32px] bg-gradient-to-b from-primary-blue to-primary-blue-1 flex flex-col'
+        >
+            <Typography
+                variant="h5"
+                component="h5"
+                className="text-lg lg:text-2xl font-extrabold text-center text-white mb-4"
+            >
+                {title}
+            </Typography>
+            <Typography
+                variant="subtitle1"
+                component="span"
+                className="text-md font-light text-center text-white mb-10"
+            >
+                {subTitle}
+            </Typography>
+
+            <div className="relative flex flex-col bg-white/10 rounded-2xl p-7 gap-4">
+                {features.map((feature, index) => (
+                    <div
+                        key={index}
+                        className="flex items-center mb-2 z-10"
+                    >
+                        <Image
+                            src="/images/dentistry/check-circle.svg"
+                            width={24}
+                            height={24}
+                            alt="Check"
+                            className="ml-2"
+                        />
+                        <Typography
+                            variant="body1"
+                            className="text-lg text-white font-semibold"
+                        >
+                            {feature}
+                        </Typography>
+                    </div>
+                ))}
+
+                <img src="/images/dentistry/vertical-stars.svg" alt="vertical-stars" className="absolute bottom-[5%] left-[5%] object-cover" />
+
+            </div>
+        </div>
+    )
+}
+
+const FeaturedSection = () => {
+    const creditPlans = [
         {
-            title: "بدون چک و ضامن",
-            subtitle: "فقط با احراز هویت و اعتبارسنجی، بدون نیاز به مراجعه حضوری",
-            items: ["فرآیند کاملا آنلاین", "تایید سریع درخواست"],
+            title: 'بدون چک و ضامن',
+            subTitle: 'فقط با احراز هویت و اعتبارسنجی، بدون نیاز به مراجعه حضوری',
+            features: [
+                'فرآیند کاملا آنلاین',
+                'تایید سریع درخواست'
+
+            ],
         },
         {
-            title: "بدون بهره و سود",
-            subtitle: "پرداخت اقساطی بدون هیچ هزینه اضافی، فقط اصل مبلغ",
-            items: ["اقساط ۶ تا ۱۲ ماهه", "بدون پیش پرداخت"],
+            title: 'بدون بهره و سود',
+            subTitle: 'پرداخت اقساطی بدون هیچ هزینه اضافی، فقط اصل مبلغ',
+            features: [
+                'اقساط ۶ تا ۱۲ ماهه',
+                'بدون پیش پرداخت'
+            ],
         },
         {
-            title: "تنوع خدمات",
-            subtitle: "قابل استفاده در انواع فروشگاه‌ها و مراکز خدماتی",
-            items: ["خدمات درمانی و پزشکی", "کالای دیجیتال و لوازم خانگی"],
+            title: 'تنوع خدمات',
+            subTitle: 'قابل استفاده در انواع فروشگاه‌ها و مراکز خدماتی',
+            features: [
+                'خدمات درمانی و پزشکی',
+                'کالای دیجیتال و لوازم خانگی'
+            ],
         },
-    ];
+    ]
 
     return (
-        <section className="py-16">
-            <div className="text-center mb-12">
-                <Typography
-                    variant="h2"
-                    component="h2"
-                    className="mb-4 text-3xl font-bold text-[#1E4FD9]"
-                    sx={{
-                        "& span": { color: "#FF6B00" },
-                    }}
-                >
-                    ویژگی های اعتبار <span>جی جی</span> لاین
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                    تجربه‌ای متفاوت در خرید اقساطی
-                </Typography>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {features.map((feature, index) => (
-                    <div key={index} className="bg-[#1E4FD9] rounded-2xl p-6 h-full text-white flex flex-col gap-4">
-                        <Typography variant="h6" className="font-bold mb-1">
-                            {feature.title}
-                        </Typography>
-                        <Typography variant="body2" className="mb-6">
-                            {feature.subtitle}
-                        </Typography>
-                        {feature.items.map((item, itemIndex) => (
-                            <div key={itemIndex} className="bg-white/10 rounded-xl p-4 flex items-center gap-4">
-                                <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#1E4FD9]">
-                                    ✓
-                                </div>
-                                <Typography variant="body2">{item}</Typography>
-                            </div>
-                        ))}
+        <section className="w-full bg-white">
+
+            <ColoredText
+                firstText="ویژگی های اعتبار جی"
+                middleText="جی"
+                lastText="لاین"
+                className="mb-5 justify-center"
+                textClassName="lg:text-3xl text-2xl font-[700]"
+            />
+            <Typography
+                variant="body1"
+                className="text-lg text-gray-800 text-center mb-10"
+            >
+                تجربه‌ای متفاوت در خرید اقساطی
+            </Typography>
+            <div className="w-full flex flex-col lg:flex-row justify-center gap-8">
+                {creditPlans.map((plan, index) => (
+                    <div key={index} className="w-full lg:w-[33%]">
+                        <FeaturedBox
+                            title={plan.title}
+                            subTitle={plan.subTitle}
+                            features={plan.features}
+                        />
                     </div>
                 ))}
             </div>
 
         </section>
-    );
-};
+    )
+}
 
-export default FeaturedBox;
-
+export default FeaturedSection 
