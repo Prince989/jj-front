@@ -12,6 +12,7 @@ const categories = [
 
 const timeSlots = Array.from({ length: 24 }, (_, i) => {
     const hour = i.toString().padStart(2, '0');
+
     return `${hour}:30`;
 });
 
@@ -27,6 +28,7 @@ export const ConsultationForm = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         // Handle form submission
     };
 

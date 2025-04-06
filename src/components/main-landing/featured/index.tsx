@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Button } from '@mui/material'
+import { Typography } from '@mui/material'
 import Image from 'next/image'
 import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
