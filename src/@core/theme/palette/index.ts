@@ -5,8 +5,8 @@ import { Skin } from 'src/@core/layouts/types'
 const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
   // ** Vars
   const whiteColor = '#FFF'
-  const lightColor = '47, 43, 61'
-  const darkColor = '208, 212, 241'
+  const lightColor = 'rgb(47, 43, 61)'
+  const darkColor = 'rgb(208, 212, 241)'
   const darkPaperBgColor = '#2F3349'
   const mainColor = mode === 'light' ? lightColor : darkColor
 
@@ -90,23 +90,23 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       A700: '#616161'
     },
     text: {
-      primary: `rgba(${mainColor}, 0.78)`,
-      secondary: `rgba(${mainColor}, 0.68)`,
-      disabled: `rgba(${mainColor}, 0.42)`
+      primary: `rgba(47, 43, 61, 0.78)`,
+      secondary: `rgba(47, 43, 61, 0.68)`,
+      disabled: `rgba(47, 43, 61, 0.42)`
     },
-    divider: `rgba(${mainColor}, 0.16)`,
+    divider: `rgba(47, 43, 61, 0.16)`,
     background: {
       paper: mode === 'light' ? whiteColor : darkPaperBgColor,
       default: defaultBgColor()
     },
     action: {
       active: `#002B8A`,
-      hover: `rgba(${mainColor}, 0.04)`,
-      selected: `rgba(${mainColor}, 0.06)`,
+      hover: `rgba(47, 43, 61, 0.04)`,
+      selected: `rgba(47, 43, 61, 0.06)`,
       selectedOpacity: 0.06,
-      disabled: `rgba(${mainColor}, 0.26)`,
-      disabledBackground: `rgba(${mainColor}, 0.12)`,
-      focus: `rgba(${mainColor}, 0.12)`
+      disabled: `rgba(47, 43, 61, 0.26)`,
+      disabledBackground: `rgba(47, 43, 61, 0.12)`,
+      focus: `rgba(47, 43, 61, 0.12)`
     }
   } as Palette
 }
