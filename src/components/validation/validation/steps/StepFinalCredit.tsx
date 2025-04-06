@@ -2,41 +2,13 @@ import { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
 import Button from '@mui/material/Button'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { SelectChangeEvent } from '@mui/material/Select'
 import { Grid } from '@mui/material'
 import FinalCreditDialog from './FinalCreditDialog'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import useFinalCredit from 'src/hooks/useFinalCredit'
 import { useAllocatedCredit } from 'src/hooks/useAllocatedCredit'
-
-const StyledSelect = styled(Select)(() => ({
-    backgroundColor: '#E0EFFF',
-    border: '0.5px solid #002B8A',
-    borderRadius: '6px',
-    color: '#0B389F',
-    fontWeight: 700,
-    fontSize: '16px',
-    '& .MuiSelect-select': {
-        padding: '4px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px'
-    },
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        border: '0.5px solid #002B8A',
-        borderRadius: '6px'
-    },
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-        border: '0.5px solid #002B8A'
-    },
-    '& .MuiOutlinedInput-notchedOutline': {
-        border: 'none'
-    }
-}))
 
 const CreditAmount = styled(Typography)(({ theme }) => ({
     color: '#FF6A00',
@@ -77,15 +49,10 @@ const CreditDetailsBox = styled(Box)(({ theme }) => ({
 
 const StepFinalCredit = () => {
     const cardInfo = usePersonalInfoStore(state => state.cardInfo)
-    const [paymentPeriod, setPaymentPeriod] = useState('12')
     const [dialogOpen, setDialogOpen] = useState(false)
     const { submitFinalCredit, loading } = useFinalCredit()
     const { creditAmount, loading: creditLoading, error } = useAllocatedCredit()
     const { setActiveStep, setCreditAmount } = usePersonalInfoStore()
-    const periods = [
-        { value: '6', label: '۶ ماهه' },
-        { value: '12', label: '۱۲ ماهه' },
-    ]
 
     // Save creditAmount to store when it's received
     useEffect(() => {
@@ -101,7 +68,7 @@ const StepFinalCredit = () => {
     }, [cardInfo, error, setActiveStep])
 
     const handleFinalRequest = async () => {
-        const success = await submitFinalCredit(Number(paymentPeriod))
+        const success = await submitFinalCredit()
         if (success) {
             setDialogOpen(true)
         }
@@ -142,31 +109,6 @@ const StepFinalCredit = () => {
                     </Typography>
                     <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
                         {creditAmount?.toLocaleString()} تومان
-                    </Typography>
-                </Box>
-
-                <Box sx={{ mb: 9, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Typography sx={{ color: '#0B389F', fontWeight: 600, fontSize: '16px', mb: 1 }}>
-                        مدت بازپرداخت
-                    </Typography>
-                    <StyledSelect
-                        value={paymentPeriod}
-                        onChange={(e: SelectChangeEvent<unknown>) => setPaymentPeriod(e.target.value as string)}
-                    >
-                        {periods.map((period) => (
-                            <MenuItem key={period.value} value={period.value}>
-                                {period.label}
-                            </MenuItem>
-                        ))}
-                    </StyledSelect>
-                </Box>
-
-                <Box sx={{ mb: 9, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        مبلغ هر قسط
-                    </Typography>
-                    <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        {creditAmount && (Math.ceil(creditAmount / Number(paymentPeriod) / 10)).toLocaleString()} تومان
                     </Typography>
                 </Box>
 

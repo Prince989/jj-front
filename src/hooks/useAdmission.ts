@@ -69,11 +69,13 @@ export default function useAdmission() {
         setRequests(temp)
     }
 
-    const install = (amount: string, userId: number, serviceId: number[]) => {
+    const install = (amount: string, userId: number, serviceId: number[], serviceType: string, paymentMode: string) => {
         mAxios.post("credit/install", {
             services: serviceId,
             amount: parseInt(amount),
-            userId
+            userId,
+            serviceType,
+            paymentMode
         }).then(() => {
             toast.success("مبلغ مورد نظر از اعتبار کاربر کسر شد", {
                 position: "bottom-left"

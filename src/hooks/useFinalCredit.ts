@@ -18,12 +18,11 @@ interface FinalCreditResponse {
 export const useFinalCredit = () => {
     const [loading, setLoading] = useState(false)
 
-    const submitFinalCredit = async (months: number): Promise<boolean> => {
+    const submitFinalCredit = async (): Promise<boolean> => {
         setLoading(true)
         try {
             const response = await mAxios.post<FinalCreditResponse>(
-                '/credit',
-                { months }
+                '/credit'
             )
 
             if (Object.keys(response.data.problem).length === 0 && response.data.data) {
