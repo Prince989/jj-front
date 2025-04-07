@@ -161,7 +161,6 @@ const InstallmentPage = () => {
                 </div>
             </div>
 
-
         </div>
     );
 };

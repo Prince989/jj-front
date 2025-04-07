@@ -82,10 +82,10 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
         }
 
         return {
-            prepay,
+            prepay: Math.round(prepay),
             prepayPercentage,
             months,
-            installment,
+            installment: Math.round(installment),
             installmentPercentage
         }
     }, [amount, serviceType, paymentMode])
@@ -226,7 +226,7 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                                 <p>
                                     <b>
                                         {
-                                            ` ${formatCurrency(info.installment / info.months)} تومان `
+                                            ` ${(formatCurrency(info.installment / info.months))} تومان `
                                         }
                                     </b>
                                     &nbsp;
@@ -306,7 +306,7 @@ function formatCurrency(amount: number): string {
     if (amount > 10)
         amount /= 10;
 
-    return amount.toLocaleString('fa-IR'); // 'fa-IR' برای نمایش اعداد به صورت فارسی
+    return Math.round(amount).toLocaleString('fa-IR'); // 'fa-IR' برای نمایش اعداد به صورت فارسی
 }
 
 export default Admission
