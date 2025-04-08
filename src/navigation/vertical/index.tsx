@@ -53,7 +53,7 @@ const useNavigation = (): VerticalNavItemsType => {
     {
       title: "خدمات",
       icon: <ServicesIcon />,
-      path: "/services"
+      path: "/services/dentistry-panel"
     },
     {
       sectionTitle: 'سایر'
