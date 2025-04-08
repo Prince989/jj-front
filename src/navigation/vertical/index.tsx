@@ -41,11 +41,11 @@ const useNavigation = (): VerticalNavItemsType => {
       path: '/validation'
     },
     {
-      title: "خرید اعتبار",
+      title: "اقساط",
 
       // icon: "tabler:vip", // String icon example
       icon: <WalletIcon />,
-      path: "/cards"
+      path: "/installment"
     },
     {
       sectionTitle: 'خدمات'

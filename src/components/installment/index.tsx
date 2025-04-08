@@ -1,20 +1,56 @@
-import React, { useState } from 'react';
-import { Button, Typography } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Chip, Typography } from '@mui/material';
+import mAxios from 'src/configs/axios';
+import { IResponse } from 'src/types/api';
+import formatCurrency from 'src/utils/formatCurrency';
 
 interface InstallmentItem {
-    id: string;
-    title: string;
-    description: string;
-    branch: string;
-    amount: string;
+    id: number,
+    credit: {
+        amount: number
+    }
+    transactions: {
+        id: number,
+        status: "pending" | "completed" | "failed"
+    }[],
+    installments: {
+        id: 1,
+        amount: 10000,
+        status: "pending" | "paid" | "overdue",
+        dueDate: string,
+        serviceType: "medical" | "beauty",
+        repaymentMonths: number,
+        paymentMode: "promissoryNote" | "installmentCheque" | "guaranteeCheque",
+        creditId: number,
+        createdAt: string,
+        updatedAt: string,
+        services: {
+            id: number,
+            title: string,
+            business: {
+                id: number,
+                title: string,
+            }
+        }[]
+    }[]
 }
 
-const InstallmentPage = () => {
-    const [activeTab, setActiveTab] = useState('thisMonth');
+interface RepayResponse {
+    paymentId: string
+    url: string
+}
 
-    // Helper function to convert Persian numbers and calculate amount
-    const calculateTotalAmount = (items: InstallmentItem[]): string => {
+const InvoiceCard = (props: { invoice: InstallmentItem }) => {
+
+    const { invoice: i } = props;
+
+    const [pending, setPending] = useState<boolean>(false);
+
+    const status = useMemo(() => {
+        return i.transactions.filter(t => t.status == "completed").length > 0 ? "paid" : "notpaid"
+    }, [i])
+
+    const calculateTotalAmount = (): string => {
         const convertPersianToEnglish = (str: string): number => {
             const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
             let result = str;
@@ -25,143 +61,148 @@ const InstallmentPage = () => {
             return parseInt(result.replace(/[^0-9]/g, ''), 10);
         };
 
-        const total = items.reduce((sum, item) => {
-            return sum + convertPersianToEnglish(item.amount);
+
+        const temp = i.installments.reduce((sum, item) => {
+            return sum + (Math.round(convertPersianToEnglish(item.amount.toString()) / item.repaymentMonths));
         }, 0);
+
+        const total = Math.round(temp / 10);
 
         // Convert back to Persian format with thousands separator
         return total.toLocaleString('fa-IR');
     };
 
-    const tabs = [
-        { id: 'thisMonth', title: 'اقساط این ماه' },
-        { id: 'nextMonths', title: 'اقساط ماه های بعدی' },
-    ];
+    const pay = () => {
+        setPending(true)
+        mAxios.post<IResponse<RepayResponse>>("/credit/repay", { gatewayId: 1, invoiceId: i.id }).then(res => {
+            const url = res.data.data.url;
 
-    // Sample data for this month's installments
-    const thisMonthInstallments: InstallmentItem[] = [
-        {
-            id: '1',
-            title: 'کلینیک دندان پزشکی مردم',
-            description: 'عصب کشی، ایمپلنت و ...',
-            branch: 'شعبه ۳ سعادت آباد',
-            amount: '۰۱/۲۸۷/۰۰۰',
-        },
-        {
-            id: '2',
-            title: 'کلینیک دندان پزشکی مردم',
-            description: 'عصب کشی، ایمپلنت و ...',
-            branch: 'شعبه ۳ سعادت آباد',
-            amount: '۰۱/۲۸۷/۰۰۰',
-        },
-    ];
-
-    // Sample data for next months' installments
-    const nextMonthsInstallments: InstallmentItem[] = [
-        {
-            id: '3',
-            title: 'کلینیک دندان پزشکی آینده',
-            description: 'جراحی لثه و ارتودنسی',
-            branch: 'شعبه ۲ ونک',
-            amount: '۰۲/۵۰۰/۰۰۰',
-        },
-        {
-            id: '4',
-            title: 'کلینیک دندان پزشکی سلامت',
-            description: 'پر کردن دندان و جرم گیری',
-            branch: 'شعبه ۱ تجریش',
-            amount: '۰۰/۸۵۰/۰۰۰',
-        },
-    ];
-
-    const activeItems = activeTab === 'thisMonth' ? thisMonthInstallments : nextMonthsInstallments;
+            window.location.href = url;
+        })
+    }
 
     return (
-        <div className="bg-white rounded-lg p-4">
-            <div className="flex items-center justify-between gap-3 my-4">
-                <Typography className="text-primary-blue text-xl font-bold">
-                    پرداخت اقساط
-                </Typography>
-                <div className="flex items-center gap-4">
-                    <Typography className="text-gray-500 text-sm">
-                        موجودی اعتبار باقی مانده:
-                    </Typography>
-                    <Typography className="text-primary-blue text-xl font-bold">
-                        ۳۳/۴۵۰/۰۰۰ تومان
-                    </Typography>
-                </div>
-            </div>
-            <div className="bg-[#F1FFEF] rounded-[10px] p-3 mb-8 flex items-start gap-2">
-                <CheckCircleIcon className="text-[#129D00]" />
-                <Typography className="text-gray-500 text-sm">
-                    کاربر گرامی! سررسید پرداخت شما ۳۱ فروردین ماه میباشد.
-                </Typography>
-            </div>
+        <>
+            <div className="bg-white rounded-lg p-4 my-4">
 
-            <div className="flex border-b mb-6">
-                {tabs.map((tab) => (
-                    <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`px-4 py-2 transition-colors text-sm font-bold relative
-                            ${activeTab === tab.id
-                                ? 'text-primary-orange after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary-orange'
-                                : 'text-black hover:text-primary-orange'
-                            }`}
-                    >
-                        {tab.title}
-                    </button>
-                ))}
-            </div>
+                <div className="space-y-4">
+                    {i.installments.map((item) => (
+                        <div
+                            key={item.id}
+                            className="border border-gray-100 shadow-sm rounded-lg p-4 transition-shadow"
+                        >
+                            <div className="flex justify-between items-start">
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <Typography className="text-primary-blue text-lg font-bold text-right">
+                                            {
+                                                item.services?.[0]?.business?.title
+                                            }
+                                        </Typography>
+                                        <Typography className="text-primary-blue font-bold text-lg">
+                                            {formatCurrency(item.amount / item.repaymentMonths)} ت
+                                        </Typography>
+                                    </div>
+                                    <div className="flex items-center justify-between mt-3">
+                                        <Typography className="text-gray-500 text-sm text-right">
+                                            نوع خدمت:
+                                            {
+                                                item.serviceType == "medical" ? "درمانی" : "زیبایی"
+                                            }
+                                        </Typography>
+                                        <Typography className="text-gray-500 text-sm text-left">
+                                            وضعیت قسط:
+                                            {
+                                                item.status == "paid" ?
+                                                    "تسویه شده" : (
+                                                        item.status == "pending" ?
+                                                            "جاری" : "تاخیر خورده"
+                                                    )
 
-            <div className="space-y-4">
-                {activeItems.map((item) => (
-                    <div
-                        key={item.id}
-                        className="border border-gray-100 shadow-sm rounded-lg p-4 transition-shadow"
-                    >
-                        <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                                <div className="flex items-center justify-between mb-2">
-                                    <Typography className="text-primary-blue text-lg font-bold text-right">
-                                        {item.title}
-                                    </Typography>
-                                    <Typography className="text-primary-blue font-bold text-lg">
-                                        {item.amount} ت
-                                    </Typography>
-                                </div>
-                                <div className="flex items-center justify-between mt-3">
-                                    <Typography className="text-gray-500 text-sm text-right">
-                                        {item.branch}
-                                    </Typography>
-                                    <Typography className="text-gray-500 text-sm text-left">
-                                        {item.description}
-                                    </Typography>
+                                            }
+                                        </Typography>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
+                    ))}
+                    <div className="flex justify-between items-center mt-4">
+                        <div className="flex items-center mt-6 mb-4 gap-4">
+                            <Typography className="text-gray-500 text-sm">
+                                {
+                                    status == "paid" ?
+                                        "مبلغ پرداخت شده"
+                                        :
+                                        " مبلغ قابل پرداخت"
+                                }
+                            </Typography>
+                            <Typography className="text-primary-orange text-lg font-bold">
+                                {calculateTotalAmount()} تومان
+                            </Typography>
+                        </div>
+                        {
+                            status == "paid" ?
+                                <Chip label="پرداخت شده" color="success" />
+                                :
+                                <Button
+                                    variant="contained"
+                                    disabled={pending}
+                                    onClick={() => pay()}
+                                    className="bg-primary-orange hover:bg-primary-orange/90 normal-case px-6"
+                                >
+                                    پرداخت
+                                </Button>
+                        }
                     </div>
-                ))}
-                <div className="flex justify-between items-center mt-4">
-                    <div className="flex items-center mt-6 mb-4 gap-4">
+                </div>
+
+            </div>
+        </>
+    )
+}
+
+const InstallmentPage = () => {
+    const [invoices, setInvoices] = useState<InstallmentItem[]>([])
+
+    useEffect(() => {
+        mAxios.get<IResponse<InstallmentItem[]>>("/credit/invoices").then(res => {
+            setInvoices(res.data.data)
+        })
+    }, [])
+
+    // const [] 
+
+    // Helper function to convert Persian numbers and calculate amount
+
+
+    return (
+        <>
+            <div className='bg-white rounded-lg p-4 my-4'>
+                <Typography className="text-primary-blue my-5 text-xl font-bold">
+                    فاکتور های اقساط
+                </Typography>
+
+                <div className="flex items-center justify-between gap-3 my-4">
+                    <div className="flex items-center gap-4">
                         <Typography className="text-gray-500 text-sm">
-                            مبلغ قابل پرداخت:
+                            موجودی اعتبار باقی مانده:
                         </Typography>
-                        <Typography className="text-primary-orange text-lg font-bold">
-                            {calculateTotalAmount(activeItems)} تومان
+                        <Typography className="text-primary-blue text-xl font-bold">
+                            {
+                                formatCurrency(invoices?.[0]?.credit?.amount) + " "
+                            }
+                            تومان
                         </Typography>
                     </div>
-                    <Button
-                        variant="contained"
-                        className="bg-primary-orange hover:bg-primary-orange/90 normal-case px-6"
-                    >
-                        پرداخت
-                    </Button>
                 </div>
             </div>
-
-        </div>
+            {
+                invoices.map(i => (
+                    <InvoiceCard key={i.id} invoice={i} />
+                ))
+            }
+        </>
     );
 };
 
