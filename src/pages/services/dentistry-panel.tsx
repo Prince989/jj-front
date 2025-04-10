@@ -32,6 +32,7 @@ const DentistryPanel = () => {
 
 DentistryPanel.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
+DentistryPanel.authGuard = false
 DentistryPanel.guestGuard = true
 
 export default DentistryPanel

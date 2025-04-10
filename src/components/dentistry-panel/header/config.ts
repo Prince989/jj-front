@@ -7,6 +7,7 @@ export const menuItems: MenuItem[] = [
         hasSubmenu: true
     },
     { text: 'راهنمای دریافت وام', href: '#' },
-    { text: 'خدمات', href: '#' },
+
+    // { text: 'خدمات', href: '#' },
     { text: 'مقالات', href: '#' },
 ]; 

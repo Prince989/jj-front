@@ -14,7 +14,7 @@ const Header = () => {
     }
 
     return (
-        <header className="py-4 bg-white w-full">
+        <header className="bg-white w-full">
             <MobileMenu open={open} onOpen={handleOpen} onClose={handleClose} />
             <DesktopMenu />
         </header>

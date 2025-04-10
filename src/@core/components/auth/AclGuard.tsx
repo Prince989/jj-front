@@ -15,7 +15,6 @@ import { buildAbilityFor } from 'src/configs/acl'
 
 // ** Component Import
 import NotAuthorized from 'src/pages/401'
-import Spinner from 'src/@core/components/spinner'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Hooks
@@ -54,8 +53,11 @@ const AclGuard = (props: AclGuardProps) => {
   if (auth.user && !ability) {
     ability = buildAbilityFor(auth.user?.role?.name)
     if (router.route === '/') {
-      if (!ability)
-        return <Spinner />
+      if (!ability) {
+        router.replace('/401')
+
+        return null
+      }
     }
   }
 
@@ -65,6 +67,7 @@ const AclGuard = (props: AclGuardProps) => {
     if (auth.user && ability) {
       return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
     } else {
+
       // If user is not logged in (render pages like login, register etc..)
       return <>{children}</>
     }
@@ -73,7 +76,9 @@ const AclGuard = (props: AclGuardProps) => {
   // Check the access of current user and render pages
   if (ability && auth.user && ability.can(aclAbilities.action, aclAbilities.subject)) {
     if (router.route === '/') {
-      return <Spinner />
+      router.replace('/401')
+
+      return null
     }
 
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>

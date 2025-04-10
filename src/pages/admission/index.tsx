@@ -8,3 +8,11 @@ export default function Admission() {
     </div>
   )
 }
+
+Admission.authGuard = true
+Admission.guestGuard = false
+
+Admission.acl = {
+  action: 'manage',
+  subject: 'admission'
+}
