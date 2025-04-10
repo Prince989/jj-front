@@ -26,8 +26,13 @@ const AuthGuard = (props: AuthGuardProps) => {
       return
     }
 
+    // Allow access to auth pages for non-authenticated users
+    if (router.pathname === '/login' || router.pathname === '/register') {
+      return
+    }
+
     if (auth.user === null && !window.localStorage.getItem('userData')) {
-      router.replace('/401')
+      router.replace('/login')
     }
   }, [router.route, auth.user])
 

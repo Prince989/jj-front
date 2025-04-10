@@ -26,22 +26,20 @@ const defineRulesFor = (role: string) => {
 
   switch (role) {
     case 'businessUser':
-
       // Business user has full access to everything
       can('manage', 'all')
       break
 
     case 'user':
-
       // User has access to most pages but not admission
       can('manage', 'all')
-
-      // Explicitly deny access to admission page
       cannot('manage', 'admission')
       break
 
     default:
-      can(['read'], 'public') // Default role can only read public resources
+      // Default role can only read public resources and access auth pages
+      can(['read'], 'public')
+      can(['read'], 'auth') // Allow access to auth pages
       break
   }
 

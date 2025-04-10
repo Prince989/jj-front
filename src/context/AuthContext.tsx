@@ -62,8 +62,16 @@ const AuthProvider = ({ children }: Props) => {
           })
           .then(async response => {
             setLoading(false)
-            setLoading(false)
             setUser({ ...response.data.data })
+
+            // Add role-based redirection for logged-in users
+            if (router.pathname === '/login' || router.pathname === '/register') {
+              if (response.data.data.role.name === 'businessUser') {
+                router.replace('/admission')
+              } else if (response.data.data.role.name === 'user') {
+                router.replace('/validation')
+              }
+            }
           })
           .catch(() => {
             // Clear both localStorage and cookies

@@ -6,8 +6,12 @@ import ColoredText from '../ColoredText';
 import { menuItems } from './config';
 import Link from 'next/link';
 import { SearchIcon } from 'src/@core/components/IconV2';
+import { useAuth } from 'src/hooks/useAuth';
 
 const DesktopMenu: React.FC = () => {
+    const { user } = useAuth();
+    const loginHref = user?.role?.name === 'businessUser' ? '/admission' : '/validation';
+
     return (
         <div className="hidden lg:flex justify-between items-center">
             <div className="flex items-center gap-9">
@@ -47,7 +51,7 @@ const DesktopMenu: React.FC = () => {
                     </IconButton>
                 </div>
 
-                <Link href='/validation' className='cursor-pointer'>
+                <Link href={loginHref} className='cursor-pointer'>
                     <Button
                         variant="contained"
                         startIcon={<PersonOutlineIcon />}
