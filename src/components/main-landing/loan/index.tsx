@@ -125,7 +125,7 @@ const LoanBox = () => {
                 <Button
                     variant="contained"
                     fullWidth
-                    className="bg-primary-orange text-white py-2 text-sm lg:text-base font-semibold hover:bg-primary-orange-1 normal-case"
+                    className="bg-primary-orange text-white py-2 text-sm font-semibold hover:bg-primary-orange-1 normal-case"
                 >
                     درخواست اعتبار خرید و خدمات
                 </Button>

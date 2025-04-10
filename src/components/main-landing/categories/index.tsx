@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import Link from 'next/link';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 interface CategoryItemProps {
     title: string;
@@ -26,7 +27,7 @@ const categories: CategoryItemProps[] = [
     },
     {
         title: 'موبایل و تبلت',
-        image: '/images/main-landing/iphone.png',
+        image: '/images/main-landing/iphone13.png',
         href: '/categories/mobile'
     },
     {
@@ -54,8 +55,8 @@ const categories: CategoryItemProps[] = [
 const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href }) => {
     return (
         <Link href={href} className="no-underline">
-            <div className="bg-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer">
-                <div className="w-32 h-32 mb-4 relative">
+            <div className="w-[270px] h-[270px] bg-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer">
+                <div className="w-[190px] h-[190px] mb-4 relative">
                     <img
                         src={image}
                         alt={title}
@@ -85,8 +86,9 @@ const CategoriesContainer = () => {
                 >
                     دسته بندی محصولات و خدمات
                 </Typography>
-                <Link href="/categories" className="hidden lg:block text-primary-blue text-sm no-underline hover:text-primary-blue/80">
+                <Link href="/categories" className="hidden lg:flex items-center gap-1 text-[#3D7AFF] text-sm no-underline hover:text-primary-blue/80">
                     بیشتر
+                    <ChevronLeftIcon fontSize="small" />
                 </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
