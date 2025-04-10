@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface CommentBoxProps {
     text: string;
@@ -15,22 +15,22 @@ interface CommentBoxProps {
 }
 
 const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bottom', isMobile }) => {
-    const [isActive, setIsActive] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(position);
     const containerRef = useRef<HTMLDivElement>(null);
     const animationFrameRef = useRef<number>();
     const movementState = useRef({
         angle: Math.random() * Math.PI * 2,
-        radius: 150 + Math.random() * 200,
-        speed: 0.005 + Math.random() * 0.01,
+        radius: 200 + Math.random() * 300,
+        speed: 0.002,
         centerX: 0,
         centerY: 0,
         initialX: 0,
-        initialY: 0
+        initialY: 0,
+        ovalRatio: 1.8 + Math.random() * 0.4
     });
 
     useEffect(() => {
-        if (!isActive && containerRef.current) {
+        if (containerRef.current) {
             const galaxyBox = document.getElementById('galaxy-box');
             if (!galaxyBox) return;
 
@@ -40,14 +40,14 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
             movementState.current.centerY = galaxyRect.height / 2;
 
             const animate = () => {
-                const { angle, radius, speed, centerX, centerY } = movementState.current;
+                const { angle, radius, speed, centerX, centerY, ovalRatio } = movementState.current;
 
                 movementState.current.angle = angle + speed;
 
                 const newX = centerX + Math.cos(angle) * radius;
-                const newY = centerY + Math.sin(angle) * radius;
+                const newY = centerY + Math.sin(angle) * (radius / ovalRatio);
 
-                const margin = 100;
+                const margin = 150;
                 const minX = margin;
                 const maxX = galaxyRect.width - margin;
                 const minY = margin;
@@ -72,29 +72,13 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
                 }
             };
         }
-    }, [isActive, position]);
-
-    const handleInteractionStart = () => {
-        setIsActive(true);
-    };
-
-    const handleInteractionEnd = () => {
-        setIsActive(false);
-    };
+    }, [position]);
 
     return (
         <motion.div
             ref={containerRef}
-            className={`absolute flex flex-col gap-2 ${isActive ? 'z-[9999999]' : 'z-10'} ${direction === 'bottom' ? 'items-end' : 'items-start'}`}
+            className={`absolute flex flex-col gap-2 z-10 ${direction === 'bottom' ? 'items-end' : 'items-start'}`}
             style={currentPosition}
-            onHoverStart={!isMobile ? handleInteractionStart : undefined}
-            onHoverEnd={!isMobile ? handleInteractionEnd : undefined}
-            onTouchStart={isMobile ? handleInteractionStart : undefined}
-            onTouchEnd={isMobile ? handleInteractionEnd : undefined}
-            animate={{
-                scale: isActive ? 1.1 : 1,
-                transition: { duration: 0.3 }
-            }}
         >
             <motion.div
                 className="w-10 h-10 rounded-full overflow-hidden cursor-pointer"
@@ -111,31 +95,26 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
                 />
             </motion.div>
 
-            <AnimatePresence>
-                {isActive && (
-                    <motion.div
-                        className="relative"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {direction === 'top' && (
-                            <div className="absolute bottom-[-6px] right-4 w-3 h-3 rotate-45 bg-[#EEF9FF]" />
-                        )}
-
-                        <div className="bg-[#EEF9FF] rounded-2xl p-4 max-w-[250px] shadow-[0px_4px_4px_0px_#00000040]">
-                            <div className="text-gray-800 text-sm leading-relaxed">
-                                <p>{text}</p>
-                            </div>
-                        </div>
-
-                        {direction === 'bottom' && (
-                            <div className="absolute top-[-6px] left-4 w-3 h-3 rotate-45 bg-[#EEF9FF]" />
-                        )}
-                    </motion.div>
+            <motion.div
+                className="relative"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+            >
+                {direction === 'top' && (
+                    <div className="absolute bottom-[-6px] right-4 w-3 h-3 rotate-45 bg-[#EEF9FF]" />
                 )}
-            </AnimatePresence>
+
+                <div className="bg-[#EEF9FF] rounded-2xl p-4 max-w-[250px] shadow-[0px_4px_4px_0px_#00000040]">
+                    <div className="text-gray-800 text-sm leading-relaxed">
+                        <p>{text}</p>
+                    </div>
+                </div>
+
+                {direction === 'bottom' && (
+                    <div className="absolute top-[-6px] left-4 w-3 h-3 rotate-45 bg-[#EEF9FF]" />
+                )}
+            </motion.div>
         </motion.div>
     );
 };
@@ -189,7 +168,7 @@ const Comments: React.FC = () => {
                 تجربه‌ای متفاوت در خرید اقساطی
             </p>
 
-            <div className="relative w-full h-[60vh] lg:h-[100vh] z-20 overflow-hidden" id="galaxy-box">
+            <div className="relative w-full h-[60vh] lg:h-[85vh] z-20 overflow-hidden" id="galaxy-box">
                 <Image
                     src="/images/main-landing/galaxy.svg"
                     alt="Galaxy background"
