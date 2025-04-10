@@ -14,8 +14,8 @@ interface CommentBoxProps {
     isMobile?: boolean;
 }
 
-const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bottom' }) => {
-    const [isHovered, setIsHovered] = useState(false);
+const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bottom', isMobile }) => {
+    const [isActive, setIsActive] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(position);
     const containerRef = useRef<HTMLDivElement>(null);
     const animationFrameRef = useRef<number>();
@@ -30,34 +30,29 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
     });
 
     useEffect(() => {
-        if (!isHovered && containerRef.current) {
+        if (!isActive && containerRef.current) {
             const galaxyBox = document.getElementById('galaxy-box');
             if (!galaxyBox) return;
 
             const galaxyRect = galaxyBox.getBoundingClientRect();
 
-            // Set initial center position based on the galaxy box
             movementState.current.centerX = galaxyRect.width / 2;
             movementState.current.centerY = galaxyRect.height / 2;
 
             const animate = () => {
                 const { angle, radius, speed, centerX, centerY } = movementState.current;
 
-                // Update angle
                 movementState.current.angle = angle + speed;
 
-                // Calculate new position relative to center
                 const newX = centerX + Math.cos(angle) * radius;
                 const newY = centerY + Math.sin(angle) * radius;
 
-                // Get container boundaries with margin
                 const margin = 100;
                 const minX = margin;
                 const maxX = galaxyRect.width - margin;
                 const minY = margin;
                 const maxY = galaxyRect.height - margin;
 
-                // Apply boundaries
                 const boundedX = Math.max(minX, Math.min(maxX, newX));
                 const boundedY = Math.max(minY, Math.min(maxY, newY));
 
@@ -77,23 +72,34 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
                 }
             };
         }
-    }, [isHovered, position]);
+    }, [isActive, position]);
+
+    const handleInteractionStart = () => {
+        setIsActive(true);
+    };
+
+    const handleInteractionEnd = () => {
+        setIsActive(false);
+    };
 
     return (
         <motion.div
             ref={containerRef}
-            className={`absolute flex flex-col gap-2 ${isHovered ? 'z-[9999999]' : 'z-10'} ${direction === 'bottom' ? 'items-end' : 'items-start'}`}
+            className={`absolute flex flex-col gap-2 ${isActive ? 'z-[9999999]' : 'z-10'} ${direction === 'bottom' ? 'items-end' : 'items-start'}`}
             style={currentPosition}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
+            onHoverStart={!isMobile ? handleInteractionStart : undefined}
+            onHoverEnd={!isMobile ? handleInteractionEnd : undefined}
+            onTouchStart={isMobile ? handleInteractionStart : undefined}
+            onTouchEnd={isMobile ? handleInteractionEnd : undefined}
             animate={{
-                scale: isHovered ? 1.1 : 1,
+                scale: isActive ? 1.1 : 1,
                 transition: { duration: 0.3 }
             }}
         >
             <motion.div
                 className="w-10 h-10 rounded-full overflow-hidden cursor-pointer"
-                whileHover={{ scale: 1.2 }}
+                whileHover={!isMobile ? { scale: 1.2 } : undefined}
+                whileTap={isMobile ? { scale: 1.2 } : undefined}
                 transition={{ duration: 0.2 }}
             >
                 <Image
@@ -106,7 +112,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
             </motion.div>
 
             <AnimatePresence>
-                {isHovered && (
+                {isActive && (
                     <motion.div
                         className="relative"
                         initial={{ opacity: 0, scale: 0.8 }}
