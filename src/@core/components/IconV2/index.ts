@@ -14,4 +14,5 @@ export const WalletIcon = createIconComponent('wallet');
 export const BellIcon = createIconComponent('bell');
 export const MagnifierIcon = createIconComponent('magnifier');
 export const DangerIcon = createIconComponent('danger');
+export const SearchIcon = createIconComponent('search');
 
