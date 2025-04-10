@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // Import components
@@ -9,8 +9,24 @@ import WhyChooseUsSection from 'src/components/dentistry-panel/WhyChooseUsSectio
 import CreditPlansSection from 'src/components/dentistry-panel/CreditPlansSection'
 import ContactFormSection from 'src/components/dentistry-panel/ContactFormSection'
 import Footer from 'src/components/dentistry-panel/Footer'
+import { useRouter } from 'next/router'
+import mAxios from 'src/configs/axios'
 
 const DentistryPanel = () => {
+
+    const { query, replace } = useRouter();
+
+    useEffect(() => {
+        if (query?.sId) {
+            const sId = query.sId;
+            mAxios.get("/sponser/validate").then(() => {
+                localStorage.setItem("jj-sid", sId?.toString())
+                replace("/services/dentistry-panel")
+            })
+                .catch(() => null)
+        }
+    }, [query])
+
     return (
         <div className="bg-white">
             <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">

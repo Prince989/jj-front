@@ -27,10 +27,20 @@ export const usePurchase = ({ selectedCard }: UsePurchaseProps): UsePurchaseRetu
 
             const gatewayId = gatewayResponse.data[0].id
 
+            const sId = localStorage.getItem("jj-sid");
+            let sponserId = null
+
+            if (sId) {
+                sponserId = sId;
+            }
+
+            sponserId = sponserId ? { sId: sponserId } : {}
+
             // Second API call to initiate payment
             const { data: paymentResponse } = await mAxios.post('/payment/pay', {
                 gatewayId,
-                cardId: parseInt(selectedCard)
+                cardId: parseInt(selectedCard),
+                ...sponserId
             })
 
             const paymentUrl = paymentResponse.data?.data?.url
