@@ -77,7 +77,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href }) => {
 
 const CategoriesContainer = () => {
     return (
-        <section className="py-12 px-4 md:px-8">
+        <section className="py-12 px-4 lg:px-0">
             <div className="flex items-center justify-center lg:justify-between mb-8">
                 <Typography
                     variant="h5"
@@ -91,7 +91,7 @@ const CategoriesContainer = () => {
                     <ChevronLeftIcon fontSize="small" />
                 </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8">
                 {categories.map((category, index) => (
                     <CategoryItem key={index} {...category} />
                 ))}

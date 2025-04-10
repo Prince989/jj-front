@@ -17,7 +17,7 @@ const LoanBox = () => {
     }
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 p-4 z-10 -mt-[80px]">
+        <div className="flex flex-col md:flex-row gap-8 py-4 px-4 lg:px-0 z-10 -mt-[80px]">
             {/* Right Column - Loan Selection */}
             <div className="flex-1 flex flex-col justify-between gap-0 bg-white p-4 lg:p-6 shadow-lg rounded-lg">
                 <div className="flex justify-between items-center mb-4">
@@ -81,20 +81,22 @@ const LoanBox = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-center items-center gap-4 mt-8">
-                    {[6, 8, 12].map((value) => (
-                        <Button
-                            key={value}
-                            variant={months === value ? 'contained' : 'outlined'}
-                            onClick={() => setMonths(value)}
-                            className={`border-primary-blue ${months === value
-                                ? 'bg-primary-blue text-white hover:bg-primary-blue'
-                                : 'text-primary-blue hover:bg-primary-blue/5'
-                                }`}
-                        >
-                            {value} ماهه
-                        </Button>
-                    ))}
+                <div className="flex justify-center items-center gap-4 mt-8 relative">
+                    <div className="flex gap-6">
+                        {[6, 8, 12].map((value) => (
+                            <Button
+                                key={value}
+                                variant={months === value ? 'contained' : 'outlined'}
+                                onClick={() => setMonths(value)}
+                                className={`border-primary-blue ${months === value
+                                    ? 'bg-primary-blue text-white hover:bg-primary-blue'
+                                    : 'text-primary-blue hover:bg-primary-blue/5'
+                                    }`}
+                            >
+                                {value} ماهه
+                            </Button>
+                        ))}
+                    </div>
                 </div>
             </div>
 

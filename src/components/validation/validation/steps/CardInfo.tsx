@@ -38,6 +38,24 @@ const LoadingContainer = styled(Box)({
     gap: '16px'
 })
 
+// Add this helper function before the CardInfo component
+const formatBirthDate = (dateString: string) => {
+    try {
+        // First try to parse the date string
+        const date = new Date(dateString)
+        if (isNaN(date.getTime())) {
+            // If the date is invalid, return the original string
+            return dateString
+        }
+
+        return format(date, 'yyyy/MM/dd')
+    } catch (error) {
+        // If any error occurs, return the original string
+
+        return dateString
+    }
+}
+
 const CardInfo = () => {
     const router = useRouter()
     const personalInfo = usePersonalInfoStore(state => state.personalInfo)
@@ -110,7 +128,7 @@ const CardInfo = () => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={format(new Date(personalInfo.birthDate), 'yyyy/MM/dd')}
+                        value={formatBirthDate(personalInfo.birthDate)}
                         label="تاریخ تولد"
                         InputProps={{ readOnly: true }}
                         disabled

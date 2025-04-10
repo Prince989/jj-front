@@ -13,22 +13,24 @@ interface CreditPlanProps {
 const FeaturedBox: React.FC<CreditPlanProps> = ({ title, features, subTitle }) => {
     return (
         <div
-            className='p-4 lg:p-8 h-full rounded-[32px] bg-gradient-to-b from-primary-blue to-primary-blue-1 flex flex-col'
+            className='p-4 lg:p-8 h-full rounded-[32px] bg-gradient-to-b from-primary-blue to-primary-blue-1 flex flex-col justify-between'
         >
-            <Typography
-                variant="h5"
-                component="h5"
-                className="text-lg lg:text-2xl font-extrabold text-center text-white mb-4"
-            >
-                {title}
-            </Typography>
-            <Typography
-                variant="subtitle1"
-                component="span"
-                className="text-md font-light text-center text-white mb-10"
-            >
-                {subTitle}
-            </Typography>
+            <div className="flex flex-col items-center justify-center">
+                <Typography
+                    variant="h5"
+                    component="h5"
+                    className="text-lg lg:text-2xl font-extrabold text-center text-white mb-4"
+                >
+                    {title}
+                </Typography>
+                <Typography
+                    variant="subtitle1"
+                    component="span"
+                    className="text-md font-light text-center text-white mb-10"
+                >
+                    {subTitle}
+                </Typography>
+            </div>
 
             <div className="relative flex flex-col bg-white/10 rounded-2xl p-7 gap-4">
                 {features.map((feature, index) => (
@@ -38,14 +40,14 @@ const FeaturedBox: React.FC<CreditPlanProps> = ({ title, features, subTitle }) =
                     >
                         <Image
                             src="/images/dentistry/check-circle.svg"
-                            width={24}
-                            height={24}
+                            width={19}
+                            height={19}
                             alt="Check"
                             className="ml-2"
                         />
                         <Typography
                             variant="body1"
-                            className="text-lg text-white font-semibold"
+                            className="text-base text-white font-semibold"
                         >
                             {feature}
                         </Typography>
