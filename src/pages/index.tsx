@@ -27,7 +27,7 @@ const MainLanding = () => {
     <div className="flex flex-col bg-white px-3 lg:px-36 mb-24">
       <CategoriesContainer />
     </div>
-    <div className="flex flex-col px-3 lg:px-36 mb-[600px] lg:mb-72 max-h-[380px] bg-[#EEF9FF]">
+    <div className="flex flex-col px-3 lg:px-36 mb-[600px] lg:mb-72 h-auto lg:max-h-[380px] bg-[#EEF9FF]">
       <BrandBanner />
       <BrandConsultation />
     </div>

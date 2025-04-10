@@ -1,9 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { IconButton } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 const tabs = [
     { id: 'digital', title: 'برند های دیجیتال', active: true },
@@ -21,22 +20,44 @@ const brands = {
         { id: 5, name: 'LG', logo: '/images/main-landing/lg.svg' },
         { id: 6, name: 'Samsung', logo: '/images/main-landing/samsung.svg' },
     ],
-
-    // Add other categories as needed
+    clothing: [
+        { id: 1, name: 'Nike', logo: '/images/main-landing/nike.svg' },
+        { id: 2, name: 'Adidas', logo: '/images/main-landing/adidas.svg' },
+        { id: 3, name: 'Zara', logo: '/images/main-landing/zara.svg' },
+        { id: 4, name: 'H&M', logo: '/images/main-landing/hm.svg' },
+        { id: 5, name: 'Puma', logo: '/images/main-landing/puma.svg' },
+        { id: 6, name: 'Levi\'s', logo: '/images/main-landing/levis.svg' },
+    ],
+    cosmetic: [
+        { id: 1, name: 'L\'Oreal', logo: '/images/main-landing/loreal.svg' },
+        { id: 2, name: 'Estee Lauder', logo: '/images/main-landing/estee.svg' },
+        { id: 3, name: 'MAC', logo: '/images/main-landing/mac.svg' },
+        { id: 4, name: 'Maybelline', logo: '/images/main-landing/maybelline.svg' },
+        { id: 5, name: 'Revlon', logo: '/images/main-landing/revlon.svg' },
+        { id: 6, name: 'Clinique', logo: '/images/main-landing/clinique.svg' },
+    ],
+    home: [
+        { id: 1, name: 'Bosch', logo: '/images/main-landing/bosch.svg' },
+        { id: 2, name: 'Siemens', logo: '/images/main-landing/siemens.svg' },
+        { id: 3, name: 'LG', logo: '/images/main-landing/lg.svg' },
+        { id: 4, name: 'Samsung', logo: '/images/main-landing/samsung.svg' },
+        { id: 5, name: 'Whirlpool', logo: '/images/main-landing/whirlpool.svg' },
+        { id: 6, name: 'Electrolux', logo: '/images/main-landing/electrolux.svg' },
+    ],
 };
 
 export const BrandSlider = () => {
     const [activeTab, setActiveTab] = useState('digital');
-    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
         {
             loop: true,
-            align: 'start',
+            align: 'center',
             direction: 'rtl',
             dragFree: true,
             slidesToScroll: 1,
-            containScroll: 'trimSnaps',
+            containScroll: false,
+            skipSnaps: false,
         },
         [Autoplay({ delay: 4000, stopOnInteraction: false })]
     );
@@ -44,17 +65,13 @@ export const BrandSlider = () => {
     useEffect(() => {
         if (emblaApi) {
             emblaApi.on('select', () => {
-                setSelectedIndex(emblaApi.selectedScrollSnap());
+                // Removed unused selectedIndex state
             });
         }
     }, [emblaApi]);
 
-    const scrollTo = useCallback((index: number) => {
-        if (emblaApi) emblaApi.scrollTo(index);
-    }, [emblaApi]);
-
     return (
-        <div className="w-full bg-white rounded-lg px-6 pt-6 pb-4 shadow-lg">
+        <div className="w-full bg-white rounded-lg px-5 h-[230px] shadow-lg flex flex-col justify-start pt-4">
             {/* Tabs */}
             <div className="flex gap-4 mb-6 overflow-x-auto whitespace-nowrap scrollbar-hide">
                 {tabs.map((tab) => (
@@ -73,14 +90,14 @@ export const BrandSlider = () => {
             </div>
 
             {/* Slider */}
-            <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex gap-4">
-                    {brands[activeTab as keyof typeof brands]?.map((brand) => (
+            <div className="overflow-hidden relative" ref={emblaRef}>
+                <div className="flex">
+                    {[...brands[activeTab as keyof typeof brands], ...brands[activeTab as keyof typeof brands]].map((brand, index) => (
                         <div
-                            key={brand.id}
-                            className="flex-[0_0_calc(90%)] lg:flex-[0_0_calc(20%-16px)]"
+                            key={`${brand.id}-${index}`}
+                            className="flex-[0_0_85px] lg:flex-[0_0_85px] min-w-0 px-2 mr-4"
                         >
-                            <div className="w-full h-[85px] flex items-center justify-center p-4 rounded-lg border border-gray-100 hover:border-primary transition-colors cursor-pointer">
+                            <div className="w-[85px] h-[85px] flex items-center justify-center p-4 rounded-lg border border-gray-100 hover:border-primary transition-colors cursor-pointer">
                                 <Image
                                     src={brand.logo}
                                     alt={brand.name}
@@ -92,23 +109,19 @@ export const BrandSlider = () => {
                         </div>
                     ))}
                 </div>
+                {/* Arrow Navigation */}
+                <div className="flex justify-between items-center mt-4 absolute top-[30%] left-0 transform -translate-y-1/2">
+                    {/* <button onClick={() => emblaApi && emblaApi.scrollNext()} className="p-2 bg-white rounded-full shadow-lg">
+                        <ChevronRightIcon fontSize="small" />
+                    </button> */}
+                    <button onClick={() => emblaApi && emblaApi.scrollPrev()} className="p-2 bg-white rounded-full shadow-lg">
+                        <ChevronLeftIcon fontSize="small" />
+                    </button>
+
+                </div>
             </div>
 
-            {/* Dots Navigation */}
-            <div className="flex justify-center gap-2 mt-4">
-                {brands[activeTab as keyof typeof brands]?.map((_, index) => (
-                    <IconButton
-                        key={index}
-                        onClick={() => scrollTo(index)}
-                        className="p-1"
-                        size="small"
-                    >
-                        <FiberManualRecordIcon
-                            className={`text-sm ${selectedIndex === index ? 'text-primary' : 'text-gray-400'}`}
-                        />
-                    </IconButton>
-                ))}
-            </div>
+
         </div>
     );
 };
