@@ -20,22 +20,18 @@ const DesktopMenu: React.FC = () => {
                 />
                 <nav className="flex gap-14 items-center">
                     {menuItems.map((item) => (
-
-
                         item.hasSubmenu ? (
-                            <div className="flex gap-2 items-center cursor-pointer">
+                            <div className="flex gap-2 items-center cursor-pointer" key={item.text}>
                                 <a href={item.href} className="text-primary-gray no-underline text-sm hover:text-primary-orange py-6 cursor-pointer">
                                     {item.text}
                                 </a>
                                 <KeyboardArrowDownIcon sx={{ width: 16, height: 16 }} />
                             </div>
                         ) : (
-                            <a href={item.href} className="text-primary-gray no-underline text-sm hover:text-primary-orange py-6 cursor-pointer">
+                            <a href={item.href} key={item.text} className="text-primary-gray no-underline text-sm hover:text-primary-orange py-6 cursor-pointer">
                                 {item.text}
                             </a>
                         )
-
-
                     ))}
                 </nav>
             </div>

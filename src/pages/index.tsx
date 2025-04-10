@@ -20,49 +20,27 @@ const MainLanding = () => {
     <div className="flex flex-col bg-white px-3 lg:px-24">
       <Header />
     </div>
-    <div className="flex flex-col px-3 lg:px-24 lg:mb-56 lg:max-h-[650px]" style={{ background: 'linear-gradient(209.22deg, #002B8A 11.23%, #6E9BFF 91.22%)' }}>
+    <div className="flex flex-col px-3 lg:px-36 lg:mb-56 lg:max-h-[550px]" style={{ background: 'linear-gradient(209.22deg, #002B8A 11.23%, #6E9BFF 91.22%)' }}>
       <Banner />
       <LoanBox />
     </div>
-    <HeaderBanner />
-    <div className="flex flex-col bg-white px-3 lg:px-24">
-      <Header />
-    </div>
-    <div className="flex flex-col px-3 lg:px-24 lg:mb-56 lg:max-h-[650px]" style={{ background: 'linear-gradient(209.22deg, #002B8A 11.23%, #6E9BFF 91.22%)' }}>
-      <Banner />
-      <LoanBox />
-    </div>
-    <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
+    <div className="flex flex-col bg-white px-3 lg:px-36 mb-24">
       <CategoriesContainer />
     </div>
-    <div className="flex flex-col px-3 lg:px-24 mb-[600px] lg:mb-72 max-h-[380px] bg-[#EEF9FF]">
+    <div className="flex flex-col px-3 lg:px-36 mb-[600px] lg:mb-72 max-h-[380px] bg-[#EEF9FF]">
       <BrandBanner />
       <BrandConsultation />
     </div>
-    <div className="flex flex-col bg-white px-3 lg:px-24">
-      <FeaturedSection />
-      <CategoriesContainer />
-    </div>
-    <div className="flex flex-col px-3 lg:px-24 mb-[600px] lg:mb-72 max-h-[380px] bg-[#EEF9FF]">
-      <BrandBanner />
-      <BrandConsultation />
-    </div>
-    <div className="flex flex-col bg-white px-3 lg:px-24">
+    <div className="flex flex-col bg-white px-3 lg:px-36">
       <FeaturedSection />
     </div>
     <div className="flex flex-col bg-white my-24">
       <Comments />
       <div className="flex flex-col bg-white my-24">
-        <Comments />
-      </div>
-      <div className="flex flex-col bg-white my-24">
         <Supporters />
-        <div className="flex flex-col bg-white my-24">
-          <Supporters />
-        </div>
-        <Footer />
       </div>
     </div>
+    <Footer />
   </div>
 }
 
