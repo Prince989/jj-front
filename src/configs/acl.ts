@@ -22,15 +22,22 @@ interface IResource {
  * admin can manage everything and client can just visit ACL page
  */
 const defineRulesFor = (role: string) => {
-  const { can, rules } = new AbilityBuilder(AppAbility)
+  const { can, rules, cannot } = new AbilityBuilder(AppAbility)
 
   switch (role) {
     case 'businessUser':
-      can('manage', 'all') // Admin can do everything
+
+      // Business user has full access to everything
+      can('manage', 'all')
       break
 
     case 'user':
+
+      // User has access to most pages but not admission
       can('manage', 'all')
+
+      // Explicitly deny access to admission page
+      cannot('manage', 'admission')
       break
 
     default:

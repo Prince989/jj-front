@@ -93,9 +93,9 @@ const LoginPage = () => {
   const onSubmit = (data: FormData) => {
     const { phoneNumber, password } = data
     auth.login({ phoneNumber, password }, (err) => {
-      setProblems(err.response.data.problem)
-      if (err.response?.data?.message)
-        toast.error(err.response?.data?.message, {
+      setProblems(err?.response?.data?.problem)
+      if (err?.response?.data?.message)
+        toast.error(err?.response?.data?.message, {
           position: "bottom-left",
         })
     })

@@ -32,3 +32,6 @@ export default function Dashboard() {
     </Box>
   )
 }
+
+Dashboard.authGuard = true
+Dashboard.guestGuard = false

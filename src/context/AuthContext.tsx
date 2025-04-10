@@ -106,11 +106,17 @@ const AuthProvider = ({ children }: Props) => {
         Cookies.set('userData', JSON.stringify(userData), cookieOptions)
 
         setUser({ ...userData })
-        if (userData.role.name == "businessUser")
-          window.location.href = "/admission"
-        const returnUrl = router.query.returnUrl
-        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/dashboard'
-        window.location.href = redirectURL?.[0] ?? redirectURL
+
+        // Determine the redirect URL based on user role
+        let redirectURL = '/'
+        if (userData.role.name === "businessUser") {
+          redirectURL = "/admission"
+        } else if (userData.role.name === "user") {
+          redirectURL = "/validation"
+        }
+
+        // Navigate to the determined URL
+        window.location.href = redirectURL
       })
       .catch(err => {
         if (errorCallback) errorCallback(err)

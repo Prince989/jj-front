@@ -1,6 +1,8 @@
 // ** React Imports
-import { ReactNode, ReactElement, useMemo } from 'react'
+import { ReactNode, ReactElement, useMemo, useEffect } from 'react'
 
+// ** Next Import
+import { useRouter } from 'next/router'
 
 // ** Hooks Import
 import { useAuth } from 'src/hooks/useAuth'
@@ -13,39 +15,23 @@ interface AuthGuardProps {
 const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props
   const auth = useAuth()
-
-  // const router = useRouter()
+  const router = useRouter()
 
   const loading = useMemo(() => {
     return auth.loading || auth.user === null;
   }, [auth.user, auth.loading])
 
-  /* 
-    useEffect(
-      () => {
-        if (!router.isReady) {
-          return
-        }
-        console.log(auth.user);
-        if (auth.user === null && !window.localStorage.getItem('userData')) {
-          if (router.asPath !== '/') {
-            router.replace({
-              pathname: '/login',
-              query: { returnUrl: router.asPath }
-            })
-          } else {
-            router.replace('/login')
-          }
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [router.route]
-    )
-   */
+  useEffect(() => {
+    if (!router.isReady) {
+      return
+    }
+
+    if (auth.user === null && !window.localStorage.getItem('userData')) {
+      router.replace('/401')
+    }
+  }, [router.route, auth.user])
 
   if (loading) {
-    console.log(auth.user);
-
     return fallback
   }
 

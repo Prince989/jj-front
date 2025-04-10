@@ -91,6 +91,11 @@ if (themeConfig.routingLoader) {
 }
 
 const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
+  // Bypass auth checks for error pages
+  if (typeof window !== 'undefined' && ['/401', '/404', '/500'].includes(window.location.pathname)) {
+    return <>{children}</>
+  }
+
   if (guestGuard) {
     return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
   } else if (!guestGuard && !authGuard) {
