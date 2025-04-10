@@ -2,6 +2,7 @@ import React from 'react'
 import { Typography, Button } from '@mui/material'
 import Image from 'next/image'
 import ColoredText from 'src/components/dentistry-panel/ColoredText'
+import Link from "next/link";
 
 interface CreditPlanProps {
     title: string
@@ -58,13 +59,15 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText }) 
                 <img src="/images/dentistry/vertical-stars.svg" alt="vertical-stars" className="absolute bottom-[30%] left-[5%] object-cover" />
 
             </div>
-
-            <Button
-                variant="contained"
-                className="bg-primary-orange hover:bg-primary-orange text-white rounded-lg py-3 mt-8 text-[15px] font-bold"
-            >
-                {buttonText}
-            </Button>
+            <Link href={'/validation'} >
+                <Button
+                    variant="contained"
+                    fullWidth
+                    className="bg-primary-orange hover:bg-primary-orange text-white rounded-lg py-3 mt-8 text-[15px] font-bold"
+                >
+                    {buttonText}
+                </Button>
+            </Link>
         </div>
     )
 }
