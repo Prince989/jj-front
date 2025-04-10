@@ -55,7 +55,7 @@ const categories: CategoryItemProps[] = [
 const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href }) => {
     return (
         <Link href={href} className="no-underline">
-            <div className="w-[270px] h-[270px] bg-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer">
+            <div className="w-full lg:w-[270px] h-[270px] bg-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer">
                 <div className="w-[190px] h-[190px] mb-4 relative">
                     <img
                         src={image}

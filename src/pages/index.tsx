@@ -12,8 +12,7 @@ import BrandConsultation from 'src/components/main-landing/consultation'
 import FeaturedSection from 'src/components/main-landing/featured'
 import Supporters from 'src/components/main-landing/supporters'
 import HeaderBanner from 'src/components/main-landing/header-banner'
-
-// import Comments from 'src/components/main-landing/comments'
+import Comments from 'src/components/main-landing/comments'
 
 const MainLanding = () => {
   return <div className="bg-white">
@@ -28,7 +27,7 @@ const MainLanding = () => {
     <div className="flex flex-col bg-white px-3 lg:px-36 mb-24">
       <CategoriesContainer />
     </div>
-    <div className="flex flex-col px-3 lg:px-36 mb-[600px] lg:mb-72 h-auto lg:max-h-[380px] bg-[#EEF9FF]">
+    <div className="flex flex-col px-3 lg:px-36 mb-20 lg:mb-72 h-auto lg:max-h-[380px] bg-[#EEF9FF]">
       <BrandBanner />
       <BrandConsultation />
     </div>
@@ -36,7 +35,7 @@ const MainLanding = () => {
       <FeaturedSection />
     </div>
     <div className="flex flex-col bg-white my-24">
-      {/* <Comments /> */}
+      <Comments />
       <div className="flex flex-col bg-white my-24">
         <Supporters />
       </div>
