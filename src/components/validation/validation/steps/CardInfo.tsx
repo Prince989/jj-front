@@ -7,6 +7,7 @@ import { useFinancialValidation } from 'src/hooks/useFinancialValidation'
 import usePaymentVerification from 'src/hooks/usePaymentVerification'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
+import { format } from 'date-fns-jalali'
 
 // Styled components
 const CardContainer = styled(Box)(({ theme }) => ({
@@ -67,6 +68,7 @@ const CardInfo = () => {
     }
 
     if (!personalInfo || !cardInfo) {
+
         return null
     }
 
@@ -108,13 +110,13 @@ const CardInfo = () => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={personalInfo.birthDate}
+                        value={format(new Date(personalInfo.birthDate), 'yyyy/MM/dd')}
                         label="تاریخ تولد"
                         InputProps={{ readOnly: true }}
                         disabled
                     />
                 </Grid>
-                <Grid item xs={12} md={4} mb={8}>
+                {/* <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
                         value={personalInfo.address}
@@ -131,7 +133,7 @@ const CardInfo = () => {
                         InputProps={{ readOnly: true }}
                         disabled
                     />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth

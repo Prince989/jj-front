@@ -15,7 +15,6 @@ import CustomTextField from 'src/@core/components/mui/text-field'
 import Box from '@mui/material/Box'
 
 // ** Custom Hooks
-import { useProfile } from 'src/hooks/useProfile'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
 // ** Components
@@ -31,9 +30,7 @@ interface FormData {
 }
 
 const StepPersonalInfo = () => {
-    const { profileData, loading } = useProfile()
-    const setPersonalInfo = usePersonalInfoStore(state => state.setPersonalInfo)
-    const { setActiveStep, activeStep } = usePersonalInfoStore()
+    const { personalInfo, setPersonalInfo, setActiveStep, activeStep } = usePersonalInfoStore()
 
     const { handleSubmit, control, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
@@ -47,13 +44,15 @@ const StepPersonalInfo = () => {
     })
 
     useEffect(() => {
-        if (profileData) {
-            setValue('fullName', `${profileData.fName} ${profileData.lName}`)
-            setValue('nationalId', profileData.nationalCode)
-            setValue('phoneNumber', profileData.phoneNumber)
-            setValue('birthDate', profileData.birthDate || '')
+        if (personalInfo) {
+            setValue('fullName', personalInfo.fullName)
+            setValue('nationalId', personalInfo.nationalId)
+            setValue('phoneNumber', personalInfo.phoneNumber)
+            setValue('birthDate', personalInfo.birthDate)
+            setValue('postalCode', personalInfo.postalCode)
+            setValue('address', personalInfo.address)
         }
-    }, [profileData, setValue])
+    }, [personalInfo, setValue])
 
     const handleNext = () => {
         setActiveStep(activeStep + 1)
@@ -68,7 +67,7 @@ const StepPersonalInfo = () => {
         console.log("Form validation errors:", errors)
     }
 
-    if (loading) {
+    if (!personalInfo) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <CircularProgress />

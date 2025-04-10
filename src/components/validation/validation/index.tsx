@@ -24,7 +24,7 @@ import { useSearchParams } from 'next/navigation'
 import StepperWrapper from 'src/@core/styles/mui/stepper'
 
 // ** Step Components
-import StepPersonalInfo from './steps/StepPersonalInfo'
+// import StepPersonalInfo from './steps/StepPersonalInfo'
 import StepCardSelection from './steps/StepCardSelection'
 import CardInfo from './steps/CardInfo'
 import StepFinalCredit from './steps/StepFinalCredit'
@@ -32,13 +32,16 @@ import StepFinalCredit from './steps/StepFinalCredit'
 // ** Store Import
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
+// ** Custom Hooks
+import { useProfile } from 'src/hooks/useProfile'
 
 const steps = [
-  {
-    title: 'تکمیل اطلاعات هویتی',
-    icon: 'tabler:user',
-    subtitle: 'اطلاعات هویتی خود را تکمیل نمایید'
-  },
+
+  // {
+  //   title: 'تکمیل اطلاعات هویتی',
+  //   icon: 'tabler:user',
+  //   subtitle: 'اطلاعات هویتی خود را تکمیل نمایید'
+  // },
   {
     icon: 'tabler:credit-card',
     title: 'انتخاب و پرداخت هزینه کارت',
@@ -148,10 +151,11 @@ const StepperConnector = styled(StepConnector)(({ theme }) => ({
 
 const ValidationWizard = () => {
   // ** Store
-  const { activeStep, setActiveStep } = usePersonalInfoStore()
+  const { activeStep, setActiveStep, setPersonalInfo } = usePersonalInfoStore()
 
   // ** Hooks
   const searchParams = useSearchParams()
+  const { profileData } = useProfile()
 
   useEffect(() => {
     const paymentStatus = searchParams.get('status')
@@ -160,10 +164,24 @@ const ValidationWizard = () => {
     }
   }, [searchParams, setActiveStep])
 
+  useEffect(() => {
+    if (profileData) {
+      setPersonalInfo({
+        fullName: `${profileData.fName} ${profileData.lName}`,
+        nationalId: profileData.nationalCode,
+        phoneNumber: profileData.phoneNumber,
+        birthDate: profileData.birthDate || '',
+        postalCode: '',
+        address: ''
+      })
+    }
+  }, [profileData, setPersonalInfo])
+
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <StepPersonalInfo />
+
+      // return <StepPersonalInfo />
       case 1:
         return <StepCardSelection />
       case 2:
