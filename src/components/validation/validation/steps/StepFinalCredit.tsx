@@ -9,6 +9,7 @@ import FinalCreditDialog from './FinalCreditDialog'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import useFinalCredit from 'src/hooks/useFinalCredit'
 import { useAllocatedCredit } from 'src/hooks/useAllocatedCredit'
+import formatCurrency from 'src/utils/formatCurrency'
 
 const CreditAmount = styled(Typography)(({ theme }) => ({
     color: '#FF6A00',
@@ -85,7 +86,7 @@ const StepFinalCredit = () => {
     return (
         <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                <CreditAmount>{creditAmount?.toLocaleString()} تومان</CreditAmount>
+                <CreditAmount>{formatCurrency(creditAmount || 0)} تومان</CreditAmount>
                 <Description2>
                     اعتبار تخصیص یافته به شما برای خدمات درمانی جی جی لاین میباشد.
                 </Description2>

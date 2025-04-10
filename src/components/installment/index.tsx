@@ -35,6 +35,11 @@ interface InstallmentItem {
     }[]
 }
 
+interface InvoiceResponse {
+    invoices: InstallmentItem[]
+    usableCredit: number
+}
+
 interface RepayResponse {
     paymentId: string
     url: string
@@ -164,10 +169,12 @@ const InvoiceCard = (props: { invoice: InstallmentItem }) => {
 
 const InstallmentPage = () => {
     const [invoices, setInvoices] = useState<InstallmentItem[]>([])
+    const [credit, setCredit] = useState<number>(0)
 
     useEffect(() => {
-        mAxios.get<IResponse<InstallmentItem[]>>("/credit/invoices").then(res => {
-            setInvoices(res.data.data)
+        mAxios.get<IResponse<InvoiceResponse>>("/credit/invoices").then(res => {
+            setInvoices(res.data.data.invoices)
+            setCredit(res.data.data.usableCredit);
         })
     }, [])
 
@@ -190,7 +197,7 @@ const InstallmentPage = () => {
                         </Typography>
                         <Typography className="text-primary-blue text-xl font-bold">
                             {
-                                formatCurrency(invoices?.[0]?.credit?.amount) + " "
+                                formatCurrency(credit) + " "
                             }
                             تومان
                         </Typography>
