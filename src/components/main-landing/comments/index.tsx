@@ -121,6 +121,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ text, position, direction = 'bo
 
 const Comments: React.FC = () => {
     const [isMobile, setIsMobile] = useState(false);
+    const galaxyBoxRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -168,13 +169,35 @@ const Comments: React.FC = () => {
                 تجربه‌ای متفاوت در خرید اقساطی
             </p>
 
-            <div className="relative w-full h-[60vh] lg:h-[85vh] z-20 overflow-hidden" id="galaxy-box">
+            <div className="relative w-full h-[60vh] lg:h-[85vh] z-20 overflow-hidden" id="galaxy-box" ref={galaxyBoxRef}>
                 <Image
                     src="/images/main-landing/galaxy.svg"
                     alt="Galaxy background"
                     fill
                     className="object-cover lg:object-contain absolute"
                 />
+                <motion.div
+                    initial={{ right: 0, top: 0 }}
+                    animate={{
+                        right: '100%',
+                        top: '100%',
+                        transition: {
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 5,
+                            ease: "linear"
+                        }
+                    }}
+                    className="absolute w-[30px] h-[30px]"
+                >
+                    <Image
+                        src="/images/main-landing/comet.png"
+                        alt="Comet"
+                        width={30}
+                        height={30}
+                        className="object-contain rotate-20"
+                    />
+                </motion.div>
                 {visibleComments.map((comment, index) => (
                     <CommentBox
                         key={index}
