@@ -41,11 +41,11 @@ const useNavigation = (): VerticalNavItemsType => {
       path: '/validation'
     },
     {
-      title: "خرید اعتبار",
+      title: "اقساط",
 
       // icon: "tabler:vip", // String icon example
       icon: <WalletIcon />,
-      path: "/cards"
+      path: "/installment"
     },
     {
       sectionTitle: 'خدمات'
@@ -53,7 +53,7 @@ const useNavigation = (): VerticalNavItemsType => {
     {
       title: "خدمات",
       icon: <ServicesIcon />,
-      path: "/services"
+      path: "/services/dentistry-panel"
     },
     {
       sectionTitle: 'سایر'
