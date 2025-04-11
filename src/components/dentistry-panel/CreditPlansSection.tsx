@@ -102,7 +102,7 @@ const CreditPlansSection = () => {
             <ColoredText
                 firstText="طرح های اعتباری جی"
                 middleText="جی"
-                lastText="لاین"
+                lastText="دکتر"
                 className="mb-10 justify-center"
                 textClassName="lg:text-4xl text-2xl font-[900]"
             />

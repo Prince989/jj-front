@@ -4,7 +4,7 @@ import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
 const WhyChooseUsSection = () => {
     const benefits = [
-        'دریافت اعتبار خُرد جی جی لاین بدون ضامن، چک، کارمزد و سود',
+        'دریافت اعتبار خُرد جی جی دکتر بدون ضامن، چک، کارمزد و سود',
         'خرید بدون پول، پرداخت در اقساط دو ماهه',
         'دریافت اعتبار از ۵۰ میلیون تومان تا ۲۰۰ میلیون تومان',
         'دریافت آنلاین و آنی اعتبار در کمتر از ۲۰ دقیقه',
@@ -30,7 +30,7 @@ const WhyChooseUsSection = () => {
                 <ColoredText
                     firstText="چرا جی"
                     middleText="جی"
-                    lastText="لاین را انتخاب کنیم؟"
+                    lastText="دکتر را انتخاب کنیم؟"
                     className="mb-6"
                     textClassName="lg:text-3xl text-lg font-[900]"
                 />
@@ -57,7 +57,9 @@ const WhyChooseUsSection = () => {
             <div className="w-full lg:w-1/2 flex justify-center items-center">
                 <div className="relative w-full h-full flex flex-col justify-center items-center p-8">
                     <img
-                        src="/images/dentistry/marham-logo.png"
+                        src="/images/main-landing/darman.png"
+
+                        // src="/images/dentistry/marham-logo.png"
                         alt="Dental logo design"
                         className="w-[400px] lg:w-[400px] mb-4"
                     />

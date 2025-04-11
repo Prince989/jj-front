@@ -38,7 +38,7 @@ const HeroSection = () => {
                         <ColoredText
                             firstText="جی"
                             middleText="جی"
-                            lastText="لاین پرداخت میکنه!"
+                            lastText="دکتر پرداخت میکنه!"
                             className="mb-3"
                             textClassName="lg:text-4xl text-2xl font-black"
                         />
