@@ -2,13 +2,13 @@ import React, { ReactNode, useEffect } from 'react'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // Import components
-import Header from 'src/components/dentistry-panel/header/Header'
+import Header from 'src/components/header/Header'
 import HeroSection from 'src/components/dentistry-panel/HeroSection'
 import ServicesSection from 'src/components/dentistry-panel/ServicesSection'
 import WhyChooseUsSection from 'src/components/dentistry-panel/WhyChooseUsSection'
 import CreditPlansSection from 'src/components/dentistry-panel/CreditPlansSection'
 import ContactFormSection from 'src/components/dentistry-panel/ContactFormSection'
-import Footer from 'src/components/dentistry-panel/Footer'
+import Footer from 'src/components/footer'
 import { useRouter } from 'next/router'
 import mAxios from 'src/configs/axios'
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, InputBase, IconButton } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ColoredText from '../ColoredText';
+import ColoredText from '../dentistry-panel/ColoredText';
 import { menuItems } from './config';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,13 +18,15 @@ const DesktopMenu: React.FC = () => {
     return (
         <div className="hidden lg:flex justify-between items-center">
             <div className="flex items-center gap-9">
-                <ColoredText
-                    firstText="Line"
-                    middleText="Jey"
-                    lastText="Jey"
-                    className=""
-                    textClassName="text-2xl font-[600]"
-                />
+                <Link href="/">
+                    <ColoredText
+                        firstText="Line"
+                        middleText="Jey"
+                        lastText="Jey"
+                        className=""
+                        textClassName="text-2xl font-[600]"
+                    />
+                </Link>
                 <nav className="flex gap-14 items-center">
                     {menuItems.map((item) => (
                         item.hasSubmenu ? (

@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ColoredText from '../ColoredText';
+import ColoredText from '../dentistry-panel/ColoredText';
 import { menuItems } from './config';
 import Link from 'next/link';
 
@@ -17,13 +17,15 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ open, onOpen, onClose }) => {
     return (
         <div className="lg:hidden flex justify-between items-center">
-            <ColoredText
-                firstText="Jey"
-                middleText="Jey"
-                lastText="Line"
-                className="mb-2"
-                textClassName="text-2xl font-[900]"
-            />
+            <Link href="/">
+                <ColoredText
+                    firstText="Jey"
+                    middleText="Jey"
+                    lastText="Line"
+                    className="mb-2"
+                    textClassName="text-2xl font-[900]"
+                />
+            </Link>
             <IconButton onClick={onOpen} sx={{ color: '#212121' }}>
                 <MenuIcon />
             </IconButton>
