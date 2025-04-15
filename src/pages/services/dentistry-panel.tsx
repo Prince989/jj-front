@@ -33,12 +33,14 @@ const DentistryPanel = () => {
                 <Header />
                 <HeroSection />
             </div>
+            <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
+                <CreditPlansSection />
+            </div>
             <div className="flex flex-col bg-white mb-24">
                 <ServicesSection />
             </div>
             <div className="flex flex-col bg-white px-3 lg:px-24 gap-y-24 mb-24">
                 <WhyChooseUsSection />
-                <CreditPlansSection />
                 <ContactFormSection />
             </div>
             <Footer />
