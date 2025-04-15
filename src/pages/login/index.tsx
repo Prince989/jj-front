@@ -1,14 +1,18 @@
 // ** React Imports
+import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Component Import
-import Login from 'src/components/auth/login'
+import Login from 'src/components/auth/Login'
+
 
 const LoginPage = () => {
-  return <Login />
+  const router = useRouter()
+
+  return <Login onSwitchToRegister={() => router.push('/register')} onSwitchToForgotPassword={() => router.push('/forgot-password')} />
 }
 
 LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
