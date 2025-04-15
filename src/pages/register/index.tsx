@@ -4,9 +4,9 @@ import React, { ReactNode } from 'react'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
+import Register from 'src/components/auth/Register'
 
 // ** Component Import
-import Register from 'src/components/auth/Register'
 
 const RegisterPage = () => {
   const router = useRouter()

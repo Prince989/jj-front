@@ -4,9 +4,9 @@ import { ReactNode } from 'react'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
+import Login from 'src/components/auth/Login'
 
 // ** Component Import
-import Login from 'src/components/auth/Login'
 
 
 const LoginPage = () => {
