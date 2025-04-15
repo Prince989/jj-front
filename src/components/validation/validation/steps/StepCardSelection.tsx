@@ -51,7 +51,21 @@ const StyledLink = styled(Link)({
 
 // Card Component
 const CreditCard = ({ data, selectedCard, onChange }: { data: CardInfo, selectedCard: string, onChange: (value: string) => void }) => (
-    <Box sx={{ flex: 1, maxWidth: '500px' }}>
+    <Box
+        sx={{
+            flex: 1,
+            maxWidth: '500px',
+            cursor: 'pointer',
+            border: selectedCard === data.id.toString() ? '2px solid #FF6A00' : '2px solid transparent',
+            borderRadius: '8px',
+            padding: '16px',
+            transition: 'border-color 0.2s ease',
+            '&:hover': {
+                borderColor: '#FF6A00'
+            }
+        }}
+        onClick={() => onChange(data.id.toString())}
+    >
         <CardImage src={data.image} alt={data.title} />
         <Box sx={{ mt: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
