@@ -19,7 +19,7 @@ export default function ValidationOTP(
         }
 ) {
 
-    const [showOtp, setShowOtp] = useState<boolean>(true);
+    const [showOtp, setShowOtp] = useState<boolean>(false);
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [token, setToken] = useState<number | null>(null);
     const [timer, setTimer] = useState<number>(75);
@@ -39,7 +39,7 @@ export default function ValidationOTP(
     const handleLogin = () => {
         if (token)
             otpLogin({
-                phoneNumber: "09194321624",
+                phoneNumber,
                 token: token?.toString()
             }, () => {
                 handlePayment();
