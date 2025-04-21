@@ -2,12 +2,14 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface PersonalInfo {
-    fullName: string
-    nationalId: string
+    fname: string
+    lname: string
+    nationalCode: string
     phoneNumber: string
-    birthDate: string
-    postalCode: string
-    address: string
+    birthDate?: string
+    postalCode?: string
+    address?: string
+    gender?: string
 }
 
 export interface CardInfo {

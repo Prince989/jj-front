@@ -31,18 +31,19 @@ import StepFinalCredit from './steps/StepFinalCredit'
 
 // ** Store Import
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+import StepPersonalInfo from './steps/StepPersonalInfo'
+import { useProfile } from 'src/hooks/useProfile'
 
 const steps = [
-
-  // {
-  //   title: 'تکمیل اطلاعات هویتی',
-  //   icon: 'tabler:user',
-  //   subtitle: 'اطلاعات هویتی خود را تکمیل نمایید'
-  // },
   {
     icon: 'tabler:credit-card',
     title: 'انتخاب و پرداخت هزینه کارت',
     subtitle: 'هزینه کارت اعتباری را پرداخت نمایید'
+  },
+  {
+    title: 'تکمیل اطلاعات هویتی',
+    icon: 'tabler:user',
+    subtitle: 'اطلاعات هویتی خود را تکمیل نمایید'
   },
   {
     title: 'درخواست اعتبارسنجی',
@@ -148,42 +149,43 @@ const StepperConnector = styled(StepConnector)(({ theme }) => ({
 
 const ValidationWizard = () => {
   // ** Store
-  const { activeStep, setActiveStep } = usePersonalInfoStore()
+  const { activeStep, setActiveStep, setPersonalInfo } = usePersonalInfoStore()
 
   // ** Hooks
   const searchParams = useSearchParams()
 
-  // const { profileData } = useProfile()
+  const { profileData } = useProfile()
 
   useEffect(() => {
     const paymentStatus = searchParams.get('status')
     if (paymentStatus === 'success') {
-      setActiveStep(2)
+      setActiveStep(1)
     }
   }, [searchParams, setActiveStep])
 
-  /*
-    useEffect(() => {
-      if (profileData) {
-        setPersonalInfo({
-          fullName: `${profileData.fName} ${profileData.lName}`,
-          nationalId: profileData.nationalCode,
-          phoneNumber: profileData.phoneNumber,
-          birthDate: profileData.birthDate || '',
-          postalCode: '',
-          address: ''
-        })
-      }
-    }, [profileData, setPersonalInfo])
-  */
+
+  useEffect(() => {
+    if (profileData) {
+      setPersonalInfo({
+        fname: profileData.fName,
+        lname: profileData.lName,
+        nationalCode: profileData.nationalCode,
+        phoneNumber: profileData.phoneNumber,
+        birthDate: profileData.birthDate || '',
+        postalCode: '',
+        address: '',
+        gender: profileData.gender
+      })
+    }
+  }, [profileData, setPersonalInfo])
+
 
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-
-      // return <StepPersonalInfo />
-      case 1:
         return <StepCardSelection />
+      case 1:
+        return <StepPersonalInfo />
       case 2:
         return <CardInfo />
       case 3:

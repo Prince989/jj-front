@@ -7,7 +7,8 @@ import { useFinancialValidation } from 'src/hooks/useFinancialValidation'
 import usePaymentVerification from 'src/hooks/usePaymentVerification'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import { format } from 'date-fns-jalali'
+
+// import { format } from 'date-fns-jalali'
 
 // Styled components
 const CardContainer = styled(Box)(({ theme }) => ({
@@ -39,22 +40,22 @@ const LoadingContainer = styled(Box)({
 })
 
 // Add this helper function before the CardInfo component
-const formatBirthDate = (dateString: string) => {
-    try {
-        // First try to parse the date string
-        const date = new Date(dateString)
-        if (isNaN(date.getTime())) {
-            // If the date is invalid, return the original string
-            return dateString
-        }
+// const formatBirthDate = (dateString: string) => {
+//     try {
+//         // First try to parse the date string
+//         const date = new Date(dateString)
+//         if (isNaN(date.getTime())) {
+//             // If the date is invalid, return the original string
+//             return dateString
+//         }
 
-        return format(date, 'yyyy/MM/dd')
-    } catch (error) {
-        // If any error occurs, return the original string
+//         return format(date, 'yyyy/MM/dd')
+//     } catch (error) {
+//         // If any error occurs, return the original string
 
-        return dateString
-    }
-}
+//         return dateString
+//     }
+// }
 
 const CardInfo = () => {
     const router = useRouter()
@@ -110,7 +111,7 @@ const CardInfo = () => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={personalInfo.fullName}
+                        value={`${personalInfo.fname} ${personalInfo.lname}`}
                         label="نام و نام خانوادگی"
                         InputProps={{ readOnly: true }}
                         disabled
@@ -119,13 +120,13 @@ const CardInfo = () => {
                 <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
-                        value={personalInfo.nationalId}
+                        value={personalInfo.nationalCode}
                         label="شماره ملی"
                         InputProps={{ readOnly: true }}
                         disabled
                     />
                 </Grid>
-                <Grid item xs={12} md={4} mb={8}>
+                {/* <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
                         value={formatBirthDate(personalInfo.birthDate)}
@@ -133,7 +134,7 @@ const CardInfo = () => {
                         InputProps={{ readOnly: true }}
                         disabled
                     />
-                </Grid>
+                </Grid> */}
                 {/* <Grid item xs={12} md={4} mb={8}>
                     <CustomTextField
                         fullWidth
