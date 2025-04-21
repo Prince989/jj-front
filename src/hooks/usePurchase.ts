@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import mAxios from 'src/configs/axios'
 import toast from 'react-hot-toast'
+import axios from 'axios'
+import authConfig from "../configs/auth";
 
 interface UsePurchaseProps {
     selectedCard: string
@@ -18,8 +20,10 @@ export const usePurchase = ({ selectedCard }: UsePurchaseProps): UsePurchaseRetu
         try {
             setIsPaymentLoading(true)
 
+            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
             // First API call to get gateway information
-            const { data: gatewayResponse } = await mAxios.get('/payment/gateway')
+            const { data: gatewayResponse } = await axios.get(baseUrl + 'payment/gateway')
 
             if (!gatewayResponse.data?.[0]?.id) {
                 throw new Error('اطلاعات درگاه در دسترس نیست')
@@ -37,11 +41,16 @@ export const usePurchase = ({ selectedCard }: UsePurchaseProps): UsePurchaseRetu
             sponserId = sponserId ? { sId: sponserId } : {}
 
             // Second API call to initiate payment
-            const { data: paymentResponse } = await mAxios.post('/payment/pay', {
+            const { data: paymentResponse } = await mAxios.post(baseUrl + 'payment/pay', {
                 gatewayId,
                 cardId: parseInt(selectedCard),
                 ...sponserId
-            })
+            },
+                {
+                    headers: {
+                        Authorization: typeof window !== 'undefined' ? localStorage.getItem(authConfig.storageTokenKeyName) : ""
+                    }
+                })
 
             const paymentUrl = paymentResponse.data?.data?.url
             if (!paymentUrl) {

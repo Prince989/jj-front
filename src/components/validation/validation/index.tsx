@@ -32,9 +32,6 @@ import StepFinalCredit from './steps/StepFinalCredit'
 // ** Store Import
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 
-// ** Custom Hooks
-import { useProfile } from 'src/hooks/useProfile'
-
 const steps = [
 
   // {
@@ -151,11 +148,12 @@ const StepperConnector = styled(StepConnector)(({ theme }) => ({
 
 const ValidationWizard = () => {
   // ** Store
-  const { activeStep, setActiveStep, setPersonalInfo } = usePersonalInfoStore()
+  const { activeStep, setActiveStep } = usePersonalInfoStore()
 
   // ** Hooks
   const searchParams = useSearchParams()
-  const { profileData } = useProfile()
+
+  // const { profileData } = useProfile()
 
   useEffect(() => {
     const paymentStatus = searchParams.get('status')
@@ -164,18 +162,20 @@ const ValidationWizard = () => {
     }
   }, [searchParams, setActiveStep])
 
-  useEffect(() => {
-    if (profileData) {
-      setPersonalInfo({
-        fullName: `${profileData.fName} ${profileData.lName}`,
-        nationalId: profileData.nationalCode,
-        phoneNumber: profileData.phoneNumber,
-        birthDate: profileData.birthDate || '',
-        postalCode: '',
-        address: ''
-      })
-    }
-  }, [profileData, setPersonalInfo])
+  /*
+    useEffect(() => {
+      if (profileData) {
+        setPersonalInfo({
+          fullName: `${profileData.fName} ${profileData.lName}`,
+          nationalId: profileData.nationalCode,
+          phoneNumber: profileData.phoneNumber,
+          birthDate: profileData.birthDate || '',
+          postalCode: '',
+          address: ''
+        })
+      }
+    }, [profileData, setPersonalInfo])
+  */
 
   const getStepContent = (step: number) => {
     switch (step) {
@@ -199,73 +199,77 @@ const ValidationWizard = () => {
 
   return (
     <>
-      <Box sx={{ mb: 6, textAlign: 'left' }}>
-        <Typography variant='h3' sx={{ mb: 3, fontSize: "24px", fontWeight: 700, color: "#002B8A" }}>
-          اعتبارسنجی
-        </Typography>
-        <Typography sx={{ color: 'text.secondary' }}>
-          کاربر گرامی! لطفا اطلاعات خود را به صورت کامل تکمیل نمایید تا اعتبار سنجی شما انجام شود.
-        </Typography>
-      </Box>
-      <Card sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, boxShadow: "none" }}>
-        <StepperHeaderContainer>
-          <StepperWrapper>
-            <Stepper
-              activeStep={activeStep}
-              orientation='vertical'
-              connector={<StepperConnector />}
-              sx={{ height: '100%', minWidth: '15rem' }}
-            >
-              {steps.map((step, index) => {
-                const RenderAvatar = activeStep >= index ? CustomAvatar : Avatar
+      <Box sx={{ display: "flex", justifyContent: "center", padding: "20px", paddingTop: "40px" }}>
+        <Box sx={{ maxWidth: "1000px" }}>
+          <Box sx={{ mb: 6, textAlign: 'left' }}>
+            <Typography variant='h3' sx={{ mb: 3, fontSize: "24px", fontWeight: 700, color: "#002B8A" }}>
+              اعتبارسنجی
+            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+              کاربر گرامی! لطفا اطلاعات خود را به صورت کامل تکمیل نمایید تا اعتبار سنجی شما انجام شود.
+            </Typography>
+          </Box>
+          <Card sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, boxShadow: "none" }}>
+            <StepperHeaderContainer>
+              <StepperWrapper>
+                <Stepper
+                  activeStep={activeStep}
+                  orientation='vertical'
+                  connector={<StepperConnector />}
+                  sx={{ height: '100%', minWidth: '15rem' }}
+                >
+                  {steps.map((step, index) => {
+                    const RenderAvatar = activeStep >= index ? CustomAvatar : Avatar
 
-                return (
-                  <Step
-                    key={index}
-                    sx={{ '&.Mui-completed + svg': { color: 'primary.main' }, mb: "0px !important" }}
-                  >
-                    <StepLabel>
-                      <div className='step-label'>
-                        <RenderAvatar
-                          variant='rounded'
-                          sx={{
-                            width: 48,
-                            height: 48,
-                            borderRadius: '8px',
-                            margin: "0px !important",
-                            ...(activeStep === index && {
-                              background: '#D6E3FF',
-                              color: '#0C3A9F',
-                              boxShadow: 'none'
-                            }),
-                            ...(activeStep > index && {
-                              background: 'linear-gradient(270deg, #032F90 75%, #3B75F6 100%) !important',
-                              color: '#FFFFFF'
-                            }),
-                            ...(activeStep < index && {
-                              background: '#F5F5F5',
-                              color: '#6F6B7D'
-                            })
-                          }}
-                        >
-                          <Icon icon={step.icon} fontSize='1.5rem' />
-                        </RenderAvatar>
-                        <div>
-                          <Typography className='step-title'>{step.title}</Typography>
-                          <Typography className='step-subtitle'>{step.subtitle}</Typography>
-                        </div>
-                      </div>
-                    </StepLabel>
-                  </Step>
-                )
-              })}
-            </Stepper>
-          </StepperWrapper>
-        </StepperHeaderContainer>
-        <CardContent sx={{ pt: theme => `${theme.spacing(6)} !important`, flex: 1 }}>
-          {renderContent()}
-        </CardContent>
-      </Card>
+                    return (
+                      <Step
+                        key={index}
+                        sx={{ '&.Mui-completed + svg': { color: 'primary.main' }, mb: "0px !important" }}
+                      >
+                        <StepLabel>
+                          <div className='step-label'>
+                            <RenderAvatar
+                              variant='rounded'
+                              sx={{
+                                width: 48,
+                                height: 48,
+                                borderRadius: '8px',
+                                margin: "0px !important",
+                                ...(activeStep === index && {
+                                  background: '#D6E3FF',
+                                  color: '#0C3A9F',
+                                  boxShadow: 'none'
+                                }),
+                                ...(activeStep > index && {
+                                  background: 'linear-gradient(270deg, #032F90 75%, #3B75F6 100%) !important',
+                                  color: '#FFFFFF'
+                                }),
+                                ...(activeStep < index && {
+                                  background: '#F5F5F5',
+                                  color: '#6F6B7D'
+                                })
+                              }}
+                            >
+                              <Icon icon={step.icon} fontSize='1.5rem' />
+                            </RenderAvatar>
+                            <div>
+                              <Typography className='step-title'>{step.title}</Typography>
+                              <Typography className='step-subtitle'>{step.subtitle}</Typography>
+                            </div>
+                          </div>
+                        </StepLabel>
+                      </Step>
+                    )
+                  })}
+                </Stepper>
+              </StepperWrapper>
+            </StepperHeaderContainer>
+            <CardContent sx={{ pt: theme => `${theme.spacing(6)} !important`, flex: 1 }}>
+              {renderContent()}
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
     </>
   )
 }

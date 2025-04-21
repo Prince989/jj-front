@@ -6,6 +6,11 @@ export type LoginParams = {
   rememberMe?: boolean
 }
 
+export type OTPLoginParams = {
+  phoneNumber: string
+  token: string
+}
+
 export type UserDataType = {
   id: number
   role: {
@@ -34,4 +39,5 @@ export type AuthValuesType = {
   setLoading: (value: boolean) => void
   setUser: (value: UserDataType | null) => void
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void
+  otpLogin: (params: OTPLoginParams, resolve: () => void, errorCallback?: ErrCallbackType) => void
 }

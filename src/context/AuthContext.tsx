@@ -14,7 +14,7 @@ import Cookies from 'js-cookie'
 import authConfig from 'src/configs/auth'
 
 // ** Types
-import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
+import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType, OTPLoginParams } from './types'
 import mAxios from 'src/configs/axios'
 
 // ** Defaults
@@ -23,6 +23,7 @@ const defaultProvider: AuthValuesType = {
   loading: true,
   setUser: () => null,
   setLoading: () => Boolean,
+  otpLogin: () => Promise.resolve(),
   login: () => Promise.resolve(),
   logout: () => Promise.resolve()
 }
@@ -97,6 +98,29 @@ const AuthProvider = ({ children }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleOTPLogin = (params: OTPLoginParams, resolve: () => void, errorCallback?: ErrCallbackType) => {
+    mAxios.post(authConfig.otpLoginEndpoint, params).then(async response => {
+      // Store in both localStorage and cookies
+      const token = response.data.data.token
+      const userData = response.data.data.userData
+
+      // Store in localStorage
+      window.localStorage.setItem(authConfig.storageTokenKeyName, token)
+      window.localStorage.setItem('userData', JSON.stringify(userData))
+
+      // Store in cookies
+      Cookies.set(authConfig.storageTokenKeyName, token, cookieOptions)
+      Cookies.set('userData', JSON.stringify(userData), cookieOptions)
+
+      setUser({ ...userData })
+
+      resolve();
+    })
+      .catch(err => {
+        if (errorCallback) errorCallback(err)
+      })
+  }
+
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
     mAxios
       .post(authConfig.loginEndpoint, params)
@@ -148,6 +172,7 @@ const AuthProvider = ({ children }: Props) => {
     setUser,
     setLoading,
     login: handleLogin,
+    otpLogin: handleOTPLogin,
     logout: handleLogout
   }
 

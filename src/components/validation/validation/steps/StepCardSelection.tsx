@@ -19,6 +19,7 @@ import { CardInfo } from 'src/store/usePersonalInfoStore'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import useCards from 'src/hooks/useCards'
 import { usePurchase } from 'src/hooks/usePurchase'
+import ValidationOTP from './ValidationOTP'
 
 // ** Styled Components
 const CardImage = styled('img')({
@@ -90,6 +91,11 @@ const StepCardSelection = () => {
     const { cards, loading, error } = useCards()
     const { setCardInfo } = usePersonalInfoStore()
     const { isPaymentLoading, handlePayment } = usePurchase({ selectedCard })
+    const [otpShow, setOtpShow] = useState<boolean>(false);
+
+    const handleClose = () => {
+        setOtpShow(false)
+    }
 
     const handleCardChange = (value: string) => {
         setSelectedCard(value)
@@ -173,7 +179,7 @@ const StepCardSelection = () => {
                     type='submit'
                     variant='contained'
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
-                    onClick={handlePayment}
+                    onClick={() => setOtpShow(true)}
                     disabled={!selectedCard || isPaymentLoading}
                 >
                     {isPaymentLoading ? (
@@ -184,6 +190,9 @@ const StepCardSelection = () => {
                     ) : 'پرداخت'}
                 </Button>
             </Grid>
+            {
+                otpShow && <ValidationOTP handlePayment={handlePayment} handleClose={handleClose} />
+            }
         </Box>
     )
 }

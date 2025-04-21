@@ -28,7 +28,7 @@ const GuestGuard = (props: GuestGuardProps) => {
       return
     }
 
-    if (window.localStorage.getItem('userData')) {
+    if (window.localStorage.getItem('userData') && router.pathname != "/validation") {
       router.replace('/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
