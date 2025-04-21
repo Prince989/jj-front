@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // Import components
-import Header from 'src/components/dentistry-panel/header/Header'
-import Footer from 'src/components/dentistry-panel/Footer'
+import Header from 'src/components/header/Header'
+import Footer from 'src/components/footer'
 import Banner from 'src/components/main-landing/banner'
 import LoanBox from 'src/components/main-landing/loan'
 import CategoriesContainer from 'src/components/main-landing/categories'

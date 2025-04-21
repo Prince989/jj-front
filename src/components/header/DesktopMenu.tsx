@@ -2,26 +2,31 @@ import React from 'react';
 import { Button, InputBase, IconButton } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ColoredText from '../ColoredText';
+import ColoredText from '../dentistry-panel/ColoredText';
 import { menuItems } from './config';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { SearchIcon } from 'src/@core/components/IconV2';
 import { useAuth } from 'src/hooks/useAuth';
 
 const DesktopMenu: React.FC = () => {
     const { user } = useAuth();
+    const router = useRouter();
     const loginHref = user?.role?.name === 'businessUser' ? '/admission' : '/validation';
+    const isDentistryPanel = router.pathname === '/services/dentistry-panel';
 
     return (
         <div className="hidden lg:flex justify-between items-center">
             <div className="flex items-center gap-9">
-                <ColoredText
-                    firstText="Line"
-                    middleText="Jey"
-                    lastText="Jey"
-                    className=""
-                    textClassName="text-2xl font-[600]"
-                />
+                <Link href="/">
+                    <ColoredText
+                        firstText="Line"
+                        middleText="Jey"
+                        lastText="Jey"
+                        className=""
+                        textClassName="text-2xl font-[600]"
+                    />
+                </Link>
                 <nav className="flex gap-14 items-center">
                     {menuItems.map((item) => (
                         item.hasSubmenu ? (
@@ -40,7 +45,7 @@ const DesktopMenu: React.FC = () => {
                 </nav>
             </div>
             <div className="flex items-center gap-4 flex-1 justify-end">
-                <div className="flex items-center border border-gray-300 rounded-md overflow-hidden bg-white h-[36px] flex-[0.7]">
+                <div className={`flex items-center border border-gray-300 rounded-md overflow-hidden bg-white h-[36px] ${!isDentistryPanel ? "flex-[0.7]" : "flex-[0.5]"}`}>
                     <InputBase
                         placeholder="چیزی که میخوای رو اینجا پیدا کن"
                         className="px-4 text-sm flex-grow text-right rounded-l-lg"
@@ -51,15 +56,17 @@ const DesktopMenu: React.FC = () => {
                     </IconButton>
                 </div>
 
-                <Link href={loginHref} className='cursor-pointer'>
-                    <Button
-                        variant="contained"
-                        startIcon={<PersonOutlineIcon />}
-                        className="bg-primary-orange text-white rounded-md py-2 px-6 normal-case text-xs font-medium hover:bg-primary-orange-1 h-[36px]"
-                    >
-                        ورود به حساب کاربری
-                    </Button>
-                </Link>
+                {!isDentistryPanel && (
+                    <Link href={loginHref} className='cursor-pointer'>
+                        <Button
+                            variant="contained"
+                            startIcon={<PersonOutlineIcon />}
+                            className="bg-primary-orange text-white rounded-md py-2 px-6 normal-case text-xs font-medium hover:bg-primary-orange-1 h-[36px]"
+                        >
+                            ورود به حساب کاربری
+                        </Button>
+                    </Link>
+                )}
             </div>
         </div>
     );
