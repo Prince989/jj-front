@@ -12,6 +12,7 @@ export interface ProfileData {
     creditScore: number
     creditLimit: string
     walletBalance: string
+    gender: string
 }
 
 export const useProfile = () => {

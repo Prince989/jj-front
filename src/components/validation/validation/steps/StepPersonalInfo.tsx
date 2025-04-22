@@ -4,11 +4,7 @@ import { useEffect } from 'react'
 
 // ** MUI Imports
 import Button from '@mui/material/Button'
-import InputAdornment from '@mui/material/InputAdornment'
 import Grid from '@mui/material/Grid'
-
-// ** Icon Imports
-import Icon from 'src/@core/components/icon'
 
 // ** Custom Components Imports
 import CustomTextField from 'src/@core/components/mui/text-field'
@@ -16,41 +12,39 @@ import Box from '@mui/material/Box'
 
 // ** Custom Hooks
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+import { usePersonalInfo } from 'src/hooks/usePersonalInfo'
 
 // ** Components
 import CircularProgress from '@mui/material/CircularProgress'
 
 interface FormData {
-    fullName: string
-    nationalId: string
+    fname: string
+    lname: string
     phoneNumber: string
-    birthDate: string
-    postalCode: string
-    address: string
+    nationalCode: string
 }
 
 const StepPersonalInfo = () => {
     const { personalInfo, setPersonalInfo, setActiveStep, activeStep } = usePersonalInfoStore()
+    const { handleUpdatePersonalInfo, isUpdating } = usePersonalInfo({
+        onSuccess: () => handleNext()
+    })
 
     const { handleSubmit, control, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
-            fullName: '',
-            nationalId: '',
+            fname: '',
+            lname: '',
             phoneNumber: '',
-            birthDate: '',
-            postalCode: '',
-            address: ''
+            nationalCode: ''
         }
     })
 
     useEffect(() => {
         if (personalInfo) {
-            setValue('fullName', personalInfo.fullName)
-            setValue('nationalId', personalInfo.nationalId)
-            setValue('phoneNumber', personalInfo.phoneNumber)
-            setValue('birthDate', personalInfo.birthDate)
-            setValue('postalCode', personalInfo.postalCode)
-            setValue('address', personalInfo.address)
+            setValue('fname', personalInfo.fname || '')
+            setValue('lname', personalInfo.lname || '')
+            setValue('phoneNumber', personalInfo.phoneNumber || '')
+            setValue('nationalCode', personalInfo.nationalCode || '')
         }
     }, [personalInfo, setValue])
 
@@ -59,8 +53,8 @@ const StepPersonalInfo = () => {
     }
 
     const handleFormSubmit = (data: FormData) => {
+        handleUpdatePersonalInfo(data)
         setPersonalInfo(data)
-        handleNext()
     }
 
     const onError = (errors: any) => {
@@ -80,68 +74,38 @@ const StepPersonalInfo = () => {
             <Grid container spacing={6}>
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name='fullName'
+                        name='fname'
                         control={control}
-                        rules={{ required: 'نام و نام خانوادگی الزامی است' }}
+                        rules={{ required: 'نام الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
-                                label='نام و نام خانوادگی'
+                                label='نام'
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                placeholder='علی محمدی'
-                                disabled
-                                error={Boolean(errors.fullName)}
-                                helperText={errors.fullName?.message}
+                                placeholder='علی'
+                                error={Boolean(errors.fname)}
+                                helperText={errors.fname?.message}
                             />
                         )}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name='nationalId'
+                        name='lname'
                         control={control}
-                        rules={{ required: 'شماره ملی الزامی است' }}
+                        rules={{ required: 'نام خانوادگی الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
-                                label='شماره ملی'
+                                label='نام خانوادگی'
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                placeholder='0023455422'
-                                disabled
-                                error={Boolean(errors.nationalId)}
-                                helperText={errors.nationalId?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name='birthDate'
-                        control={control}
-
-                        // rules={{ required: 'تاریخ تولد الزامی است' }}
-                        render={({ field: { value, onChange, onBlur } }) => (
-                            <CustomTextField
-                                fullWidth
-                                label='تاریخ تولد'
-                                value={value}
-                                onBlur={onBlur}
-                                onChange={onChange}
-                                placeholder='1345/09/19'
-                                disabled
-                                error={Boolean(errors.birthDate)}
-                                helperText={errors.birthDate?.message}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position='end'>
-                                            <Icon fontSize='1.25rem' icon='tabler:calendar' />
-                                        </InputAdornment>
-                                    )
-                                }}
+                                placeholder='محمدی'
+                                error={Boolean(errors.lname)}
+                                helperText={errors.lname?.message}
                             />
                         )}
                     />
@@ -159,7 +123,6 @@ const StepPersonalInfo = () => {
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 placeholder='09123456788'
-                                disabled
                                 error={Boolean(errors.phoneNumber)}
                                 helperText={errors.phoneNumber?.message}
                             />
@@ -168,38 +131,19 @@ const StepPersonalInfo = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name='postalCode'
+                        name='nationalCode'
                         control={control}
-                        rules={{ required: 'کد پستی الزامی است' }}
+                        rules={{ required: 'کد ملی الزامی است' }}
                         render={({ field: { value, onChange, onBlur } }) => (
                             <CustomTextField
                                 fullWidth
-                                label='کدپستی'
+                                label='کد ملی'
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                placeholder='1234567898'
-                                error={Boolean(errors.postalCode)}
-                                helperText={errors.postalCode?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name='address'
-                        control={control}
-                        rules={{ required: 'آدرس الزامی است' }}
-                        render={({ field: { value, onChange, onBlur } }) => (
-                            <CustomTextField
-                                fullWidth
-                                label='آدرس'
-                                value={value}
-                                onBlur={onBlur}
-                                onChange={onChange}
-                                placeholder='تهران، تهران'
-                                error={Boolean(errors.address)}
-                                helperText={errors.address?.message}
+                                placeholder='0023455422'
+                                error={Boolean(errors.nationalCode)}
+                                helperText={errors.nationalCode?.message}
                             />
                         )}
                     />
@@ -209,9 +153,10 @@ const StepPersonalInfo = () => {
                 <Button
                     type='submit'
                     variant='contained'
+                    disabled={isUpdating}
                     className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
                 >
-                    ثبت اطلاعات
+                    {isUpdating ? 'در حال بروزرسانی...' : 'ثبت اطلاعات'}
                 </Button>
             </Grid>
         </form>
