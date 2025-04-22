@@ -109,7 +109,7 @@ const StepFinalCredit = () => {
                         وام تخصیص داده شده
                     </Typography>
                     <Typography sx={{ color: '#0B389F', fontWeight: 700, fontSize: '16px' }}>
-                        {creditAmount?.toLocaleString()} تومان
+                        {formatCurrency(creditAmount || 0)} تومان
                     </Typography>
                 </Box>
 

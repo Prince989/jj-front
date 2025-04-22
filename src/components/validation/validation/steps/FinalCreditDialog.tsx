@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
+import formatCurrency from 'src/utils/formatCurrency'
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
@@ -75,7 +76,7 @@ const FinalCreditDialog = ({ open, onClose }: FinalCreditDialogProps) => {
                     >
                         کاربر گرامی!
                         <br />
-                        مبلغ {creditAmount} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
+                        مبلغ {formatCurrency(creditAmount || 0)} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
                     </Typography>
                 </MessageBox>
             </DialogContent>
