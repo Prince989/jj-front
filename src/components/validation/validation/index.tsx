@@ -156,6 +156,25 @@ const ValidationWizard = () => {
 
   const { profileData } = useProfile()
 
+  const getStepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return <StepCardSelection />
+      case 1:
+        return <StepPersonalInfo />
+      case 2:
+        return <CardInfo />
+      case 3:
+        return <StepFinalCredit />
+      default:
+        return null
+    }
+  }
+
+  const renderContent = () => {
+    return getStepContent(activeStep)
+  }
+
   useEffect(() => {
     const paymentStatus = searchParams.get('status')
     if (paymentStatus === 'success') {
@@ -178,26 +197,6 @@ const ValidationWizard = () => {
       })
     }
   }, [profileData, setPersonalInfo])
-
-
-  const getStepContent = (step: number) => {
-    switch (step) {
-      case 0:
-        return <StepCardSelection />
-      case 1:
-        return <StepPersonalInfo />
-      case 2:
-        return <CardInfo />
-      case 3:
-        return <StepFinalCredit />
-      default:
-        return null
-    }
-  }
-
-  const renderContent = () => {
-    return getStepContent(activeStep)
-  }
 
   return (
     <>

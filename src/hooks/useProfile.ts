@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import mAxios from 'src/configs/axios'
-import toast from 'react-hot-toast'
 
 export interface ProfileData {
     id: number
@@ -28,7 +27,8 @@ export const useProfile = () => {
             setError(null)
         } catch (err: any) {
             setError('خطا در دریافت اطلاعات پروفایل')
-            toast.error('خطا در دریافت اطلاعات پروفایل')
+
+            // toast.error('خطا در دریافت اطلاعات پروفایل')
         } finally {
             setLoading(false)
         }

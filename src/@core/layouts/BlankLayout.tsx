@@ -8,6 +8,8 @@ import { BlankLayoutProps } from './types'
 // Styled component for Blank Layout component
 const BlankLayoutWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   height: '100vh',
+  maxWidth: '2000px',
+  margin: '0 auto',
 
   // For V1 Blank layout pages
   '& .content-center': {
