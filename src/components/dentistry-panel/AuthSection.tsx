@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Box from '@mui/material/Box'
 import Image from 'next/image'
 import RightWrapper from 'src/components/layout/RightWrapper'
 import RegisterForm from 'src/components/auth/RegisterForm'
@@ -12,20 +11,8 @@ const AuthSection = () => {
     const [formType, setFormType] = useState<FormType>('login')
 
     return (
-        <Box sx={{ backgroundColor: 'background.paper', display: 'flex' }}>
-            <Box
-                sx={{
-                    flex: 1,
-                    display: 'flex',
-                    position: 'relative',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    gap: '45px',
-                    justifyContent: 'center',
-                    backgroundColor: '#FAFBFF',
-                    p: 4
-                }}
-            >
+        <div className="flex bg-white">
+            <div className="hidden flex-1 lg:flex relative items-center flex-col gap-[45px] justify-center bg-[#FAFBFF] p-4">
                 <Image
                     alt='auth-illustration'
                     width={450}
@@ -34,17 +21,9 @@ const AuthSection = () => {
                     className='max-h-[450px] max-w-[450px]'
                     src='/images/dentistry/auth.svg'
                 />
-            </Box>
+            </div>
             <RightWrapper>
-                <Box
-                    sx={{
-                        p: [6, 12],
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
+                <div className="p-6 md:p-12 h-full flex items-center justify-center">
                     {formType === 'login' && (
                         <LoginForm
                             onSwitchToRegister={() => setFormType('register')}
@@ -59,9 +38,9 @@ const AuthSection = () => {
                             onSwitchToLogin={() => setFormType('login')}
                         />
                     )}
-                </Box>
+                </div>
             </RightWrapper>
-        </Box>
+        </div>
     )
 }
 
