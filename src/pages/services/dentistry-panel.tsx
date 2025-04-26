@@ -33,12 +33,10 @@ const DentistryPanel = () => {
         <div className="bg-white">
             <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
                 <Header />
-            </div>
-            <div className="flex flex-col bg-white px-3 lg:px-24 mb-24 mt-3">
-                <CreditPlansSection />
+                <HeroSection />
             </div>
             <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
-                <HeroSection />
+                <CreditPlansSection />
             </div>
             <div className="flex flex-col bg-white mb-24">
                 <ServicesSection />

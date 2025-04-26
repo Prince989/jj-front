@@ -8,57 +8,61 @@ interface CreditPlanProps {
     title: string
     features: string[]
     buttonText: string
-
+    image: string
+    link: string
 }
 
-const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText }) => {
+const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText, image, link }) => {
     return (
-        <Link href={'/validation'} className="block h-full">
+        <Link href={link} className="block h-full">
             <div
-                className='p-4 lg:p-8 h-full rounded-[32px] bg-gradient-to-b from-primary-blue to-primary-blue-1 flex flex-col cursor-pointer'
+                className='p-4 lg:p-8 h-full rounded-[32px] bg-gradient-to-b from-primary-blue to-primary-blue-1 flex flex-col justify-between cursor-pointer'
             >
-                <div className="w-4/5 h-20 rounded-2xl mx-auto my-8 flex justify-center items-center">
-                    <Image
-                        src="/images/dentistry/money-bag.svg"
-                        width={70}
-                        height={70}
-                        alt="Money Bag"
-                        className="text-secondary"
-                    />
-                </div>
+                <div className='flex flex-col'>
+                    <div className="w-full h-20 rounded-2xl mx-auto my-8 flex justify-center items-center">
+                        <Image
+                            src={image}
+                            width={350}
+                            height={150}
+                            alt="Money Bag"
+                            className="text-secondary"
 
-                <Typography
-                    variant="h4"
-                    component="h3"
-                    className="text-lg lg:text-2xl font-extrabold text-center text-white mb-10"
-                >
-                    {title}
-                </Typography>
+                        />
+                    </div>
 
-                <div className="relative flex flex-col bg-white/10 rounded-2xl p-7 gap-4">
-                    {features.map((feature, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center mb-2"
-                        >
-                            <Image
-                                src="/images/dentistry/check-circle.svg"
-                                width={24}
-                                height={24}
-                                alt="Check"
-                                className="ml-2"
-                            />
-                            <Typography
-                                variant="body1"
-                                className="text-lg lg:text-xl text-white font-semibold"
+                    <Typography
+                        variant="h4"
+                        component="h3"
+                        className="text-lg lg:text-2xl font-extrabold text-center text-white mb-10 lg:mt-8"
+                    >
+                        {title}
+                    </Typography>
+
+                    <div className="relative flex flex-col bg-white/10 rounded-2xl p-7 gap-4">
+                        {features.map((feature, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center mb-2"
                             >
-                                {feature}
-                            </Typography>
-                        </div>
-                    ))}
+                                <Image
+                                    src="/images/dentistry/check-circle.svg"
+                                    width={24}
+                                    height={24}
+                                    alt="Check"
+                                    className="ml-2"
+                                />
+                                <Typography
+                                    variant="body1"
+                                    className="text-lg lg:text-xl text-white font-semibold"
+                                >
+                                    {feature}
+                                </Typography>
+                            </div>
+                        ))}
 
-                    <img src="/images/dentistry/vertical-stars.svg" alt="vertical-stars" className="absolute bottom-[30%] left-[5%] object-cover" />
+                        <img src="/images/dentistry/vertical-stars.svg" alt="vertical-stars" className="absolute bottom-[30%] left-[5%] object-cover" />
 
+                    </div>
                 </div>
                 <Button
                     variant="contained"
@@ -72,32 +76,40 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText }) 
     )
 }
 
+
 const CreditPlansSection = () => {
     const creditPlans = [
         {
             title: 'اعتبار ۵۰ میلیون تومانی',
             features: [
-                'بازپرداخت ۲۴ ماهه',
-                'بازپرداخت ۲۴ ماهه',
-                'بدون نیاز به ضامن',
-                'بدون نیاز به ضامن'
+                'اقساط ۶ ماهه',
+                'سقف اعتبار ۵۰ میلیون',
+                'ویزیت اولیه پزشک رایگان',
+                'بدون سود و کارمزد',
+                'هزینه فعال سازی با ۵۰٪ تخفیف ۱ میلیون',
             ],
-            buttonText: 'دریافت اعتبار'
+            buttonText: 'دریافت اعتبار',
+            image: '/images/validation-forms/50mil.svg',
+            link: '/validation?card=50mil'
         },
         {
             title: 'اعتبار ۲۰۰ میلیون تومانی',
             features: [
-                'بازپرداخت ۲۴ ماهه',
-                'بازپرداخت ۲۴ ماهه',
-                'بدون نیاز به ضامن',
-                'بدون نیاز به ضامن'
+                'اعتبار تا ۲۴ ماه',
+                'سقف اعتبار ۲۰۰ میلیون',
+                'ویزیت اولیه پزشک رایگان',
+                'تا ۱۲ ماه بدون سود و کارمزد',
+                '۵میلیون اعتبار بدون نیاز به چک و سفته',
+                'هزینه فعالسازی با ۵۰٪ تخفیف ۴ میلیون',
             ],
             buttonText: 'دریافت اعتبار',
+            image: '/images/validation-forms/200mil.svg',
+            link: '/validation?card=200mil'
         }
     ]
 
     return (
-        <section className="w-full bg-white">
+        <section className="w-full bg-white" id="credit-plans">
 
             <ColoredText
                 firstText="طرح های اعتباری جی"
@@ -117,6 +129,8 @@ const CreditPlansSection = () => {
                             title={plan.title}
                             features={plan.features}
                             buttonText={plan.buttonText}
+                            image={plan.image}
+                            link={plan.link}
                         />
                     </div>
                 ))}

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -20,6 +20,7 @@ import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import useCards from 'src/hooks/useCards'
 import { usePurchase } from 'src/hooks/usePurchase'
 import ValidationOTP from './ValidationOTP'
+import { useSearchParams } from 'next/navigation'
 
 // ** Styled Components
 const CardImage = styled('img')({
@@ -105,7 +106,17 @@ const StepCardSelection = () => {
     const { cards, loading, error } = useCards()
     const { setCardInfo } = usePersonalInfoStore()
     const { isPaymentLoading, handlePayment } = usePurchase({ selectedCard })
-    const [otpShow, setOtpShow] = useState<boolean>(false);
+    const [otpShow, setOtpShow] = useState<boolean>(false)
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+        const cardParam = searchParams.get('card')
+        if (cardParam && cards.length > 0 && !selectedCard) {
+            const cardId = cardParam === '50mil' ? '1' : '2'
+            handleCardChange(cardId)
+            setOtpShow(true)
+        }
+    }, [cards, searchParams, selectedCard])
 
     const handleClose = () => {
         setOtpShow(false)
@@ -116,8 +127,8 @@ const StepCardSelection = () => {
         const selectedCardData = cards.find(card => card.id.toString() === value)
         if (selectedCardData) {
             const cardImage = selectedCardData.id === 1
-                ? '/images/validation-forms/50mil.png'
-                : '/images/validation-forms/200mil.png'
+                ? '/images/validation-forms/50mil.svg'
+                : '/images/validation-forms/200mil.svg'
 
             setCardInfo({
                 id: selectedCardData.id,

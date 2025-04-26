@@ -4,6 +4,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ColoredText from 'src/components/dentistry-panel/ColoredText'
 
 const HeroSection = () => {
+    const handleCreditButtonClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const creditPlansSection = document.getElementById('credit-plans');
+        if (creditPlansSection) {
+            creditPlansSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <section className="py-8 bg-white w-full relative">
             <style>{`
@@ -47,8 +55,9 @@ const HeroSection = () => {
                                 variant="contained"
                                 endIcon={<ArrowBackIcon />}
                                 className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-3 lg:px-6 px-3 text-sm"
+                                onClick={handleCreditButtonClick}
                             >
-                                راهنمای دریافت اعتبار
+                                دریافت فوری اعتبار
                             </Button>
 
                             <Button
