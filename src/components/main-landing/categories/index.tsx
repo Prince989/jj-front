@@ -7,55 +7,71 @@ interface CategoryItemProps {
     title: string;
     image: string;
     href: string;
+    badge?: string;
 }
 
 const categories: CategoryItemProps[] = [
     {
+        title: 'دندان پزشکی جی جی',
+        image: '/images/main-landing/darman.png',
+        href: '/services/dentistry-panel',
+        badge: "",
+    },
+    {
         title: 'طلا و جواهر',
         image: '/images/main-landing/tala.png',
-        href: '/categories/jewelry'
+        href: '',
+        badge: "به زودی"
     },
     {
         title: 'لوازم خانگی',
         image: '/images/main-landing/zarf.png',
-        href: '/categories/home-appliances'
+        href: '',
+        badge: "به زودی"
     },
     {
         title: 'مد و پوشاک',
         image: '/images/main-landing/hodi.png',
-        href: '/categories/fashion'
+        href: '',
+        badge: "به زودی"
     },
     {
         title: 'موبایل و تبلت',
         image: '/images/main-landing/iphone13.png',
-        href: '/categories/mobile'
+        href: '',
+        badge: "به زودی"
     },
     {
         title: 'رستوران و کافه',
         image: '/images/main-landing/cofe.png',
-        href: '/categories/restaurant'
-    },
-    {
-        title: 'خدمات درمانی',
-        image: '/images/main-landing/darman.png',
-        href: '/categories/medical'
+        href: '',
+        badge: "به زودی"
     },
     {
         title: 'کالای دیجیتال',
         image: '/images/main-landing/tv.png',
-        href: '/categories/digital'
+        href: '',
+        badge: "به زودی"
     },
     {
         title: 'خودرو و موتورسیکلت',
         image: '/images/main-landing/bmv.png',
-        href: '/categories/automotive'
+        href: '',
+        badge: "به زودی"
     }
 ];
 
-const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href }) => {
+const CategoryItem: React.FC<CategoryItemProps> = ({ title, image, href, badge }) => {
+    const isDisabled = !href;
+
     return (
-        <Link href={href} className="no-underline">
-            <div className="w-full lg:w-[270px] h-[270px] bg-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer">
+        <Link href={href} className={`no-underline ${isDisabled ? 'pointer-events-none' : ''}`}>
+            <div className={`relative w-full lg:w-[270px] h-[270px] bg-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center transition-all ${!isDisabled ? 'hover:shadow-lg cursor-pointer' : 'opacity-70'}`}>
+                {badge && (
+                    <div className="absolute top-4 right-4 bg-gray-400 text-white px-3 py-1 rounded-full text-sm z-20">
+                        {badge}
+                    </div>
+                )}
                 <div className="w-[190px] h-[190px] mb-4 relative">
                     <img
                         src={image}
