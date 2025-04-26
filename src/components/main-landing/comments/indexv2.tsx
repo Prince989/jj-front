@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Image from 'next/image';
 
 interface Testimonial {
     id: number;
@@ -55,7 +56,7 @@ const testimonials: Testimonial[] = [
         name: "علی حسینی",
         image: "/images/main-landing/profile.jpeg",
         comment: "این یک متن تستی می باشد. نظر بنده درباره این سامانه بسیار خوب می باشد. امیدوارم که این سامانه بتواند به شما هم کمک کند.",
-        position: { top: "55%", left: "5%" }
+        position: { top: "55%", left: "10%" }
     },
 ];
 
@@ -158,6 +159,12 @@ const DesktopFloatingView: React.FC<{
     setActiveTestimonial: (id: number | null) => void;
 }> = React.memo(({ testimonials, activeTestimonial, setActiveTestimonial }) => (
     <div className="relative h-[600px] w-full overflow-hidden bg-white rounded-xl">
+        <Image
+            src="/images/main-landing/galaxy.svg"
+            alt="Galaxy background"
+            fill
+            className="object-cover lg:object-contain absolute"
+        />
 
         {/* Floating Profile Images */}
         {testimonials.map((testimonial) => (
