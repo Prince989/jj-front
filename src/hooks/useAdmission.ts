@@ -14,6 +14,7 @@ export interface IServiceRequest {
     businessId: number;
     price: number;
     usableCredit: number;
+    creditAmount: number;
     user: {
         id: number;
         fName: string;
@@ -69,13 +70,12 @@ export default function useAdmission() {
         setRequests(temp)
     }
 
-    const install = (amount: string, userId: number, serviceId: number[], serviceType: string, paymentMode: string) => {
+    const install = (amount: string, userId: number, serviceId: number[], serviceType: string) => {
         mAxios.post("credit/install", {
             services: serviceId,
             amount: parseInt(amount),
             userId,
-            serviceType,
-            paymentMode
+            serviceType
         }).then(() => {
             toast.success("مبلغ مورد نظر از اعتبار کاربر کسر شد", {
                 position: "bottom-left"

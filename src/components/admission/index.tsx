@@ -1,94 +1,120 @@
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, Card, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material"
-import { useEffect, useMemo, useState } from "react"
+import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import Icon from 'src/@core/components/icon'
 import CustomTextField from "src/@core/components/mui/text-field"
 import useAdmission, { IService, IServiceRequest } from "src/hooks/useAdmission"
 
-const UserRequest = (props: { request: IServiceRequest, services: IService[], install: (amount: string, userId: number, serviceId: number[], serviceType: string, paymentMode: string) => void }) => {
+type PaymentMode = "free" | "guaranteeCheque" | "promissoryNote" | "guaranteeAndPersonCheque"
 
-    const { name, user, usableCredit } = props.request;
+const UserRequest = (props: { request: IServiceRequest, services: IService[], install: (amount: string, userId: number, serviceId: number[], serviceType: string) => void }) => {
+
+    const { name, user, usableCredit, creditAmount } = props.request;
     const services = props.services;
 
     const [selectedServices, setSelectedServices] = useState<IService[]>([])
     const [amount, setAmount] = useState<number>(0)
     const [serviceType, setServiceType] = useState<"medical" | "beauty">("medical")
-    const [paymentMode, setPaymentMode] = useState<"promissoryNote" | "installmentCheque" | "guaranteeCheque">("promissoryNote")
+    const [is24, setIs24] = useState<boolean>(false);
 
     const makeInstallment = () => {
-        props.install(amount.toString(), user.id, services.map(s => s.id), serviceType, paymentMode)
+        props.install(amount.toString(), user.id, services.map(s => s.id), serviceType)
         setSelectedServices([])
         setAmount(0)
+    }
+
+    const handle24Change = (e: ChangeEvent<HTMLInputElement>) => {
+        const r = e.currentTarget.value == "24";
+        setIs24(r);
     }
 
     const info = useMemo(() => {
         let months = 0;
         let prepay = 0;
         let installment = 0
-
+        let paymentMode: PaymentMode = "free";
         let prepayPercentage = 0;
         let installmentPercentage = 0;
 
-        if (serviceType == "medical") {
-            switch (paymentMode) {
-                case "promissoryNote":
-                    prepayPercentage = 30;
-                    installmentPercentage = 70;
-                    prepay = prepayPercentage * amount / 100;
-                    installment = installmentPercentage * amount / 100;
-                    months = 6;
-                    break;
-                case "installmentCheque":
-                    prepayPercentage = 30;
-                    installmentPercentage = 70;
-                    prepay = prepayPercentage * amount / 100;
-                    installment = installmentPercentage * amount / 100;
-                    months = 12;
+        if (creditAmount == 2000000000) {
+            if (amount <= 2000000000 && amount > 1000000000) {
+                paymentMode = "guaranteeAndPersonCheque"
+            }
+            if (amount <= 1000000000 && amount > 300000000) {
+                paymentMode = "guaranteeCheque"
+            }
+            if (amount <= 300000000 && amount > 50000000) {
+                paymentMode = "promissoryNote"
+            }
+            else if (amount < 50000000) {
+                paymentMode = "free"
+            }
 
-                    break;
-                case "guaranteeCheque":
-                    prepayPercentage = 30;
-                    installmentPercentage = 70;
-                    prepay = prepayPercentage * amount / 100;
-                    installment = installmentPercentage * amount / 100;
-                    months = 8;
-                    break;
+            if (serviceType == "medical") {
+                if (is24) {
+                    prepayPercentage = 50
+                    installmentPercentage = 50
+                    installment = amount * installmentPercentage / 100;
+                    prepay = (amount * 18 * (24 + 1)) / 2400;
+                    prepay *= 0.5;
+                    installment = prepay;
+                    months = 24;
+                }
+                else {
+                    prepayPercentage = 30
+                    installmentPercentage = 70
+                    prepay = amount * prepayPercentage / 100;
+                    installment = amount * installmentPercentage / 100;
+                    months = 12;
+                }
+            }
+            else {
+                prepayPercentage = 50
+                installmentPercentage = 50
+                prepay = amount * prepayPercentage / 100;
+                installment = amount * installmentPercentage / 100;
+                months = 6;
+            }
+        }
+        else if (creditAmount == 500000000) {
+
+            if (amount > 100000000 && amount <= 500000000) {
+                paymentMode = "guaranteeCheque"
+            }
+            else if (amount <= 100000000 && amount > 10000000) {
+                paymentMode = "promissoryNote"
+            }
+            else if (amount < 10000000) {
+                paymentMode = "free"
+            }
+
+            if (serviceType == "medical") {
+                prepayPercentage = 30
+                installmentPercentage = 70
+                prepay = amount * prepayPercentage / 100;
+                installment = amount * installmentPercentage / 100;
+                months = 6;
+            }
+            else {
+                prepayPercentage = 50
+                installmentPercentage = 50
+                prepay = amount * prepayPercentage / 100;
+                installment = amount * installmentPercentage / 100;
+                months = 4;
             }
         }
         else {
-            switch (paymentMode) {
-                case "promissoryNote":
-                    prepayPercentage = 50;
-                    installmentPercentage = 50;
-                    prepay = prepayPercentage * amount / 100;
-                    installment = installmentPercentage * amount / 100;
-                    months = 3;
-                    break;
-                case "installmentCheque":
-                    prepayPercentage = 50;
-                    installmentPercentage = 50;
-                    prepay = prepayPercentage * amount / 100;
-                    installment = installmentPercentage * amount / 100;
-                    months = 6;
 
-                    break;
-                case "guaranteeCheque":
-                    prepayPercentage = 50;
-                    installmentPercentage = 50;
-                    prepay = prepayPercentage * amount / 100;
-                    installment = installmentPercentage * amount / 100;
-                    months = 4;
-                    break;
-            }
         }
 
         return {
             prepay: Math.round(prepay),
             prepayPercentage,
             months,
+            paymentMode,
             installment: Math.round(installment),
             installmentPercentage
         }
-    }, [amount, serviceType, paymentMode])
+    }, [amount, serviceType, is24])
 
     return (
         <Card sx={{ padding: '30px', my: "30px" }}>
@@ -170,19 +196,22 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                             <Box sx={{ mx: "30px" }} />
                             <FormControl>
                                 <FormLabel id="demo-row-radio-buttons-group-label">شیوه پرداخت</FormLabel>
-                                <RadioGroup
-                                    row
-                                    value={paymentMode}
+                                {
+                                    creditAmount == 2000000000 &&
+                                    <RadioGroup
+                                        row
+                                        value={is24}
+                                        defaultValue={"12"}
 
-                                    // @ts-ignore
-                                    onChange={(e) => setPaymentMode(e.currentTarget.value)}
-                                    aria-labelledby="demo-row-radio-buttons-group-label"
-                                    name="row-radio-buttons-group"
-                                >
-                                    <FormControlLabel value="promissoryNote" control={<Radio />} label="سفته" />
-                                    <FormControlLabel value="installmentCheque" control={<Radio />} label="چک اقساط" />
-                                    <FormControlLabel value="guaranteeCheque" control={<Radio />} label="چک تضمینی" />
-                                </RadioGroup>
+                                        // @ts-ignore
+                                        onChange={handle24Change}
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="row-radio-buttons-group"
+                                    >
+                                        <FormControlLabel value="12" control={<Radio />} label="12 ماهه" />
+                                        <FormControlLabel value="24" control={<Radio />} label="24 ماهه" />
+                                    </RadioGroup>
+                                }
                             </FormControl>
                         </Box>
                         {
@@ -214,6 +243,15 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                                         ` ماهه`
                                     }
                                 </p>
+                                {
+                                    is24 &&
+                                    <p>
+                                        <b>
+                                            سود سالیانه 18 درصد
+                                        </b>
+                                    </p>
+                                }
+
                                 <p>
                                     <b>
                                         {
