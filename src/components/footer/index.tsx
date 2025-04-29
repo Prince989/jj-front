@@ -5,6 +5,8 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import ColoredText from 'src/components/dentistry-panel/ColoredText'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const Footer = () => {
     const customerServices = [
@@ -19,6 +21,17 @@ const Footer = () => {
         { icon: <TwitterIcon />, href: '#' },
         { icon: <TelegramIcon />, href: '#' },
         { icon: <InstagramIcon />, href: '#' }
+    ]
+
+    const generalIcons = [
+        {
+            children: <Link href='https://trustseal.enamad.ir/?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E' target='_blank' referrerPolicy='origin'>
+                <Image src='https://trustseal.enamad.ir/logo.aspx?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
+            </Link>
+        },
+        { children: null },
+        { children: null },
+        { children: null }
     ]
 
     return (
@@ -101,8 +114,10 @@ const Footer = () => {
                     />
 
                     <div className="flex justify-start items-center gap-4">
-                        {customerServices.map((service, index) => (
-                            <div key={index} className="w-[70px] h-[70px] rounded-lg bg-white"></div>
+                        {generalIcons.map((icon, index) => (
+                            <div key={index} className="w-[70px] h-[70px] rounded-lg bg-white overflow-hidden">
+                                {icon.children}
+                            </div>
                         ))}
                     </div>
 
@@ -125,6 +140,8 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
+
+            <div dangerouslySetInnerHTML={{ __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E' alt='' style='cursor:pointer' code='q13R8P19nYWYQj9y03cblayPuMw0wx7E'></a>` }} />
 
             <div className="w-full flex justify-center items-center bg-primary-blue py-4">
                 <p className="text-sm text-white">
