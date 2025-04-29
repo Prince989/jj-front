@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Typography, Slider, Button } from '@mui/material'
+import Link from 'next/link'
 
 const LoanBox = () => {
     const [loanAmount, setLoanAmount] = useState<number>(100000000) // 100 million tomans
@@ -124,13 +125,15 @@ const LoanBox = () => {
                     </div>
                 </div>
 
-                <Button
-                    variant="contained"
-                    fullWidth
-                    className="bg-primary-orange text-white py-2 text-sm font-semibold hover:bg-primary-orange-1 normal-case"
-                >
-                    درخواست اعتبار خرید و خدمات
-                </Button>
+                <Link href={"/validation"}>
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        className="bg-primary-orange text-white py-2 text-sm font-semibold hover:bg-primary-orange-1 normal-case"
+                    >
+                        درخواست اعتبار خرید و خدمات
+                    </Button>
+                </Link>
             </div>
         </div>
     )

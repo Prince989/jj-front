@@ -1,15 +1,33 @@
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, Card, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material"
+import { format } from "date-fns-jalali"
 import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import Icon from 'src/@core/components/icon'
 import CustomTextField from "src/@core/components/mui/text-field"
-import useAdmission, { IService, IServiceRequest } from "src/hooks/useAdmission"
+import useAdmission, { IInovicePrepay, IService, IServiceRequest, checkPaymentStatus } from "src/hooks/useAdmission"
 
 type PaymentMode = "free" | "guaranteeCheque" | "promissoryNote" | "guaranteeAndPersonCheque"
 
-const UserRequest = (props: { request: IServiceRequest, services: IService[], install: (amount: string, userId: number, serviceId: number[], serviceType: string) => void }) => {
+const paymentModeTranslate = {
+    "free": "بدون چک و سفته",
+    "guaranteeCheque": "چک شخص یا ضامن",
+    "promissoryNote": "150% سفته",
+    "guaranteeAndPersonCheque": "چک شخص و ضامن"
+}
 
-    const { name, user, usableCredit, creditAmount } = props.request;
+const UserRequest = (
+    props: {
+        request: IServiceRequest,
+        services: IService[],
+        loading: boolean,
+        getRequest: () => void,
+        install: (amount: string, userId: number, serviceId: number[], serviceType: string) => void
+        prepay: (amount: string, sId: number, serviceType: string, serviceId: number[], Is24: boolean) => void
+    }
+) => {
+
+    const { name, user, usableCredit, creditAmount, prepayInvoice } = props.request;
     const services = props.services;
+    const getRequest = props.getRequest;
 
     const [selectedServices, setSelectedServices] = useState<IService[]>([])
     const [amount, setAmount] = useState<number>(0)
@@ -17,7 +35,8 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
     const [is24, setIs24] = useState<boolean>(false);
 
     const makeInstallment = () => {
-        props.install(amount.toString(), user.id, services.map(s => s.id), serviceType)
+        // props.prepay(amount.toString(), user.id, services.map(s => s.id), serviceType)
+        props.prepay(amount.toString(), props.request.id, serviceType, services.map(s => s.id), is24)
         setSelectedServices([])
         setAmount(0)
     }
@@ -194,13 +213,13 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                                 </RadioGroup>
                             </FormControl>
                             <Box sx={{ mx: "30px" }} />
-                            <FormControl>
-                                <FormLabel id="demo-row-radio-buttons-group-label">شیوه پرداخت</FormLabel>
-                                {
-                                    creditAmount == 2000000000 &&
+                            {
+                                creditAmount == 2000000000 &&
+                                <FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label">شیوه پرداخت</FormLabel>
                                     <RadioGroup
                                         row
-                                        value={is24}
+                                        value={is24 ? "24" : "12"}
                                         defaultValue={"12"}
 
                                         // @ts-ignore
@@ -211,8 +230,8 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                                         <FormControlLabel value="12" control={<Radio />} label="12 ماهه" />
                                         <FormControlLabel value="24" control={<Radio />} label="24 ماهه" />
                                     </RadioGroup>
-                                }
-                            </FormControl>
+                                </FormControl>
+                            }
                         </Box>
                         {
                             amount > 0 &&
@@ -220,6 +239,11 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                                 <h1 className="font-bold">
                                     شرح پرداختی:
                                 </h1>
+                                <p>
+                                    {
+                                        paymentModeTranslate[info.paymentMode]
+                                    }
+                                </p>
                                 <p>
                                     <b>
                                         {info.prepayPercentage}
@@ -309,7 +333,11 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
                             ثبت
                         </Button>
                     </Box>
-
+                    {
+                        prepayInvoice.map(p =>
+                            <Invoice invoice={p} key={p.id} getRequest={getRequest} loading={props.loading} />
+                        )
+                    }
                 </AccordionDetails>
             </Accordion>
 
@@ -319,9 +347,66 @@ const UserRequest = (props: { request: IServiceRequest, services: IService[], in
 
 }
 
+const Invoice = (props: { invoice: IInovicePrepay, getRequest: () => void, loading: boolean }) => {
+
+    const { id, amount, createdAt, services } = props.invoice;
+
+    const paymentStatus = useMemo(() => {
+        return checkPaymentStatus(props.invoice);
+    }, [props.invoice])
+
+    return (
+        <Card sx={{ padding: "20px", my: "20px" }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box>
+                    شماره فاکتور:
+                    {id}
+                </Box>
+                <Box>
+                    مبلغ پیش پرداخت:
+                    {amount.toLocaleString()} ریال
+                </Box>
+                <Box>
+                    خدمات:
+                    {services.map(s => s.title).join(",")}
+                </Box>
+                <Box>
+                    تاریخ:
+                    {convertToJalali(createdAt)}
+                </Box>
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "space-between", my: "20px" }}>
+                <Box>
+                    وضعیت : {
+                        paymentStatus ? <span className="text-emerald-500">
+                            پرداخت شده
+                        </span>
+                            :
+                            <span className="text-orange-600">
+                                در انتظار پرداخت
+                            </span>
+                    }
+                </Box>
+                {
+                    !paymentStatus &&
+                    <Box>
+                        <Button
+                            disabled={props.loading}
+                            onClick={props.getRequest}
+                            className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
+                            variant="contained" size="small" sx={{ width: "200px", height: "40px" }}>
+                            بررسی وضعیت پرداخت
+                        </Button>
+                    </Box>
+                }
+            </Box>
+        </Card>
+    )
+}
+
 const Admission = () => {
 
-    const { requests, filter, services, install } = useAdmission()
+    const { requests, filter, services, install, prepay, getRequests, loading } = useAdmission()
 
     useEffect(() => {
         console.log(requests)
@@ -334,7 +419,7 @@ const Admission = () => {
             </Card>
             <Box sx={{ marginY: "30px" }} />
             {
-                requests.map(r => <UserRequest request={r} services={services} install={install} key={r.id} />)
+                requests.map(r => <UserRequest getRequest={getRequests} loading={loading} request={r} prepay={prepay} services={services} install={install} key={r.id} />)
             }
         </div>
     )
@@ -345,6 +430,13 @@ function formatCurrency(amount: number): string {
         amount /= 10;
 
     return Math.round(amount).toLocaleString('fa-IR'); // 'fa-IR' برای نمایش اعداد به صورت فارسی
+}
+
+
+function convertToJalali(dateString: string): string {
+    const date = new Date(dateString);
+
+    return format(date, 'yyyy/MM/dd');
 }
 
 export default Admission

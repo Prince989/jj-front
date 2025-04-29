@@ -6,6 +6,20 @@ export interface IService {
     id: number
     title: string
 }
+export interface IInovicePrepay {
+    id: number
+    amount: number
+    services: {
+        id: number;
+        title: string;
+        price: number
+    }[]
+    transactions: {
+        id: number
+        status: "pending" | "failed" | "completed"
+    }[]
+    createdAt: string
+}
 
 export interface IServiceRequest {
     id: number;
@@ -15,6 +29,7 @@ export interface IServiceRequest {
     price: number;
     usableCredit: number;
     creditAmount: number;
+    prepayInvoice: IInovicePrepay[]
     user: {
         id: number;
         fName: string;
@@ -44,11 +59,15 @@ export default function useAdmission() {
     const [requests, setRequests] = useState<IServiceRequest[]>([])
     const [initalRequests, setInitialRequests] = useState<IServiceRequest[]>([]);
     const [services, setServices] = useState<IService[]>([])
+    const [loading, setLoading] = useState<boolean>(false);
 
     const getRequests = () => {
+        setLoading(true)
         mAxios.get<IResponse<IServiceRequest>>("service-request/1").then(res => {
             setInitialRequests(res.data.data);
             setRequests(res.data.data)
+        }).finally(() => {
+            setLoading(false)
         })
     }
 
@@ -68,6 +87,27 @@ export default function useAdmission() {
 
         const temp = initalRequests.filter(i => i.user.nationalCode.includes(nationalCode))
         setRequests(temp)
+    }
+
+    const prepay = (amount: string, sId: number, serviceType: string, serviceId: number[], Is24: boolean) => {
+        mAxios.post("prepay/pay", {
+            sId,
+            gatewayId: 1,
+            services: serviceId,
+            Is24,
+            amount: parseInt(amount),
+            serviceType
+        }).then(() => {
+            toast.success("لینک پرداخت پیش پرداخت ارسال شد", {
+                position: "bottom-left"
+            });
+            getRequests();
+        })
+            .catch((err) => {
+                toast.error(err.response.data.message, {
+                    position: "bottom-left"
+                })
+            })
     }
 
     const install = (amount: string, userId: number, serviceId: number[], serviceType: string) => {
@@ -94,6 +134,18 @@ export default function useAdmission() {
         filter,
         services,
         install,
-        getRequests
+        prepay,
+        getRequests,
+        loading
     }
+}
+
+export function checkPaymentStatus(invoice: IInovicePrepay) {
+    const successfullTransaction = invoice.transactions.find(i => i.status == "completed");
+
+    if (successfullTransaction) {
+        return true
+    }
+
+    return false
 }
