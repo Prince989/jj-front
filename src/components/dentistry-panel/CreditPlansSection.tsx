@@ -110,8 +110,8 @@ const CreditPlansSection = () => {
             ],
             image: '/images/validation-forms/50mil.svg',
             link: '/validation?card=50mil',
-            salePrice: '۱,۰۰۰,۰۰۰',
-            mainPrice: '۲,۰۰۰,۰۰۰'
+            salePrice: '۵۰۰,۰۰۰',
+            mainPrice: '۱,۰۰۰,۰۰۰'
         },
         {
             title: 'اعتبار ۲۰۰ میلیون تومانی',
