@@ -12,7 +12,7 @@ import { useAuth } from 'src/hooks/useAuth';
 const DesktopMenu: React.FC = () => {
     const { user } = useAuth();
     const router = useRouter();
-    const loginHref = user?.role?.name === 'businessUser' ? '/admission' : '/validation';
+    const loginHref = user?.role?.name === 'businessUser' ? '/admission' : '/dashboard';
     const isDentistryPanel = router.pathname === '/services/dentistry-panel';
 
     return (

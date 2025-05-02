@@ -73,7 +73,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ open, onOpen, onClose }) => {
                             </div>
                         ))}
                     </nav>
-                    <Link href='/validation'>
+                    <Link href='/dashboard'>
                         <Button
                             variant="contained"
                             startIcon={<PersonOutlineIcon />}

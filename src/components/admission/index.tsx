@@ -214,7 +214,7 @@ const UserRequest = (
                             </FormControl>
                             <Box sx={{ mx: "30px" }} />
                             {
-                                creditAmount == 2000000000 &&
+                                creditAmount == 2000000000 && serviceType == "medical" &&
                                 <FormControl>
                                     <FormLabel id="demo-row-radio-buttons-group-label">شیوه پرداخت</FormLabel>
                                     <RadioGroup
