@@ -21,6 +21,12 @@ module.exports = {
         hostname: 'api.mass-message.ir',
         port: '',
         pathname: '/apps/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'trustseal.enamad.ir',
+        port: '',
+        pathname: '/**'
       }
     ]
   },

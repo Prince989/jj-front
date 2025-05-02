@@ -7,12 +7,13 @@ import Link from "next/link";
 interface CreditPlanProps {
     title: string
     features: string[]
-    buttonText: string
     image: string
     link: string
+    salePrice: string
+    mainPrice: string
 }
 
-const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText, image, link }) => {
+const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, image, link, salePrice, mainPrice }) => {
     return (
         <Link href={link} className="block h-full">
             <div
@@ -25,7 +26,8 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText, im
                             width={350}
                             height={150}
                             alt="Money Bag"
-                            className="text-secondary"
+                            className="text-secondary rounded-2xl"
+                            style={{ boxShadow: `rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;` }}
 
                         />
                     </div>
@@ -45,11 +47,11 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText, im
                                 className="flex items-center mb-2"
                             >
                                 <Image
-                                    src="/images/dentistry/check-circle.svg"
+                                    src="/images/dentistry/green-tick.svg"
                                     width={24}
                                     height={24}
                                     alt="Check"
-                                    className="ml-2"
+                                    className="ml-2 min-w-[24px] min-h-[24px]"
                                 />
                                 <Typography
                                     variant="body1"
@@ -69,7 +71,26 @@ const CreditPlan: React.FC<CreditPlanProps> = ({ title, features, buttonText, im
                     fullWidth
                     className="bg-primary-orange hover:bg-primary-orange text-white rounded-lg py-3 mt-8 text-[15px] font-bold"
                 >
-                    {buttonText}
+                    <div className="flex justify-between items-center w-full">
+
+
+                        <div className="flex items-center gap-2">
+                            <span>هزینه فعال سازی:</span>
+
+                        </div>
+
+
+                        <div className="flex gap-2 items-center">
+                            <div className="flex flex-col items-end">
+                                <span className="text-lg">{salePrice}</span>
+                                <span className="text-sm line-through opacity-70">{mainPrice}</span>
+                            </div>
+                            <span>تومان</span>
+                        </div>
+
+
+
+                    </div>
                 </Button>
             </div>
         </Link>
@@ -86,11 +107,11 @@ const CreditPlansSection = () => {
                 'سقف اعتبار ۵۰ میلیون',
                 'ویزیت اولیه پزشک رایگان',
                 'بدون سود و کارمزد',
-                'هزینه فعال سازی با ۵۰٪ تخفیف ۱ میلیون',
             ],
-            buttonText: 'دریافت اعتبار',
             image: '/images/validation-forms/50mil.svg',
-            link: '/validation?card=50mil'
+            link: '/validation?card=50mil',
+            salePrice: '۵۰۰,۰۰۰',
+            mainPrice: '۱,۰۰۰,۰۰۰'
         },
         {
             title: 'اعتبار ۲۰۰ میلیون تومانی',
@@ -100,11 +121,11 @@ const CreditPlansSection = () => {
                 'ویزیت اولیه پزشک رایگان',
                 'تا ۱۲ ماه بدون سود و کارمزد',
                 '۵میلیون اعتبار بدون نیاز به چک و سفته',
-                'هزینه فعالسازی با ۵۰٪ تخفیف ۴ میلیون',
             ],
-            buttonText: 'دریافت اعتبار',
             image: '/images/validation-forms/200mil.svg',
-            link: '/validation?card=200mil'
+            link: '/validation?card=200mil',
+            salePrice: '۲,۰۰۰,۰۰۰',
+            mainPrice: '۴,۰۰۰,۰۰۰'
         }
     ]
 
@@ -128,9 +149,10 @@ const CreditPlansSection = () => {
                         <CreditPlan
                             title={plan.title}
                             features={plan.features}
-                            buttonText={plan.buttonText}
                             image={plan.image}
                             link={plan.link}
+                            salePrice={plan.salePrice}
+                            mainPrice={plan.mainPrice}
                         />
                     </div>
                 ))}
