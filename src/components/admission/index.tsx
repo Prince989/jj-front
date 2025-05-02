@@ -72,10 +72,11 @@ const UserRequest = (
                 if (is24) {
                     prepayPercentage = 50
                     installmentPercentage = 50
-                    installment = amount * installmentPercentage / 100;
-                    prepay = (amount * 18 * (24 + 1)) / 2400;
-                    prepay *= 0.5;
-                    installment = prepay;
+                    const profit = (amount * 18 * (24 + 1)) / 2400;
+                    installment = amount + profit;
+                    installment *= installmentPercentage / 100;
+                    prepay = amount + profit;
+                    prepay *= prepayPercentage / 100;
                     months = 24;
                 }
                 else {
