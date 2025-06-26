@@ -4,7 +4,7 @@ import { useAuth } from 'src/hooks/useAuth'
 
 // Import components
 import CeleardHeader from 'src/components/celeard/header'
-import HeroSection from 'src/components/dentistry-panel/HeroSection'
+import HeroSection from 'src/components/celeard/heroSection'
 import Footer from 'src/components/footer'
 import { useRouter } from 'next/router'
 import mAxios from 'src/configs/axios'
