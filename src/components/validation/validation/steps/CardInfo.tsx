@@ -1,12 +1,14 @@
 import { Box, Typography, Button, styled, Grid, CircularProgress } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import { usePersonalInfoStore } from 'src/store/usePersonalInfoStore'
 import { List, ListItem } from '@mui/material'
 import { useFinancialValidation } from 'src/hooks/useFinancialValidation'
-import usePaymentVerification from 'src/hooks/usePaymentVerification'
+import { usePaymentVerification } from 'src/hooks/usePaymentVerification'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
+import ConfirmationDialog from './ConfirmationDialog'
+import OTPDialog from './OTPDialog'
 
 // import { format } from 'date-fns-jalali'
 
@@ -63,7 +65,10 @@ const CardInfo = () => {
     const cardInfo = usePersonalInfoStore(state => state.cardInfo)
     const { handleValidation } = useFinancialValidation()
     const { setActiveStep } = usePersonalInfoStore()
-    const { loading, error } = usePaymentVerification()
+    const { loading, error, getVerificationOtp, verifyOtp } = usePaymentVerification()
+
+    const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
+    const [showOtpDialog, setShowOtpDialog] = useState(false)
 
     useEffect(() => {
         if (error) {
@@ -77,6 +82,31 @@ const CardInfo = () => {
         }
     }, [error, setActiveStep, router])
 
+    const handleConfirmation = async () => {
+        setShowConfirmationDialog(false)
+        setShowOtpDialog(true)
+        const success = await getVerificationOtp()
+        if (!success) {
+            setShowOtpDialog(false)
+        }
+    }
+
+    const handleOtpVerification = async (token: string) => {
+        const success = await verifyOtp(token)
+        if (success) {
+            await handleValidation()
+            handleNext()
+        }
+    }
+
+    const handleValidationClick = () => {
+        setShowConfirmationDialog(true)
+    }
+
+    const handleNext = () => {
+        setActiveStep(3)
+    }
+
     if (loading) {
         return (
             <LoadingContainer>
@@ -87,21 +117,7 @@ const CardInfo = () => {
     }
 
     if (!personalInfo || !cardInfo) {
-
         return null
-    }
-
-    const handleValidationClick = async () => {
-        try {
-            await handleValidation();
-            handleNext()
-        } catch (error) {
-            console.error('Error in validation:', error)
-        }
-    }
-
-    const handleNext = () => {
-        setActiveStep(3)
     }
 
     return (
@@ -208,6 +224,18 @@ const CardInfo = () => {
                     درخواست اعتبارسنجی
                 </Button>
             </Grid>
+
+            <ConfirmationDialog
+                open={showConfirmationDialog}
+                onClose={() => setShowConfirmationDialog(false)}
+                onConfirm={handleConfirmation}
+            />
+
+            <OTPDialog
+                open={showOtpDialog}
+                onClose={() => setShowOtpDialog(false)}
+                onVerify={handleOtpVerification}
+            />
         </Box>
     )
 }
