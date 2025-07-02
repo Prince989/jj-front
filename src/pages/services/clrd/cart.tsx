@@ -1,15 +1,14 @@
 import React, { ReactNode, useEffect } from 'react'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
-import { useAuth } from 'src/hooks/useAuth'
 
 // Import components
 import CeleardHeader from 'src/components/celeard/header'
-import HeroSection from 'src/components/celeard/heroSection'
 import Footer from 'src/components/footer'
 import { useRouter } from 'next/router'
 import mAxios from 'src/configs/axios'
+import Cart from 'src/components/celeard/cart'
 
-const CeleardPanel = () => {
+const CartPage = () => {
     const { query, replace } = useRouter();
 
     useEffect(() => {
@@ -24,22 +23,22 @@ const CeleardPanel = () => {
     }, [query])
 
     return (
-        <div className="bg-white">
-            <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
+        <div className="bg-[#FFFCFA] max-w-[1440px] mx-auto">
+            <div className="flex flex-col px-3 lg:px-24 mb-24">
                 <CeleardHeader />
             </div>
-            <div className="flex flex-col bg-white px-3 lg:px-24 mb-24">
-                <HeroSection />
+            <div className="flex flex-col px-3 lg:px-24 mb-24">
+                <Cart />
             </div>
             <Footer />
         </div>
     )
 }
 
-CeleardPanel.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+CartPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-CeleardPanel.authGuard = false
-CeleardPanel.guestGuard = false
+CartPage.authGuard = false
+CartPage.guestGuard = false
 
-export default CeleardPanel
+export default CartPage
 
