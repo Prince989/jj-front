@@ -72,10 +72,11 @@ const UserRequest = (
                 if (is24) {
                     prepayPercentage = 50
                     installmentPercentage = 50
-                    installment = amount * installmentPercentage / 100;
-                    prepay = (amount * 18 * (24 + 1)) / 2400;
-                    prepay *= 0.5;
-                    installment = prepay;
+                    const profit = (amount * 18 * (24 + 1)) / 2400;
+                    installment = amount + profit;
+                    installment *= installmentPercentage / 100;
+                    prepay = amount + profit;
+                    prepay *= prepayPercentage / 100;
                     months = 24;
                 }
                 else {
@@ -214,7 +215,7 @@ const UserRequest = (
                             </FormControl>
                             <Box sx={{ mx: "30px" }} />
                             {
-                                creditAmount == 2000000000 &&
+                                creditAmount == 2000000000 && serviceType == "medical" &&
                                 <FormControl>
                                     <FormLabel id="demo-row-radio-buttons-group-label">شیوه پرداخت</FormLabel>
                                     <RadioGroup
