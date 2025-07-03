@@ -14,6 +14,7 @@ import { useRegister } from 'src/hooks/useRegister'
 import { useLogin } from 'src/hooks/useLogin'
 import { useRouter } from 'next/navigation';
 import { useCartQuantity } from 'src/context/CartContext';
+import authConfig from 'src/configs/auth'
 
 interface PostalInfoForm {
     fname: string;
@@ -42,10 +43,11 @@ const PostalInfo: React.FC = () => {
             password: '',
             postalCode: '',
             address: '',
-            paymentType: 'installment',
+            paymentType: paymentType,
         },
     });
 
+    // const { profileData } = useProfile();
 
     const [showOtpDialog, setShowOtpDialog] = useState(false)
     const [pendingFormData, setPendingFormData] = useState<PostalInfoForm | null>(null)
@@ -60,12 +62,42 @@ const PostalInfo: React.FC = () => {
 
     // On form submit, request OTP and store form data
     const onSubmit = async (data: PostalInfoForm) => {
-        setPendingFormData(data)
-        try {
-            await requestOtpCode({ phoneNumber: data.phone })
-            setShowOtpDialog(true)
-        } catch (err) {
-            // Error handled in hook
+        // Check for token in localStorage
+        const token = typeof window !== 'undefined' ? localStorage.getItem(authConfig.storageTokenKeyName) : null;
+        if (token) {
+            setIsProcessing(true);
+            try {
+                // Only add to cart and create order
+                await handleAddToCart({
+                    products: [{ productId: 1, count: quantity }]
+                });
+                const orderDetail = await handleCreateOrder({
+                    transportationId: 1,
+                    hasInstallment: data.paymentType === 'installment',
+                    address: data.address,
+                    postalCode: data.postalCode
+                });
+                const { data: { url, message } } = orderDetail?.data;
+                if (message === "Success") {
+                    toast.success('سفارش با موفقیت ثبت شد');
+                    router.push('/services/clrd');
+                    window.open(url, "_blank")
+                }
+            } catch (err) {
+                // Errors are handled in hooks, but you can add more here if needed
+            } finally {
+                setIsProcessing(false);
+            }
+        } else {
+            setPendingFormData(data)
+            try {
+                await requestOtpCode({ phoneNumber: data.phone })
+                setShowOtpDialog(true)
+            } catch (err) {
+                setShowOtpDialog(false)
+
+                // Error handled in hook
+            }
         }
     }
 
@@ -97,14 +129,18 @@ const PostalInfo: React.FC = () => {
             })
 
             // 4. Create order
-            await handleCreateOrder({
+            const orderDetail = await handleCreateOrder({
                 transportationId: 1,
                 hasInstallment: pendingFormData.paymentType === 'installment',
                 address: pendingFormData.address,
                 postalCode: pendingFormData.postalCode
             })
-            toast.success('سفارش با موفقیت ثبت شد')
-            router.push('/services/clrd')
+            const { data: { url, message } } = orderDetail?.data;
+            if (message === "Success") {
+                toast.success('سفارش با موفقیت ثبت شد');
+                router.push('/services/clrd');
+                window.open(url, "_blank")
+            }
         } catch (err) {
 
             // Errors are handled in hooks, but you can add more here if needed
@@ -113,6 +149,18 @@ const PostalInfo: React.FC = () => {
             setPendingFormData(null)
         }
     }
+
+    // useEffect(() => {
+    //     if (profileData) {
+    //         reset(prev => ({
+    //             ...prev,
+    //             fname: profileData.fName || '',
+    //             lname: profileData.lName || '',
+    //             nationalCode: profileData.nationalCode || '',
+    //             phone: profileData.phoneNumber || '',
+    //         }));
+    //     }
+    // }, [profileData, reset]);
 
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-2 bg-[#F9FBFD]">

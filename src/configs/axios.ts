@@ -17,4 +17,18 @@ mAxios.interceptors.request.use((config) => {
     return config;
 });
 
+// Add a response interceptor
+mAxios.interceptors.response.use(
+    response => response,
+    error => {
+        if (typeof window !== "undefined" && error.response && error.response.status === 403) {
+            localStorage.removeItem(authConfig.storageTokenKeyName);
+            localStorage.removeItem('userData');
+            window.location.href = "/";
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export default mAxios;

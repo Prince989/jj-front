@@ -10,7 +10,7 @@ const PostalInfoPage = () => {
 
     return (
         <div className="bg-[#FFFCFA] max-w-[1440px] mx-auto">
-            <div className="flex flex-col px-3 lg:px-24 mb-24">
+            <div className="flex flex-col px-3 lg:px-24">
                 <CeleardHeader />
             </div>
             <div className="flex flex-col px-3 lg:px-24 mb-24">

@@ -13,7 +13,7 @@ interface UseOrderReturn {
         hasInstallment: boolean
         address: string
         postalCode: string
-    }) => Promise<void>
+    }) => Promise<any>
 }
 
 export const useOrder = ({ onSuccess }: UseOrderProps): UseOrderReturn => {
@@ -22,12 +22,15 @@ export const useOrder = ({ onSuccess }: UseOrderProps): UseOrderReturn => {
     const handleCreateOrder = async (data: { transportationId: number; hasInstallment: boolean; address: string; postalCode: string }) => {
         try {
             setIsUpdating(true)
-            await createOrder(data)
+            const result = await createOrder(data)
             toast.success('سفارش با موفقیت ثبت شد')
             onSuccess?.()
+
+            return result
         } catch (error) {
             console.error('Create order error:', error)
             toast.error('خطا در ثبت سفارش. لطفا دوباره تلاش کنید')
+            throw error
         } finally {
             setIsUpdating(false)
         }
