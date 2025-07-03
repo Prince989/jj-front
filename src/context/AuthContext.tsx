@@ -53,7 +53,6 @@ const AuthProvider = ({ children }: Props) => {
     const initAuth = async (): Promise<void> => {
       const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName) || Cookies.get(authConfig.storageTokenKeyName)
       if (storedToken) {
-        console.log(storedToken, "this is stored");
         setLoading(true)
         await mAxios
           .get(authConfig.meEndpoint, {

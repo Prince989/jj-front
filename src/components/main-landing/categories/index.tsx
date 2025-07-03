@@ -18,10 +18,10 @@ const categories: CategoryItemProps[] = [
         badge: "",
     },
     {
-        title: 'طلا و جواهر',
-        image: '/images/main-landing/tala.png',
-        href: '',
-        badge: "به زودی"
+        title: 'سفید کننده دندان کلرد',
+        image: "/images/celeard/cleard-product.svg",
+        href: '/services/clrd',
+        badge: ""
     },
     {
         title: 'لوازم خانگی',
