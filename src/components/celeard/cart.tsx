@@ -20,22 +20,22 @@ const Cart: React.FC = () => {
 
     return (
         <div
-            className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-2"
+            className="w-full flex flex-col items-center justify-center min-h-screen px-2"
         >
             {/* Main Card */}
             <div className="w-full bg-[#EDF7FF] rounded-2xl shadow-md px-6 py-10 flex flex-col lg:flex-row gap-8 mb-16">
                 {/* Product Details & Controls */}
-                <div className="w-full lg:w-[60%] flex flex-col gap-6 justify-between">
+                <div className="w-full lg:w-[60%] flex flex-col gap-6 justify-between order-2 lg:order-1">
                     {/* Product Info */}
                     <div>
-                        <div className="flex flex-row justify-between items-center">
+                        <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
                             <div className="text-2xl font-extrabold mb-2 text-[#222]">سفید کننده دندان کلرد</div>
                             <div className="flex items-center gap-4 mb-4">
                                 <span className="text-xl text-[#B0B0B0] line-through">{toPersianNumber(oldPricePerItem)} ت</span>
                                 <span className="text-2xl text-[#222] font-bold">{toPersianNumber(pricePerItem)} ت</span>
                             </div>
                         </div>
-                        <div className="text-sm text-[#555] leading-7 mb-4 mt-8">
+                        <div className="text-sm text-[#555] leading-7 mb-4 mt-8 text-center lg:text-right">
                             <span className='text-xl text-[#222] mb-4'>سفیدکننده و ترمیم کننده</span>
                             <p className='text-sm text-[#222] mt-4'>
                                 ژل سفید‌کننده دندان عملکردی مشابه بلیچینگ مطب‌های دندانپزشکی دارد، اما به دلیل استفاده از دوز‌های پایین‌تر و اعمال آن به مرور زمان، نتایج به صورت تدریجی در طول یک تا دو هفته قابل مشاهده است. ژل سفید‌کننده دندان عملکردی مشابه بلیچینگ مطب‌های دندانپزشکی دارد، اما به دلیل استفاده از دوز‌های پایین‌تر و اعمال آن به مرور زمان، نتایج به صورت تدریجی در طول یک تا دو هفته قابل مشاهده است.
@@ -114,9 +114,9 @@ const Cart: React.FC = () => {
                     </div>
                 </div>
                 {/* Product Image */}
-                <div className="w-full lg:w-[40%] flex items-center justify-center bg-white rounded-2xl">
+                <div className="w-full lg:w-[40%] flex items-center justify-center bg-white rounded-2xl order-1 lg:order-2">
                     <img
-                        src="/images/celeard/hero2.svg"
+                        src="/images/celeard/product-image.svg"
                         alt="سفید کننده دندان کلرد"
                         className="w-full max-w-xs h-[340px] object-contain"
                         style={{ pointerEvents: 'none' }}

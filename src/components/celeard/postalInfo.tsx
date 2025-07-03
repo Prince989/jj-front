@@ -130,7 +130,7 @@ const PostalInfo: React.FC = () => {
             )}
             <div className="w-full max-w-[1440px] bg-[#EAF6FF] rounded-2xl shadow-md px-6 py-10 flex flex-col gap-8 mb-16">
                 <div className="w-full flex flex-col gap-4 mb-6">
-                    <div className="text-2xl font-bold text-right text-[#222]">کاربر گرامی، لطفا فرم زیر را تکمیل نمایید.</div>
+                    <div className="text-xl lg:text-2xl font-bold text-[#222] text-center lg:text-right">کاربر گرامی، لطفا فرم زیر را تکمیل نمایید.</div>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-8">
                     {/* Top Row */}
@@ -145,7 +145,7 @@ const PostalInfo: React.FC = () => {
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="کوثر"
+                                        placeholder="نام"
                                         error={!!errors.fname}
                                         helperText={errors.fname?.message}
                                     />
@@ -162,7 +162,7 @@ const PostalInfo: React.FC = () => {
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="منعمی"
+                                        placeholder="نام خانوادگی"
                                         error={!!errors.lname}
                                         helperText={errors.lname?.message}
                                     />
@@ -179,7 +179,7 @@ const PostalInfo: React.FC = () => {
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="0034556789"
+                                        placeholder="کدملی"
                                         error={!!errors.nationalCode}
                                         helperText={errors.nationalCode?.message}
                                     />
@@ -216,7 +216,7 @@ const PostalInfo: React.FC = () => {
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="09123456777"
+                                        placeholder="شماره تماس"
                                         error={!!errors.phone}
                                         helperText={errors.phone?.message}
                                     />
@@ -233,7 +233,7 @@ const PostalInfo: React.FC = () => {
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="09123456777"
+                                        placeholder="کدپستی"
                                         error={!!errors.postalCode}
                                         helperText={errors.postalCode?.message}
                                     />
@@ -254,7 +254,7 @@ const PostalInfo: React.FC = () => {
                                     fullWidth
                                     multiline
                                     minRows={2}
-                                    placeholder="تهران، شهرک غرب، بلوار دادمان، برج کنتراست، طبقه ۴، واحد ۴۵۶، شرکت جی جی لاین."
+                                    placeholder="آدرس"
                                     error={!!errors.address}
                                     helperText={errors.address?.message}
                                 />

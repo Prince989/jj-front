@@ -3,10 +3,10 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // Import components
 import CeleardHeader from 'src/components/celeard/header'
-import Footer from 'src/components/footer'
 import { useRouter } from 'next/router'
 import mAxios from 'src/configs/axios'
 import Cart from 'src/components/celeard/cart'
+import CeleardFooter from 'src/components/celeard/footer'
 
 const CartPage = () => {
     const { query, replace } = useRouter();
@@ -24,13 +24,13 @@ const CartPage = () => {
 
     return (
         <div className="bg-[#FFFCFA] max-w-[1440px] mx-auto">
-            <div className="flex flex-col px-3 lg:px-24 mb-24">
+            <div className="flex flex-col px-3 lg:px-24 mb-14">
                 <CeleardHeader />
             </div>
             <div className="flex flex-col px-3 lg:px-24 mb-24">
                 <Cart />
             </div>
-            <Footer />
+            <CeleardFooter />
         </div>
     )
 }

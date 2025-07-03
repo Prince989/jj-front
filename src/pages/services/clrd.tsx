@@ -4,11 +4,11 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // Import components
 import CeleardHeader from 'src/components/celeard/header'
 import HeroSection from 'src/components/celeard/heroSection'
-import Footer from 'src/components/footer'
 import { useRouter } from 'next/router'
 import mAxios from 'src/configs/axios'
 import AboutSection from 'src/components/celeard/aboutSection'
 import WhyCeleardSection from 'src/components/celeard/whyCeleardSection'
+import CeleardFooter from 'src/components/celeard/footer'
 
 const CeleardPanel = () => {
     const { query, replace } = useRouter();
@@ -34,7 +34,7 @@ const CeleardPanel = () => {
                 <AboutSection />
                 <WhyCeleardSection />
             </div>
-            <Footer />
+            <CeleardFooter />
         </div>
     )
 }

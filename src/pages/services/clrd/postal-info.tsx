@@ -3,8 +3,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // Import components
 import CeleardHeader from 'src/components/celeard/header'
-import Footer from 'src/components/footer'
 import PostalInfo from 'src/components/celeard/postalInfo'
+import CeleardFooter from 'src/components/celeard/footer'
 
 const PostalInfoPage = () => {
 
@@ -16,7 +16,7 @@ const PostalInfoPage = () => {
             <div className="flex flex-col px-3 lg:px-24 mb-24">
                 <PostalInfo />
             </div>
-            <Footer />
+            <CeleardFooter />
         </div>
     )
 }

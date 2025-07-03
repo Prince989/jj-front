@@ -63,7 +63,7 @@ const AddToCart: React.FC = () => {
             {/* Payment Method */}
             <div className="flex flex-col gap-4 mt-4">
                 <div className="text-lg font-bold text-right">نحوه پرداخت</div>
-                <div className="flex flex-row items-center justify-between gap-2">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2">
                     <div className="flex flex-col items-start gap-2">
                         <label className="flex items-center cursor-pointer gap-2">
                             <Radio

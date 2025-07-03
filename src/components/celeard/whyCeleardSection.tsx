@@ -1,6 +1,7 @@
 import React from 'react';
 import AddToCart from './addToCart';
 import ContactUs from './contactUs';
+import ProductInfo from './productInfo';
 
 const features = [
     {
@@ -19,7 +20,7 @@ const features = [
 
 const WhyCeleardSection = () => {
     return (
-        <section className="w-full flex flex-col lg:mt-40 lg:mb-20 mt-20 mb-10 gap-10">
+        <section className="w-full flex flex-col lg:mt-20 lg:mb-20 mt-10 mb-10 gap-10">
             {/* Title */}
             <div className="w-full flex flex-row">
                 <h2 className="text-xl lg:text-2xl font-bold text-center lg:text-left">
@@ -73,6 +74,24 @@ const WhyCeleardSection = () => {
                         className="w-full h-full object-contain z-0"
                         style={{ pointerEvents: 'none' }}
                     />
+                    <div className="hidden lg:block absolute top-48 left-1/4 -translate-x-1/4">
+                        <ProductInfo
+                            title="سفید کننده دندان کلرد"
+                            subTitle="سفیدکننده و ترمیم کننده"
+                            price="۹۸۰,۰۰۰"
+                            oldPrice="۱,۵۶۷,۰۰۰"
+                            size="large"
+                        />
+                    </div>
+                    <div className="block lg:hidden">
+                        <ProductInfo
+                            title="سفید کننده دندان کلرد"
+                            subTitle="سفیدکننده و ترمیم کننده"
+                            price="۹۸۰,۰۰۰"
+                            oldPrice="۱,۵۶۷,۰۰۰"
+                            size="large"
+                        />
+                    </div>
                     <AddToCart />
                 </div>
             </div>

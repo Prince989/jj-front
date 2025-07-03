@@ -1,4 +1,5 @@
 import React from 'react';
+import ProductInfo from './productInfo';
 
 const HeroSection = () => {
     return (
@@ -18,14 +19,32 @@ const HeroSection = () => {
             {/* Left Side (70%) */}
             <div className="w-full md:w-[70%] flex flex-col lg:flex-row">
                 {/* Right 50% (Image and product card) */}
-                <div className="w-full lg:w-2/3 h-[255px] lg:h-[390px] flex items-center justify-center relative">
+                <div className="w-full lg:w-2/3 h-[255px] lg:h-[390px] flex flex-col lg:flex-row items-center justify-center relative">
                     {/* Background SVG */}
                     <img
                         src="/images/celeard/hero1.svg"
                         alt="Hero BG"
-                        className="absolute inset-0 w-full h-full object-contain z-0"
+                        className="lg:absolute inset-0 w-full h-full object-contain z-0"
                         style={{ pointerEvents: 'none' }}
                     />
+                    <div className="hidden lg:block absolute bottom-12 left-16">
+                        <ProductInfo
+                            title="محصول کلرد"
+                            subTitle="سفیدکننده و ترمیم کننده"
+                            price="۹۸۰,۰۰۰"
+                            link="red"
+                            size="small"
+                        />
+                    </div>
+                    <div className="block lg:hidden absolute bottom-9 left-12">
+                        <ProductInfo
+                            title="محصول کلرد"
+                            subTitle="سفیدکننده و ترمیم کننده"
+                            price="۹۸۰,۰۰۰"
+                            link="red"
+                            size="very-small"
+                        />
+                    </div>
                 </div>
                 {/* Left 50% (Text, absolute) */}
                 <div className="w-full lg:w-1/3 relative flex items-center justify-center">
@@ -44,15 +63,15 @@ const HeroSection = () => {
                 {/* Orders, Satisfaction, Credit, Barcode */}
                 <div className="flex flex-col gap-5 w-full">
                     <div>
-                        <div className="text-3xl font-bold text-center lg:text-left">+1000</div>
+                        <div className="text-3xl font-bold text-center lg:text-left">+۱۰۰۰</div>
                         <div className="text-base text-gray-500 mt-1 text-center lg:text-left">سفارش آنلاین</div>
                     </div>
                     <div>
-                        <div className="text-3xl font-bold text-center lg:text-left">%76</div>
+                        <div className="text-3xl font-bold text-center lg:text-left">%۸۶</div>
                         <div className="text-base text-gray-500 mt-1 text-center lg:text-left">رضایت مشتریان</div>
                     </div>
                     <div>
-                        <div className="text-3xl font-bold text-center lg:text-left">+1700</div>
+                        <div className="text-3xl font-bold text-center lg:text-left">+۱۷۰۰</div>
                         <div className="text-base text-gray-500 mt-1 text-center lg:text-left">اعتبار خرید</div>
                     </div>
                     <div className="mt-4 flex justify-center lg:justify-end">
@@ -66,37 +85,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-
-
-{/* Product Card */ }
-// <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
-//     {/* Product Image */}
-//     <img
-//         src="/images/celeard/celeard.svg"
-//         alt="Celeard Product"
-//         className="w-40 md:w-52 lg:w-60 xl:w-64 mx-auto drop-shadow-xl"
-//     />
-//     {/* Product Card Content */}
-//     <div className="bg-[#FFE7E7] rounded-3xl shadow-lg px-6 py-6 mt-4 w-64 max-w-full flex flex-col items-center">
-//         <div className="flex items-center gap-2 mb-2">
-//             <span className="text-lg font-bold">محصول کلرد</span>
-//             {/* Stars */}
-//             <span className="flex flex-col items-center ml-2">
-//                 <span className="text-[#FF3B57] text-xl">★</span>
-//                 <span className="text-[#FF3B57] text-xl">★</span>
-//                 <span className="text-[#FF3B57] text-xl">★</span>
-//                 <span className="text-[#FF3B57] text-xl">★</span>
-//                 <span className="text-[#FF3B57] text-xl">★</span>
-//             </span>
-//         </div>
-//         <div className="text-gray-600 text-sm mb-2">سفیدکننده و ترمیم کننده</div>
-//         <div className="text-lg font-bold mb-2">۹۹۸,۰۰۰ ت</div>
-//         <a
-//             href="#"
-//             className="text-[#FF3B57] font-bold underline underline-offset-4 hover:text-[#e62a47] transition-colors"
-//         >
-//             خرید محصول
-//         </a>
-//     </div>
-// </div>

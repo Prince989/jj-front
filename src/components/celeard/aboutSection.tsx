@@ -1,4 +1,5 @@
 import React from 'react';
+import ProductInfo from './productInfo';
 
 const AboutSection = () => {
     return (
@@ -25,6 +26,24 @@ const AboutSection = () => {
                             className="w-full h-full object-contain z-0"
                             style={{ pointerEvents: 'none' }}
                         />
+                        <div className="hidden lg:block absolute bottom-0 left-5">
+                            <ProductInfo
+                                title="محصول کلرد"
+                                subTitle="سفیدکننده و ترمیم کننده"
+                                price="۹۸۰,۰۰۰"
+                                link="blue"
+                                size="small"
+                            />
+                        </div>
+                        <div className="block lg:hidden absolute bottom-10 left-[100px]">
+                            <ProductInfo
+                                title="محصول کلرد"
+                                subTitle="سفیدکننده و ترمیم کننده"
+                                price="۹۸۰,۰۰۰"
+                                link="blue"
+                                size="very-small"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,19 +57,28 @@ const AboutSection = () => {
                             className="w-full h-full object-contain z-0"
                             style={{ pointerEvents: 'none' }}
                         />
+                        <div className="hidden lg:block absolute bottom-20 right-16">
+                            <ProductInfo
+                                title="محصول کلرد"
+                                subTitle="سفیدکننده و ترمیم کننده"
+                                price="۹۸۰,۰۰۰"
+                                link="red"
+                                size="small"
+                            />
+                        </div>
+                        <div className="block lg:hidden absolute bottom-14 right-12">
+                            <ProductInfo
+                                title="محصول کلرد"
+                                subTitle="سفیدکننده و ترمیم کننده"
+                                price="۹۸۰,۰۰۰"
+                                link="red"
+                                size="very-small"
+                            />
+                        </div>
                     </div>
                 </div>
                 {/* Right Side (60%) */}
                 <div className="w-full lg:w-[60%] flex flex-col justify-center gap-10 lg:order-2 order-1">
-                    <div className='w-full flex justify-end'>
-                        <div className="flex flex-col gap-3 w-full lg:w-2/3">
-                            <span className="text-xl font-bold leading-6">
-                                سفید کننده دندان <span className="text-[#FF3B57]">کلرد</span>
-                            </span>
-                            <p className="text-sm text-gray-500"> ژل سفید‌کننده دندان عملکردی مشابه بلیچینگ مطب‌های دندانپزشکی دارد، اما به دلیل استفاده از دوز‌های پایین‌تر و اعمال آن به مرور زمان، نتایج به صورت تدریجی در طول یک تا دو هفته قابل مشاهده است.</p>
-
-                        </div>
-                    </div>
                     <div className='w-full flex justify-end'>
                         <div className="flex flex-col gap-3 w-full lg:w-2/3">
                             <span className="text-xl font-bold leading-6">
