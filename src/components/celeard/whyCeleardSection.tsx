@@ -78,7 +78,7 @@ const WhyCeleardSection = () => {
                         <ProductInfo
                             title="سفید کننده دندان کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
-                            price="۹۸۰,۰۰۰"
+                            price="۹۸۶,۰۰۰"
                             oldPrice="۱,۵۶۷,۰۰۰"
                             size="large"
                         />
@@ -87,7 +87,7 @@ const WhyCeleardSection = () => {
                         <ProductInfo
                             title="سفید کننده دندان کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
-                            price="۹۸۰,۰۰۰"
+                            price="۹۸۶,۰۰۰"
                             oldPrice="۱,۵۶۷,۰۰۰"
                             size="large"
                         />

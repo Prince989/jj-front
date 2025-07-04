@@ -4,7 +4,7 @@ import Radio from '@mui/material/Radio';
 import { useCartQuantity } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
 
-const pricePerItem = 998000;
+const pricePerItem = 986000;
 
 const AddToCart: React.FC = () => {
     const { quantity, setQuantity, paymentType, setPaymentType } = useCartQuantity();
@@ -75,7 +75,7 @@ const AddToCart: React.FC = () => {
                             <span className="text-sm">پرداخت اقساطی با اعتبار <span className="text-[#002B8A] font-bold">Jey <span className="text-[#FF6A00]">Jey</span> Line</span></span>
                         </label>
                         <div className="bg-[#F9FBFD] rounded-lg p-3 text-xs text-[#222] mt-1">
-                            ۴ قسط <span className="text-[#008EFF] font-bold">۴۵۶/۰۰۰</span> تومانی (بازپرداخت اولین قسط ۳۱ تیرماه)
+                            ۴ قسط <span className="text-[#008EFF] font-bold">۲۴۶/۵۰۰</span> تومانی (بازپرداخت اولین قسط ۳۱ تیرماه)
                         </div>
                         <label className="flex items-center cursor-pointer gap-2">
                             <Radio

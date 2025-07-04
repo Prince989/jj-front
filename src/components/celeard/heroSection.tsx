@@ -31,7 +31,7 @@ const HeroSection = () => {
                         <ProductInfo
                             title="محصول کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
-                            price="۹۸۰,۰۰۰"
+                            price="۹۸۶,۰۰۰"
                             link="red"
                             size="small"
                         />
@@ -40,7 +40,7 @@ const HeroSection = () => {
                         <ProductInfo
                             title="محصول کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
-                            price="۹۸۰,۰۰۰"
+                            price="۹۸۶,۰۰۰"
                             link="red"
                             size="very-small"
                         />
