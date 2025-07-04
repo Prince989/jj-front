@@ -7,6 +7,7 @@ import HeroSection from 'src/components/celeard/heroSection'
 import AboutSection from 'src/components/celeard/aboutSection'
 import WhyCeleardSection from 'src/components/celeard/whyCeleardSection'
 import CeleardFooter from 'src/components/celeard/footer'
+import Consulting from 'src/components/celeard/consulting'
 
 const CeleardPanel = () => {
 
@@ -18,6 +19,7 @@ const CeleardPanel = () => {
             <div className="flex flex-col px-3 lg:px-24 mb-24">
                 <HeroSection />
                 <AboutSection />
+                <Consulting />
                 <WhyCeleardSection />
             </div>
             <CeleardFooter />
