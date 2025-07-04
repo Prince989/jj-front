@@ -34,20 +34,7 @@ const Consulting: React.FC = () => {
                 {/* Two Column Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Left Column - Image */}
-                    <div className="flex justify-center lg:justify-start">
-                        <div className="relative w-full max-w-md h-80">
-                            <Image
-                                src="/images/celeard/consulting.svg"
-                                alt="Consulting"
-                                fill
-                                className="object-contain"
-                                priority
-                            />
-                        </div>
-                    </div>
-
-                    {/* Right Column - Form */}
-                    <div className="flex justify-center lg:justify-start">
+                    <div className="flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="w-full max-w-md">
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                                 <div>
@@ -86,6 +73,20 @@ const Consulting: React.FC = () => {
                             </form>
                         </div>
                     </div>
+
+                    {/* Right Column - Form */}
+                    <div className="flex justify-center lg:justify-start order-1 lg:order-2">
+                        <div className="relative w-full max-w-md h-80">
+                            <Image
+                                src="/images/celeard/consulting.svg"
+                                alt="Consulting"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
