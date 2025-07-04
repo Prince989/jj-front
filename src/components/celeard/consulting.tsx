@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import { useRequestClrd } from 'src/hooks/useConsultingClrd';
 
 interface ConsultationFormData {
     phoneNumber: string;
@@ -14,11 +15,16 @@ const Consulting: React.FC = () => {
         reset
     } = useForm<ConsultationFormData>();
 
-    const onSubmit = (data: ConsultationFormData) => {
-        console.log('Phone number submitted:', data.phoneNumber);
+    const { isConsulting, handleConsulting } = useRequestClrd({
+        onSuccess: () => {
+            reset();
+        }
+    });
 
-        // Here you can add your API call to submit the phone number
-        reset();
+    const onSubmit = async (data: ConsultationFormData) => {
+        await handleConsulting({
+            phoneNumber: data.phoneNumber,
+        });
     };
 
     return (
@@ -63,12 +69,12 @@ const Consulting: React.FC = () => {
                                         </p>
                                     )}
                                 </div>
-
                                 <button
                                     type="submit"
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    disabled={isConsulting}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                 >
-                                    ارسال درخواست مشاوره
+                                    {isConsulting ? 'در حال ارسال...' : 'ارسال درخواست مشاوره'}
                                 </button>
                             </form>
                         </div>
