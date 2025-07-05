@@ -1,9 +1,9 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 // ** Next Imports
 import Head from 'next/head'
-import { Router } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
@@ -35,6 +35,7 @@ import AclGuard from 'src/@core/components/auth/AclGuard'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
 import AuthGuard from 'src/@core/components/auth/AuthGuard'
 import GuestGuard from 'src/@core/components/auth/GuestGuard'
+import GoogleAnalytics from 'src/components/GoogleAnalytics'
 
 // ** Spinner Import
 import Spinner from 'src/@core/components/spinner'
@@ -49,6 +50,9 @@ import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
+
+//utils
+import { pageview } from 'src/utils/gtag'
 
 // ** Prismjs Styles
 import 'prismjs'
@@ -123,6 +127,20 @@ const App = (props: ExtendedAppProps) => {
 
   const aclAbilities = Component.acl ?? defaultACLObj
 
+  const router = useRouter()
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      pageview(url)
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
+
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
@@ -145,6 +163,7 @@ const App = (props: ExtendedAppProps) => {
                     <CartProvider>
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
                         <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
+                          <GoogleAnalytics />
                           {getLayout(<Component {...pageProps} />)}
                         </AclGuard>
                       </Guard>
