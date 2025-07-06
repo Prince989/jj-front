@@ -1,8 +1,12 @@
-version: '3.8'
-
 services:
   frontend:
     build: .
     container_name: insurance-transfer-frontend
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
+    networks:
+       jjline-net
+         ipv4_address: 150.50.50.4
+networks:
+  jjline-net:
+    external: true
