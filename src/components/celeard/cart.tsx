@@ -5,7 +5,7 @@ import ContactUs from './contactUs';
 import { useCartQuantity } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
 
-const pricePerItem = 998000;
+const pricePerItem = 986000;
 const oldPricePerItem = 1567000;
 
 const Cart: React.FC = () => {

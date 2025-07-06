@@ -9,6 +9,10 @@ interface AddToCartParams {
     products: CartProduct[]
 }
 
+export interface AddConsultingParams {
+    phoneNumber: string
+}
+
 export const addToCart = async (data: AddToCartParams) => {
     const response = await mAxios.post('clrd/cart', data)
 
@@ -17,6 +21,14 @@ export const addToCart = async (data: AddToCartParams) => {
 
 export const getCartInfo = async () => {
     const response = await mAxios.get('clrd/cart')
+
+    return response.data
+}
+
+
+
+export const addConsulting = async (data: AddConsultingParams) => {
+    const response = await mAxios.post('clrd/request', data);
 
     return response.data
 } 

@@ -18,7 +18,7 @@ export default function CeleardFooter() {
                 <div className="w-full lg:w-[35%] flex flex-col items-center lg:items-start text-center lg:text-right">
                     {/* Logo */}
                     <div className="mb-4">
-                        <img src="/celeard-logo.svg" alt="Celeard Logo" className="h-14 w-auto mx-auto lg:mx-0" onClick={() => router.push('/')} />
+                        <img src="/celeard-logo.svg" alt="Celeard Logo" className="h-14 w-auto mx-auto lg:mx-0 cursor-pointer" onClick={() => router.push('/services/clrd')} />
                     </div>
                     {/* Description */}
                     <p className="text-[15px] text-black mb-6 leading-7">
