@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import mAxios from 'src/configs/axios'
+import authConfig from 'src/configs/auth'
+import Cookies from 'js-cookie'
 
 export interface ProfileData {
     id: number
@@ -35,7 +37,16 @@ export const useProfile = () => {
     }
 
     useEffect(() => {
-        fetchProfile()
+        // Check if user has authorization token before making the API call
+        const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName) || Cookies.get(authConfig.storageTokenKeyName)
+
+        if (storedToken) {
+            fetchProfile()
+        } else {
+            // If no token, set loading to false and return null data
+            setLoading(false)
+            setProfileData(null)
+        }
     }, [])
 
     return { profileData, loading, error, refetchProfile: fetchProfile }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import CustomTextField from 'src/@core/components/mui/text-field';
 import Button from '@mui/material/Button';
@@ -14,6 +14,7 @@ import { useRegister } from 'src/hooks/useRegister'
 import { useLogin } from 'src/hooks/useLogin'
 import { useCartQuantity } from 'src/context/CartContext';
 import authConfig from 'src/configs/auth'
+import { useProfile } from 'src/hooks/useProfile';
 
 interface PostalInfoForm {
     fname: string;
@@ -47,6 +48,7 @@ const PostalInfo: React.FC = () => {
     const {
         handleSubmit,
         control,
+        reset,
         formState: { errors },
         watch,
     } = useForm<PostalInfoForm>({
@@ -124,7 +126,7 @@ const PostalInfo: React.FC = () => {
         return new Intl.NumberFormat('fa-IR').format(amount);
     };
 
-    // const { profileData } = useProfile();
+    const { profileData } = useProfile();
 
     const [showOtpDialog, setShowOtpDialog] = useState(false)
     const [pendingFormData, setPendingFormData] = useState<PostalInfoForm | null>(null)
@@ -230,17 +232,17 @@ const PostalInfo: React.FC = () => {
         }
     }
 
-    // useEffect(() => {
-    //     if (profileData) {
-    //         reset(prev => ({
-    //             ...prev,
-    //             fname: profileData.fName || '',
-    //             lname: profileData.lName || '',
-    //             nationalCode: profileData.nationalCode || '',
-    //             phone: profileData.phoneNumber || '',
-    //         }));
-    //     }
-    // }, [profileData, reset]);
+    useEffect(() => {
+        if (profileData) {
+            reset(prev => ({
+                ...prev,
+                fname: profileData.fName || '',
+                lname: profileData.lName || '',
+                nationalCode: profileData.nationalCode || '',
+                phone: profileData.phoneNumber || '',
+            }));
+        }
+    }, [profileData, reset]);
 
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-2 bg-[#F9FBFD]">
