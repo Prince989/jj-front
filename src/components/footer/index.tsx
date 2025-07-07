@@ -25,8 +25,8 @@ const Footer = () => {
 
     const generalIcons = [
         {
-            children: <Link href='https://trustseal.enamad.ir/?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E' target='_blank' referrerPolicy='origin'>
-                <Image src='https://trustseal.enamad.ir/logo.aspx?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
+            children: <Link href='https://trustseal.enamad.ir/?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' target='_blank' referrerPolicy='origin'>
+                <Image src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
             </Link>
         },
         { children: null },
