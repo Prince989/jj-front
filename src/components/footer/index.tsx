@@ -6,7 +6,6 @@ import TelegramIcon from '@mui/icons-material/Telegram'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import ColoredText from 'src/components/dentistry-panel/ColoredText'
 import Link from 'next/link'
-import Image from 'next/image'
 
 const Footer = () => {
     const customerServices = [
@@ -26,10 +25,10 @@ const Footer = () => {
     const generalIcons = [
         {
             children: <Link href='https://trustseal.enamad.ir/?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' target='_blank' referrerPolicy='origin'>
-                <Image src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
+                <img src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
             </Link>
         },
-        { children: null },
+        { children: <div className='w-[70px] h-[70px] overflow-hidden' dangerouslySetInnerHTML={{ __html: `<a style="width: 70px; height: 70px;" referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' alt='eNamad' style='cursor:pointer; width: 70px; height: 70px;' code='snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS'></a>` }} /> },
         { children: null },
         { children: null }
     ]
@@ -140,9 +139,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-
-            <div dangerouslySetInnerHTML={{ __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=588072&Code=q13R8P19nYWYQj9y03cblayPuMw0wx7E' alt='' style='cursor:pointer' code='q13R8P19nYWYQj9y03cblayPuMw0wx7E'></a>` }} />
-
             <div className="w-full flex justify-center items-center bg-primary-blue py-4">
                 <p className="text-sm text-white">
                     کلیه حقوق این وبسایت به جی جی لاین تعلق دارد
