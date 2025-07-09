@@ -5,7 +5,7 @@ services:
     expose:
       - "3000"
     networks:
-       jjline-net
+       jjline-net:
          ipv4_address: 150.50.50.4
 networks:
   jjline-net:
