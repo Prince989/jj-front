@@ -28,7 +28,7 @@ const Footer = () => {
                 <img src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
             </Link>
         },
-        { children: <div className='w-[70px] h-[70px] overflow-hidden' dangerouslySetInnerHTML={{ __html: `<a style="width: 70px; height: 70px;" referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' alt='eNamad' style='cursor:pointer; width: 70px; height: 70px;' code='snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS'></a>` }} /> },
+        { children: null },
         { children: null },
         { children: null }
     ]

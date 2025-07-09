@@ -3,7 +3,7 @@ import ProductInfo from './productInfo';
 
 const AboutSection = () => {
     return (
-        <section className="w-full flex flex-col lg:mt-40 lg:mb-20 mt-20 mb-10 gap-10">
+        <section className="w-full flex flex-col lg:mt-40 lg:mb-20 mt-20 gap-10">
             <div className="w-full flex flex-col lg:flex-row gap-10">
                 {/* Right Side (50%) */}
                 <div className="w-full lg:w-[50%] flex flex-col justify-center items-start gap-10">
@@ -79,17 +79,32 @@ const AboutSection = () => {
                 </div>
                 {/* Right Side (60%) */}
                 <div className="w-full lg:w-[60%] flex flex-col justify-center gap-10 lg:order-2 order-1">
-                    <div className='w-full flex justify-end'>
-                        <div className="flex flex-col gap-3 w-full lg:w-2/3">
+                    <div className='w-full flex flex-col items-end gap-4'>
+                        <div className="w-full lg:w-2/3 flex flex-col gap-3 mb-4">
                             <span className="text-xl font-bold leading-6">
                                 سفید کننده دندان <span className="text-[#FF3B57]">کلرد</span>
                             </span>
                             <p className="text-sm text-gray-500"> ژل سفید‌کننده دندان عملکردی مشابه بلیچینگ مطب‌های دندانپزشکی دارد، اما به دلیل استفاده از دوز‌های پایین‌تر و اعمال آن به مرور زمان، نتایج به صورت تدریجی در طول یک تا دو هفته قابل مشاهده است.</p>
-
+                        </div>
+                        <div className='w-full lg:w-2/3 flex flex-col items-start justify-start gap-2'>
+                            <span className="text-xl font-bold leading-6 mb-2">
+                                فواید <span className="text-[#FF3B57]">کلرد</span>
+                            </span>
+                            <div className='w-full flex gap-2 items-center'>
+                                <img src="/images/celeard/red-tick.svg" alt="tick" className='w-[22px] h-[22px] object-contain' />
+                                <p>اثرگذاری در کوتاه مدت</p>
+                            </div>
+                            <div className='w-full flex gap-2 items-center'>
+                                <img src="/images/celeard/red-tick.svg" alt="tick" className='w-[22px] h-[22px] object-contain' />
+                                <p>مناسب برای دندان های حساس</p>
+                            </div>
+                            <div className='w-full flex gap-2 items-center'>
+                                <img src="/images/celeard/red-tick.svg" alt="tick" className='w-[22px] h-[22px] object-contain' />
+                                <p>راهکاری بدون دردسر</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
     );

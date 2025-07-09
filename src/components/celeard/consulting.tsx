@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import Image from 'next/image';
 import { useRequestClrd } from 'src/hooks/useConsultingClrd';
 
 interface ConsultationFormData {
@@ -28,73 +27,71 @@ const Consulting: React.FC = () => {
     };
 
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-                {/* Section Title */}
-                <div className="text-center mb-12">
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                        برای مشاوره بیشتر شماره تماس خود را وارد کنید تا همکاران ما در اسرع وقت باشما ارتباط بگیرند.
-                    </h2>
+        <div className="w-full h-[400px] lg:h-[330px] relative">
+            <img
+                src="/images/celeard/hero7.svg"
+                alt="Hero BG"
+                className="w-full h-full hidden lg:block absolute"
+                style={{ pointerEvents: 'none' }}
+            />
+            <img
+                src="/images/celeard/hero8.svg"
+                alt="Hero BG"
+                className="w-full h-full lg:hidden block absolute"
+                style={{ pointerEvents: 'none' }}
+            />
+            {/* Two Column Layout */}
+            <div className="flex flex-col lg:flex-row items-center justify-between z-100 absolute p-4 top-1/2 -translate-y-1/2">
+                {/* Right Column - Form */}
+                <div className="w-full lg:w-1/2 flex justify-start lg:justify-center">
+                    <div className="text-center">
+                        <p className="text-xl lg:text-2xl font-bold text-gray-900 mb-4">
+                            برای دریافت <span className="text-[#ED1A31]">مشاوره رایگان</span> شماره تماس خود را وارد نمایید تا کارشناسان کلرد با شما ارتباط بگیرند.
+                        </p>
+                    </div>
                 </div>
-
-                {/* Two Column Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    {/* Left Column - Image */}
-                    <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                        <div className="w-full max-w-md">
-                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                                <div>
-                                    <label
-                                        htmlFor="phoneNumber"
-                                        className="block text-sm font-medium text-gray-700 mb-2"
-                                    >
-                                        شماره تماس
-                                    </label>
-                                    <input
-                                        {...register('phoneNumber', {
-                                            required: 'شماره تماس الزامی است',
-                                            pattern: {
-                                                value: /^(\+98|0)?9\d{9}$/,
-                                                message: 'لطفا شماره تماس معتبر وارد کنید'
-                                            }
-                                        })}
-                                        type="tel"
-                                        id="phoneNumber"
-                                        placeholder="مثال: 09123456789"
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-right"
-                                    />
-                                    {errors.phoneNumber && (
-                                        <p className="mt-2 text-sm text-red-600">
-                                            {errors.phoneNumber.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <button
-                                    type="submit"
-                                    disabled={isConsulting}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                {/* Left Column - Image */}
+                <div className="w-full lg:w-1/2 flex justify-end lg:justify-center">
+                    <div className="w-full max-w-md">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                            <div>
+                                <label
+                                    htmlFor="phoneNumber"
+                                    className="block text-sm font-medium text-gray-700 mb-2"
                                 >
-                                    {isConsulting ? 'در حال ارسال...' : 'ارسال درخواست مشاوره'}
-                                </button>
-                            </form>
-                        </div>
+                                    شماره تماس
+                                </label>
+                                <input
+                                    {...register('phoneNumber', {
+                                        required: 'شماره تماس الزامی است',
+                                        pattern: {
+                                            value: /^(\+98|0)?9\d{9}$/,
+                                            message: 'لطفا شماره تماس معتبر وارد کنید'
+                                        }
+                                    })}
+                                    type="tel"
+                                    id="phoneNumber"
+                                    placeholder="مثال: 09123456789"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-right bg-white"
+                                />
+                                {errors.phoneNumber && (
+                                    <p className="mt-2 text-sm text-red-600">
+                                        {errors.phoneNumber.message}
+                                    </p>
+                                )}
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={isConsulting}
+                                className="w-full bg-[#ED1A31] disabled:bg-[#ca6470] text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            >
+                                {isConsulting ? 'در حال ارسال...' : 'ارسال درخواست مشاوره'}
+                            </button>
+                        </form>
                     </div>
-
-                    {/* Right Column - Form */}
-                    <div className="flex justify-center lg:justify-start order-1 lg:order-2">
-                        <div className="relative w-full max-w-md h-80">
-                            <Image
-                                src="/images/celeard/consulting.svg"
-                                alt="Consulting"
-                                fill
-                                className="object-contain"
-                                priority
-                            />
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
         </div>
     );
 };

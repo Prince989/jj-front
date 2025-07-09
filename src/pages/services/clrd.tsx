@@ -8,19 +8,21 @@ import AboutSection from 'src/components/celeard/aboutSection'
 import WhyCeleardSection from 'src/components/celeard/whyCeleardSection'
 import CeleardFooter from 'src/components/celeard/footer'
 import Consulting from 'src/components/celeard/consulting'
+import WhyComponent from 'src/components/celeard/WhyComponent'
 
 const CeleardPanel = () => {
 
     return (
         <div className="bg-[#FFFCFA] max-w-[1440px] mx-auto">
-            <div className="flex flex-col px-3 lg:px-24 mb-24">
+            <div className="flex flex-col px-3 lg:px-24 mb-10 lg:mb-24">
                 <CeleardHeader />
             </div>
             <div className="flex flex-col px-3 lg:px-24 mb-24">
                 <HeroSection />
-                <AboutSection />
-                <Consulting />
                 <WhyCeleardSection />
+                <Consulting />
+                <AboutSection />
+                <WhyComponent />
             </div>
             <CeleardFooter />
         </div>
