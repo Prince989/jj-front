@@ -43,8 +43,8 @@ const Cart: React.FC = () => {
                         </div>
                     </div>
                     {/* Quantity & Price */}
-                    <div className="flex flex-col sm:flex-row gap-6 items-center bg-[#EDF7FF] rounded-lg p-4 w-full">
-                        <div className="flex flex-row items-center gap-4">
+                    <div className="flex flex-col sm:flex-row gap-6 items-center bg-[#EDF7FF] rounded-lg w-full">
+                        <div className="flex flex-row items-center gap-2">
                             <span className="text-xs text-[#222] font-semibold">تعداد:</span>
                             <button
                                 className="w-8 h-8 flex items-center justify-center bg-white rounded-md border border-[#EDEDED] text-lg font-bold"

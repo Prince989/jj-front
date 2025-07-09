@@ -19,7 +19,7 @@ const ContactUs = () => {
     return (
         <div className='w-full flex flex-col gap-10'>
             {/* Title */}
-            <div className="w-full flex flex-row justify-center lg:justify-start">
+            <div className="w-full flex flex-row">
                 <h2 className="text-xl lg:text-2xl font-bold text-left">
                     با ما در ارتباط باشید
                 </h2>
@@ -27,7 +27,7 @@ const ContactUs = () => {
             <div className="w-full flex flex-col lg:flex-row gap-10">
                 {/* Right Side (50%) */}
                 <div className="w-full lg:w-[50%] flex justify-end order-2 lg:order-1">
-                    <div className="flex flex-row gap-3 lg:gap-6 w-full justify-center lg:justify-end">
+                    <div className="flex flex-row gap-3 lg:gap-6 w-full justify-center lg:justify-between">
                         {info.map((item, idx) => (
                             <div
                                 key={idx}
@@ -44,7 +44,7 @@ const ContactUs = () => {
                 {/* Left Side (50%) */}
                 <div className="w-full lg:w-[50%] flex flex-col justify-center items-start gap-10 order-1 lg:order-2">
                     {/* Impact Card */}
-                    <div className="w-full flex flex-row items-center bg-white rounded-2xl shadow-md p-3 lg:p-6 gap-3 lg:gap-6 lg:min-h-[220px]">
+                    <div className="w-full flex flex-row items-center bg-white rounded-2xl shadow-md p-3 lg:p-4 gap-3 lg:gap-6 lg:min-h-[200px]">
                         {/* Badge */}
                         <div className="flex flex-col items-center justify-center w-[25%] border-l">
                             <div className="relative flex items-center justify-center">

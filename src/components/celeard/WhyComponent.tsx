@@ -3,7 +3,7 @@ import ContactUs from './contactUs';
 
 const features = [
     {
-        icon: '/images/celeard/profile.svg',
+        icon: '/images/celeard/profile2.svg',
         text: 'متناسب با جنس دندان',
     },
     {
@@ -30,7 +30,7 @@ const WhyComponent = () => {
                 {/* Right Side (50%) */}
                 <div className="w-full lg:w-[50%] flex flex-col justify-center items-start gap-10">
                     {/* Impact Card */}
-                    <div className="w-full flex flex-row items-center bg-white rounded-2xl shadow-md p-3 lg:p-6 gap-3 lg:gap-6 lg:min-h-[220px]">
+                    <div className="w-full flex flex-row items-center bg-white rounded-2xl shadow-md p-3 lg:p-4 gap-3 lg:gap-6 lg:min-h-[200px]">
                         {/* Badge */}
                         <div className="flex flex-col items-center justify-center w-[25%] border-l">
                             <div className="relative flex items-center justify-center">
@@ -50,7 +50,7 @@ const WhyComponent = () => {
                 </div>
                 {/* Left Side (50%) */}
                 <div className="w-full lg:w-[50%] flex justify-end">
-                    <div className="flex flex-row gap-3 lg:gap-6 w-full justify-center lg:justify-end">
+                    <div className="flex flex-row gap-3 lg:gap-6 w-full justify-center lg:justify-between">
                         {features.map((item, idx) => (
                             <div
                                 key={idx}

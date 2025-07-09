@@ -1,14 +1,17 @@
+import Link from 'next/link';
 import React from 'react';
 
 interface ProductInfoProps {
     title: string;
     subTitle: string;
-    price: string | number;
+    price?: string | number;
     oldPrice?: string | number;
-    link?: 'red' | 'blue';
+    linkColor?: 'red' | 'blue';
     addToCart?: boolean;
     size?: 'small' | 'large' | 'very-small';
     className?: string;
+    href?: string;
+    handleClick?: () => void
 }
 
 const CartIcon = ({ color = '#fff', size = 28 }: { color?: string; size?: number }) => (
@@ -26,13 +29,15 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     subTitle,
     price,
     oldPrice,
-    link,
+    linkColor,
     addToCart,
     size = 'small',
     className = '',
+    href = "/services/clrd/cart",
+    handleClick
 }) => {
     // Color and background based on link prop
-    const color = link === 'red' ? 'text-[#ED1A31]' : 'text-[#1B94FF]';
+    const color = linkColor === 'red' ? 'text-[#ED1A31]' : 'text-[#1B94FF]';
     const borderRadius = size === 'large' ? 'rounded-[8px]' : size === 'very-small' ? 'rounded-[2.5px]' : 'rounded-[5px]';
     const padding = size === 'large' ? 'py-6 px-8' : size === 'very-small' ? 'py-[9px] px-5' : 'py-[18px] px-5';
     const titleSize = size === 'large' ? 'text-[28px]' : size === 'very-small' ? 'text-[10]' : 'text-[20px]';
@@ -61,28 +66,30 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                         {oldPrice} ت
                     </span>
                 )}
-                <span
+                {price && <span
                     className={`font-bold ${priceSize} text-[#232323] tracking-wider`}
                 >
                     {price} ت
-                </span>
+                </span>}
+
             </div>
             {addToCart ? (
                 <button
                     className={`bg-[#ED1A31] text-white font-medium ${buttonSize} border-none ${borderRadius} ${buttonPadding} cursor-pointer flex items-center mt-4`}
+                    onClick={handleClick}
                 >
                     <span className="mr-2">
                         <CartIcon color="#fff" size={size === 'large' ? 18 : 15} />
                     </span>
                     افزودن به سبد خرید
                 </button>
-            ) : link ? (
-                <a
-                    href="#"
+            ) : linkColor ? (
+                <Link
+                    href={href}
                     className={`${color} ${linkSize} underline cursor-pointer`}
                 >
                     خرید محصول
-                </a>
+                </Link>
             ) : null}
         </div>
     );

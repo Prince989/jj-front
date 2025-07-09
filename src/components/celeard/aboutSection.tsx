@@ -31,7 +31,7 @@ const AboutSection = () => {
                                 title="محصول کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
-                                link="blue"
+                                linkColor="blue"
                                 size="small"
                             />
                         </div>
@@ -40,7 +40,7 @@ const AboutSection = () => {
                                 title="محصول کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
-                                link="blue"
+                                linkColor="blue"
                                 size="very-small"
                             />
                         </div>
@@ -62,7 +62,7 @@ const AboutSection = () => {
                                 title="محصول کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
-                                link="red"
+                                linkColor="red"
                                 size="small"
                             />
                         </div>
@@ -71,7 +71,7 @@ const AboutSection = () => {
                                 title="محصول کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
-                                link="red"
+                                linkColor="red"
                                 size="very-small"
                             />
                         </div>

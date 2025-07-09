@@ -45,7 +45,7 @@ const Consulting: React.FC = () => {
                 {/* Right Column - Form */}
                 <div className="w-full lg:w-1/2 flex justify-start lg:justify-center">
                     <div className="text-center">
-                        <p className="text-xl lg:text-2xl font-bold text-gray-900 mb-4">
+                        <p className="text-base lg:text-2xl font-bold text-gray-900 mb-4 leading-[30px] lg:leading-[50px]">
                             برای دریافت <span className="text-[#ED1A31]">مشاوره رایگان</span> شماره تماس خود را وارد نمایید تا کارشناسان کلرد با شما ارتباط بگیرند.
                         </p>
                     </div>

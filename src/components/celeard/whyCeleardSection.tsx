@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AddToCart from './addToCart';
 import ProductInfo from './productInfo';
 
 
 const WhyCeleardSection = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <section className="w-full flex flex-col lg:mt-20 lg:mb-20 mt-10 mb-10 gap-10">
             <div className="w-full flex flex-row justify-center">
@@ -35,20 +37,24 @@ const WhyCeleardSection = () => {
                                 price="۹۸۶,۰۰۰"
                                 oldPrice="۱,۵۶۷,۰۰۰"
                                 size="large"
+                                addToCart
+                                handleClick={() => setIsOpen(!isOpen)}
                             />
                         </div>
-                        <div className="block lg:hidden absolute bottom-16 left-[50px] z-10">
+                        <div className="block lg:hidden absolute bottom-10 left-[50px] z-10">
                             <ProductInfo
                                 title="سفید کننده دندان کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
                                 oldPrice="۱,۵۶۷,۰۰۰"
                                 size="small"
+                                addToCart
+                                handleClick={() => setIsOpen(!isOpen)}
                             />
                         </div>
                     </div>
 
-                    <AddToCart />
+                    <AddToCart isOpen={isOpen} />
                 </div>
             </div>
         </section>

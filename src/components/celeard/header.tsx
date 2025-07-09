@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/navigation';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 
 const menuItems = [
     { label: 'خانه', key: 'home', href: '/services/clrd' },
@@ -24,15 +23,15 @@ const CeleardHeader = () => {
     };
 
     return (
-        <header className="w-full flex items-center justify-between pt-6 rtl">
+        <header className="w-full flex items-center justify-between px-3 lg:px-24 py-4 rtl bg-white shadow-sm sticky top-0 z-50">
+            {/* Mobile: Hamburger Menu */}
+            <div className="lg:hidden flex items-center">
+                <IconButton onClick={() => setDrawerOpen(true)}>
+                    <img src="/images/celeard/menu.svg" className='w-[34px] h-[34px]' />
+                </IconButton>
+            </div>
             {/* Right: Logo and Nav */}
             <div className="flex items-center gap-3 lg:gap-12">
-                <img
-                    src="/celeard-logo.svg"
-                    alt="Celeard Logo"
-                    className="w-[52px] h-[36px] object-contain cursor-pointer"
-                    onClick={() => router.push('/services/clrd')}
-                />
                 {/* Desktop Nav */}
                 <nav className="hidden lg:flex items-center gap-12">
                     {menuItems.map((item) => (
@@ -51,22 +50,42 @@ const CeleardHeader = () => {
                 </nav>
             </div>
 
+            <img
+                src="/celeard-logo.svg"
+                alt="Celeard Logo"
+                className="w-[52px] h-[36px] object-contain cursor-pointer"
+                onClick={() => router.push('/services/clrd')}
+            />
+
             {/* Desktop: Action Button */}
             <div className="hidden lg:flex items-center gap-6">
                 <Button
                     variant="contained"
-                    className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-[#d0172b] h-[40px]"
+                    className="border border-solid border-[#ED1A31] text-[#ED1A31] rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#fff] hover:text-[#ED1A31] font-medium h-[40px]"
                     onClick={() => router.push('/services/clrd/cart')}
+                    startIcon={<img src="/images/celeard/cart.svg" className='w-[20px] h-[20px]' />}
                 >
                     سبد خرید
                 </Button>
+                <Button
+                    variant="contained"
+                    className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#d0172b] font-medium h-[40px]"
+                    onClick={() => router.push('/services/clrd/cart')}
+                    startIcon={<img src="/images/celeard/profile.svg" className='w-[20px] h-[20px]' />}
+                >
+                    ورود/ثبت نام
+                </Button>
             </div>
 
-            {/* Mobile: Hamburger Menu */}
-            <div className="lg:hidden flex items-center">
-                <IconButton onClick={() => setDrawerOpen(true)}>
-                    <MenuIcon fontSize="large" />
+            {/* Mobile: Action Button */}
+            <div className="flex lg:hidden items-center gap-1">
+                <IconButton onClick={() => router.push('/services/clrd/cart')} className='border border-solid border-[#ED1A31] rounded-[3px] w-[24px] h-[24px] p-0'>
+                    <img src="/images/celeard/cart.svg" className='w-[20px] h-[20px]' />
                 </IconButton>
+                <IconButton onClick={() => router.push('/services/clrd/cart')} className='bg-[#ED1A31] rounded-[3px] w-[24px] h-[24px] p-0'>
+                    <img src="/images/celeard/profile.svg" className='w-[20px] h-[20px]' />
+                </IconButton>
+
             </div>
 
             {/* Mobile Drawer */}

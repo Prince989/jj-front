@@ -1,11 +1,13 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const quickLinks = [
-    { label: 'درباره ما', href: '#' },
-    { label: 'تماس با ما', href: '#' },
-    { label: 'خانه', href: '#' },
-    { label: 'سبد خرید', href: '/services/clrd/cart' },
+const quickLinks1 = [
+    { label: 'درباره کلرد', href: '#' },
+    { label: 'ارتباط با ما', href: '#' },
+];
+const quickLinks2 = [
+    { label: 'فواید کلرد', href: '#' },
+    { label: 'درخواست مشاوره', href: '#' },
 ];
 
 export default function CeleardFooter() {
@@ -41,36 +43,50 @@ export default function CeleardFooter() {
                             <a href="#" className="w-4 h-4 flex items-center justify-center">
                                 <img src="/images/celeard/youtube.svg" alt="Youtube" className="w-4 h-4" />
                             </a>
-                            <a href="#" className="w-4 h-4 flex items-center justify-center">
-                                <img src="/images/celeard/threads.svg" alt="Threads" className="w-4 h-4" />
-                            </a>
                         </div>
                     </div>
                     {/* Right Section: Logo, Description, Socials */}
-                    <div className="w-full lg:w-[60%] flex flex-col lg:flex-row lg:justify-end gap-8 lg:gap-16">
-                        {[0].map((col) => (
-                            <div
-                                key={col}
-                                className="flex flex-col items-center sm:items-start pt-4 sm:pt-8"
-                            >
-                                <h3 className="font-bold text-lg mb-4">دسترسی سریع</h3>
-                                <ul className="space-y-3 text-center sm:text-right">
-                                    {quickLinks.map((link, idx) => (
-                                        <li key={idx}>
-                                            <a href={link.href} className="hover:underline text-base text-black">
-                                                {link.label}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
+                    <div className="w-full lg:w-[60%] flex flex-row justify-between lg:justify-end gap-2 lg:gap-16">
+                        <div
+                            className="flex flex-col items-center sm:items-start pt-4 sm:pt-8"
+                        >
+                            <h3 className="font-bold text-sm lg:text-lg mb-4">دسترسی سریع</h3>
+                            <ul className="space-y-3 text-center sm:text-right">
+                                {quickLinks1.map((link, idx) => (
+                                    <li key={idx}>
+                                        <a href={link.href} className="hover:underline text-xs lg:text-base text-black">
+                                            {link.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div
+                            className="flex flex-col items-center sm:items-start pt-4 sm:pt-8"
+                        >
+                            <h3 className="font-bold text-sm lg:text-lg mb-4">دسترسی سریع</h3>
+                            <ul className="space-y-3 text-center sm:text-right">
+                                {quickLinks2.map((link, idx) => (
+                                    <li key={idx}>
+                                        <a href={link.href} className="hover:underline text-xs lg:text-base text-black">
+                                            {link.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div
+                            className="flex flex-col items-center sm:items-start pt-4 sm:pt-8"
+                        >
+                            <h3 className="font-bold text-sm lg:text-lg mb-4">به کلرد اعتماد کنید...</h3>
+                            <div className='w-[55px] h-[55px] lg:w-[75px] lg:h-[75px] rounded-lg bg-white'></div>
+                        </div>
                     </div>
                 </div>
             </footer >
             <div className='w-full flex justify-center items-center py-2 bg-white'>
                 <p className='text-center text-xs lg:text-sm text-black'>
-                    تمامی حقوق مادی و معنوی این سایت متعلق به شرکت های سازمانی است.
+                    کلیه حقوق این وبسایت متعلق به جی جی لاین میباشد.
                 </p>
             </div>
         </>

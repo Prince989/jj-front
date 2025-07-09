@@ -26,21 +26,19 @@ const HeroSection = () => {
                         className="lg:absolute inset-0 w-full h-full object-contain z-0 block lg:hidden"
                         style={{ pointerEvents: 'none' }}
                     />
-                    <div className="hidden lg:block absolute bottom-12 left-16">
+                    <div className="hidden lg:block absolute bottom-16 left-16">
                         <ProductInfo
                             title="محصول کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
-                            price="۹۸۶,۰۰۰"
-                            link="red"
+                            linkColor="red"
                             size="small"
                         />
                     </div>
-                    <div className="block lg:hidden absolute bottom-9 left-12">
+                    <div className="block lg:hidden absolute bottom-14 left-12">
                         <ProductInfo
                             title="محصول کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
-                            price="۹۸۶,۰۰۰"
-                            link="red"
+                            linkColor="red"
                             size="very-small"
                         />
                     </div>
