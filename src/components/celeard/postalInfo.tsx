@@ -221,9 +221,13 @@ const PostalInfo: React.FC = () => {
                 toast.success('سفارش با موفقیت ثبت شد');
 
                 // router.push('/services/clrd');
-                window.open(url, "_blank")
+                // window.open(url, "_blank")
+
+                console.log("order-success", orderDetail?.data);
+                window.location.href = url;
             }
         } catch (err) {
+            console.log("order-error", err);
 
             // Errors are handled in hooks, but you can add more here if needed
         } finally {
