@@ -31,7 +31,7 @@ const CeleardHeader = () => {
                 </IconButton>
             </div>
             {/* Right: Logo and Nav */}
-            <div className="flex items-center gap-3 lg:gap-12">
+            <div className="hidden lg:flex items-center gap-3 lg:gap-12">
                 {/* Desktop Nav */}
                 <nav className="hidden lg:flex items-center gap-12">
                     {menuItems.map((item) => (
@@ -49,7 +49,6 @@ const CeleardHeader = () => {
                     ))}
                 </nav>
             </div>
-
             <img
                 src="/celeard-logo.svg"
                 alt="Celeard Logo"

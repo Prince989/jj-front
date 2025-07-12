@@ -19,8 +19,8 @@ const CeleardPanel = () => {
             </div>
             <div className="flex flex-col px-3 lg:px-24 mb-24">
                 <HeroSection />
-                <WhyCeleardSection />
                 <Consulting />
+                <WhyCeleardSection />
                 <AboutSection />
                 <WhyComponent />
             </div>

@@ -27,7 +27,7 @@ const Consulting: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-[400px] lg:h-[330px] relative">
+        <div className="w-full h-[400px] lg:h-[330px] relative mt-40">
             <img
                 src="/images/celeard/hero7.svg"
                 alt="Hero BG"
