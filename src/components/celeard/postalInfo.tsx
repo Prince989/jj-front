@@ -4,17 +4,14 @@ import CustomTextField from 'src/@core/components/mui/text-field';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import ContactUs from './contactUs';
-import OTPDialog from 'src/components/validation/validation/steps/OTPDialog'
 import { useCart } from 'src/hooks/useCart'
 import { useOrder } from 'src/hooks/useOrder'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
-import { useRequestOtp } from 'src/hooks/useRequestOtp'
-import { useRegister } from 'src/hooks/useRegister'
-import { useLogin } from 'src/hooks/useLogin'
 import { useCartQuantity } from 'src/context/CartContext';
-import authConfig from 'src/configs/auth'
 import { useProfile } from 'src/hooks/useProfile';
+import { useAuth } from 'src/hooks/useAuth';
+import { useRouter } from 'next/router';
 
 interface PostalInfoForm {
     fname: string;
@@ -43,8 +40,33 @@ interface InvoiceCalculation {
     };
 }
 
+// Helper function to convert Persian numbers to English numbers
+const convertPersianToEnglishNumbers = (text: string): string => {
+    const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    let result = text;
+    persianNumbers.forEach((persianNum, index) => {
+        result = result.replace(new RegExp(persianNum, 'g'), englishNumbers[index]);
+    });
+
+    return result;
+};
+
+// Helper function to process form data before submission
+const processFormData = (data: PostalInfoForm): PostalInfoForm => {
+    return {
+        ...data,
+        phone: convertPersianToEnglishNumbers(data.phone),
+        postalCode: convertPersianToEnglishNumbers(data.postalCode),
+        nationalCode: convertPersianToEnglishNumbers(data.nationalCode),
+    };
+};
+
 const PostalInfo: React.FC = () => {
     const { quantity, paymentType, setPaymentType } = useCartQuantity();
+    const { user, refreshAuth } = useAuth();
+    const router = useRouter();
     const {
         handleSubmit,
         control,
@@ -128,110 +150,86 @@ const PostalInfo: React.FC = () => {
 
     const { profileData } = useProfile();
 
-    const [showOtpDialog, setShowOtpDialog] = useState(false)
-    const [pendingFormData, setPendingFormData] = useState<PostalInfoForm | null>(null)
     const [isProcessing, setIsProcessing] = useState(false)
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
-    // Add hooks for new flow
-    const { requestOtpCode, isRequesting } = useRequestOtp()
-    const { handleRegister, isRegistering } = useRegister()
-    const { handleLogin, isLoggingIn } = useLogin()
+    // Add hooks for cart and order
     const { handleAddToCart } = useCart({})
     const { handleCreateOrder } = useOrder({})
 
-    // On form submit, request OTP and store form data
+    // Handle authentication navigation
+    const handleAuthNavigation = (formData: PostalInfoForm) => {
+        const currentPath = window.location.pathname + window.location.search;
+        const formDataString = encodeURIComponent(JSON.stringify(formData));
+        router.push(`/verify-otp?returnUrl=${encodeURIComponent(currentPath)}&formData=${formDataString}`);
+    };
+
+    // On form submit, check authentication and proceed accordingly
     const onSubmit = async (data: PostalInfoForm) => {
-        // Check for token in localStorage
-        const token = typeof window !== 'undefined' ? localStorage.getItem(authConfig.storageTokenKeyName) : null;
-        if (token) {
-            setIsProcessing(true);
-            try {
-                // Only add to cart and create order
-                await handleAddToCart({
-                    products: [{ productId: 1, count: quantity }]
-                });
-                const orderDetail = await handleCreateOrder({
-                    transportationId: 1,
-                    hasInstallment: data.paymentType === 'installment',
-                    address: data.address,
-                    postalCode: data.postalCode
-                });
-                const { data: { url, message } } = orderDetail?.data;
-                if (message === "Success") {
-                    toast.success('سفارش با موفقیت ثبت شد');
+        console.log('onSubmit called, user:', user);
+        console.log('Form data:', data);
 
-                    // router.push('/services/clrd');
-                    window.open(url, "_blank")
-                }
-            } catch (err) {
+        // Check if user is authenticated
+        if (!user) {
+            console.log('User not authenticated, navigating to verify-otp');
 
-                // Errors are handled in hooks, but you can add more here if needed
-            } finally {
-                setIsProcessing(false);
-            }
-        } else {
-            setPendingFormData(data)
-            try {
-                await requestOtpCode({ phoneNumber: data.phone })
-                setShowOtpDialog(true)
-            } catch (err) {
-                setShowOtpDialog(false)
+            // If not authenticated, navigate to verify-otp page with form data
+            handleAuthNavigation(data);
 
-                // Error handled in hook
-            }
+            return;
         }
-    }
 
-    // Handle OTP verification and chained API calls
-    const handleOtpVerification = async (token: string) => {
-        setShowOtpDialog(false)
-        if (!pendingFormData) return
-        setIsProcessing(true)
+        console.log('User is authenticated, proceeding with order creation');
+
+        // If authenticated, proceed with order creation
+        setIsProcessing(true);
         try {
-            // 1. Register user
-            await handleRegister({
-                fname: pendingFormData.fname,
-                lname: pendingFormData.lname,
-                phoneNumber: pendingFormData.phone,
-                password: pendingFormData.password,
-                nationalCode: pendingFormData.nationalCode,
-                token
-            })
 
-            // 2. Login user
-            await handleLogin({
-                phoneNumber: pendingFormData.phone,
-                password: pendingFormData.password
-            })
+            // Process form data - for authenticated users, password is optional
+            const processedData = processFormData({
+                ...data,
 
-            // 3. Add to cart
+                // If user is authenticated and password is empty, set a default value
+                password: user && !data.password ? 'authenticated_user' : data.password
+            });
+            console.log('Processed data:', processedData);
+
+            // Add to cart
+            console.log('Adding to cart...');
             await handleAddToCart({
                 products: [{ productId: 1, count: quantity }]
-            })
+            });
 
-            // 4. Create order
+            // Create order
+            console.log('Creating order...');
             const orderDetail = await handleCreateOrder({
                 transportationId: 1,
-                hasInstallment: pendingFormData.paymentType === 'installment',
-                address: pendingFormData.address,
-                postalCode: pendingFormData.postalCode
-            })
+                hasInstallment: processedData.paymentType === 'installment',
+                address: processedData.address,
+                postalCode: processedData.postalCode
+            });
+
+            console.log('Order detail:', orderDetail);
             const { data: { url, message } } = orderDetail?.data;
             if (message === "Success") {
                 toast.success('سفارش با موفقیت ثبت شد');
-
-                // router.push('/services/clrd');
-                // window.open(url, "_blank")
-
-                window.location.href = url;
+                window.open(url, "_blank")
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("order-error", err);
 
-            // Errors are handled in hooks, but you can add more here if needed
+            // Extract error message from response
+            let errorMessage = 'خطا در ثبت سفارش';
+
+            if (err?.response?.data?.message) {
+                errorMessage = err.response.data.message;
+            } else if (err?.message) {
+                errorMessage = err.message;
+            }
+
+            toast.error(errorMessage);
         } finally {
-            setIsProcessing(false)
-            setPendingFormData(null)
+            setIsProcessing(false);
         }
     }
 
@@ -247,14 +245,49 @@ const PostalInfo: React.FC = () => {
         }
     }, [profileData, reset]);
 
+    // Handle pre-filled form data from URL parameters
+    useEffect(() => {
+        const { formData } = router.query;
+        if (formData && typeof formData === 'string') {
+            try {
+                const parsedFormData = JSON.parse(decodeURIComponent(formData));
+                reset(prev => ({
+                    ...prev,
+                    ...parsedFormData,
+                }));
+
+                // Show success message when returning from OTP verification
+                setShowSuccessMessage(true);
+
+                // Hide success message after 5 seconds
+                setTimeout(() => setShowSuccessMessage(false), 5000);
+
+                // Refresh auth state when returning from OTP verification
+                setTimeout(async () => {
+                    await refreshAuth();
+                }, 100);
+            } catch (error) {
+                console.error('Error parsing form data from URL:', error);
+            }
+        }
+    }, [router.query, reset, refreshAuth]);
+
+    // Check if user is returning from OTP verification
+    const isReturningFromOTP = !!router.query.formData;
+
+    // Check if profileData has data to determine which fields should be disabled
+    const hasProfileData = profileData && (
+        profileData.fName ||
+        profileData.lName ||
+        profileData.nationalCode ||
+        profileData.phoneNumber
+    );
+
+    // Fields should be disabled if returning from OTP or if profile data exists
+    const shouldDisableFields = Boolean(isReturningFromOTP || hasProfileData);
+
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-2 bg-[#F9FBFD]">
-            {/* OTP Dialog */}
-            <OTPDialog
-                open={showOtpDialog}
-                onClose={() => setShowOtpDialog(false)}
-                onVerify={handleOtpVerification}
-            />
             {/* Optionally show a loading overlay when processing */}
             {isProcessing && (
                 <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
@@ -262,14 +295,24 @@ const PostalInfo: React.FC = () => {
                 </div>
             )}
             <div className="w-full max-w-[1440px] bg-[#EAF6FF] rounded-2xl shadow-md px-6 py-10 flex flex-col gap-8 mb-16">
+                {/* Success Message */}
+                {showSuccessMessage && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-center">
+                        <strong>تبریک!</strong> ثبت نام شما با موفقیت انجام شد. لطفا اطلاعات باقی مانده را تکمیل کنید.
+                    </div>
+                )}
                 <div className="w-full flex flex-col gap-4 mb-6">
                     <div className="text-xl lg:text-2xl font-bold text-[#222] text-center lg:text-right">کاربر گرامی، لطفا فرم زیر را تکمیل نمایید.</div>
+
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-8">
                     {/* Top Row */}
                     <div className="w-full flex flex-col lg:flex-row gap-6">
                         <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">نام:</label>
+                            <label className="text-right font-semibold">
+                                نام:
+                                {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                            </label>
                             <Controller
                                 name="fname"
                                 control={control}
@@ -281,12 +324,16 @@ const PostalInfo: React.FC = () => {
                                         placeholder="نام"
                                         error={!!errors.fname}
                                         helperText={errors.fname?.message}
+                                        disabled={shouldDisableFields}
                                     />
                                 )}
                             />
                         </div>
                         <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">نام خانوادگی:</label>
+                            <label className="text-right font-semibold">
+                                نام خانوادگی:
+                                {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                            </label>
                             <Controller
                                 name="lname"
                                 control={control}
@@ -298,12 +345,16 @@ const PostalInfo: React.FC = () => {
                                         placeholder="نام خانوادگی"
                                         error={!!errors.lname}
                                         helperText={errors.lname?.message}
+                                        disabled={shouldDisableFields}
                                     />
                                 )}
                             />
                         </div>
                         <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">کد ملی:</label>
+                            <label className="text-right font-semibold">
+                                کد ملی:
+                                {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                            </label>
                             <Controller
                                 name="nationalCode"
                                 control={control}
@@ -315,6 +366,7 @@ const PostalInfo: React.FC = () => {
                                         placeholder="کدملی"
                                         error={!!errors.nationalCode}
                                         helperText={errors.nationalCode?.message}
+                                        disabled={shouldDisableFields}
                                     />
                                 )}
                             />
@@ -323,24 +375,43 @@ const PostalInfo: React.FC = () => {
                     {/* Second Row */}
                     <div className="w-full flex flex-col lg:flex-row gap-6">
                         <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">پسورد:</label>
+                            <label className="text-right font-semibold">
+                                پسورد:
+                                {user && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                                {shouldDisableFields && !user && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                            </label>
                             <Controller
                                 name="password"
                                 control={control}
-                                rules={{ required: 'پسورد الزامی است' }}
+                                rules={{
+                                    required: user ? false : 'پسورد الزامی است',
+                                    validate: (value) => {
+
+                                        // If user is authenticated, password is optional
+                                        if (user) return true;
+
+                                        // If user is not authenticated, password is required
+                                        return value && value.length > 0 ? true : 'پسورد الزامی است';
+                                    }
+                                }}
                                 render={({ field }) => (
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="********"
+                                        placeholder={user ? "اختیاری (احراز هویت انجام شده)" : "********"}
                                         error={!!errors.password}
                                         helperText={errors.password?.message}
+                                        disabled={shouldDisableFields}
+                                        type="password"
                                     />
                                 )}
                             />
                         </div>
                         <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">شماره تماس:</label>
+                            <label className="text-right font-semibold">
+                                شماره تماس:
+                                {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                            </label>
                             <Controller
                                 name="phone"
                                 control={control}
@@ -352,6 +423,7 @@ const PostalInfo: React.FC = () => {
                                         placeholder="شماره تماس"
                                         error={!!errors.phone}
                                         helperText={errors.phone?.message}
+                                        disabled={shouldDisableFields}
                                     />
                                 )}
                             />
@@ -449,9 +521,9 @@ const PostalInfo: React.FC = () => {
                                     variant="contained"
                                     className="bg-[#ED1A31] text-white rounded-lg py-3 px-10 normal-case text-sm font-medium hover:bg-[#d0172b]"
                                     style={{ fontFamily: 'YekanBakh', minWidth: 120 }}
-                                    disabled={isProcessing || isRegistering || isLoggingIn || isRequesting}
+                                    disabled={isProcessing}
                                 >
-                                    پرداخت نهایی
+                                    {user ? 'پرداخت نهایی' : 'احراز هویت'}
                                 </Button>
                             </div>
                         </div>

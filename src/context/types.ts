@@ -40,4 +40,5 @@ export type AuthValuesType = {
   setUser: (value: UserDataType | null) => void
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void
   otpLogin: (params: OTPLoginParams, resolve: () => void, errorCallback?: ErrCallbackType) => void
+  refreshAuth: () => Promise<void>
 }

@@ -25,7 +25,8 @@ const defaultProvider: AuthValuesType = {
   setLoading: () => Boolean,
   otpLogin: () => Promise.resolve(),
   login: () => Promise.resolve(),
-  logout: () => Promise.resolve()
+  logout: () => Promise.resolve(),
+  refreshAuth: () => Promise.resolve()
 }
 
 // Cookie options
@@ -95,7 +96,7 @@ const AuthProvider = ({ children }: Props) => {
 
     initAuth()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router.asPath])
 
   const handleOTPLogin = (params: OTPLoginParams, resolve: () => void, errorCallback?: ErrCallbackType) => {
     mAxios.post(authConfig.otpLoginEndpoint, params).then(async response => {
@@ -165,6 +166,35 @@ const AuthProvider = ({ children }: Props) => {
     router.push('/login')
   }
 
+  const refreshAuth = async (): Promise<void> => {
+    const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName) || Cookies.get(authConfig.storageTokenKeyName)
+    if (storedToken) {
+      setLoading(true)
+      try {
+        const response = await mAxios.get(authConfig.meEndpoint, {
+          headers: {
+            Authorization: storedToken
+          }
+        })
+        setUser({ ...response.data.data })
+      } catch (error) {
+        // Clear both localStorage and cookies on error
+        localStorage.removeItem('userData')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('accessToken')
+        Cookies.remove('userData')
+        Cookies.remove('refreshToken')
+        Cookies.remove('accessToken')
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      setUser(null)
+      setLoading(false)
+    }
+  }
+
   const values = {
     user,
     loading,
@@ -172,7 +202,8 @@ const AuthProvider = ({ children }: Props) => {
     setLoading,
     login: handleLogin,
     otpLogin: handleOTPLogin,
-    logout: handleLogout
+    logout: handleLogout,
+    refreshAuth
   }
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
