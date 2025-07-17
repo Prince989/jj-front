@@ -26,22 +26,13 @@ const AboutSection = () => {
                             className="w-full h-full object-contain z-0"
                             style={{ pointerEvents: 'none' }}
                         />
-                        <div className="hidden lg:block absolute bottom-0 left-5">
+                        <div className="hidden lg:block absolute bottom-0 left-16">
                             <ProductInfo
                                 title="محصول کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
                                 linkColor="blue"
                                 size="small"
-                            />
-                        </div>
-                        <div className="block lg:hidden absolute bottom-10 left-[100px]">
-                            <ProductInfo
-                                title="محصول کلرد"
-                                subTitle="سفیدکننده و ترمیم کننده"
-                                price="۹۸۶,۰۰۰"
-                                linkColor="blue"
-                                size="very-small"
                             />
                         </div>
                     </div>
@@ -57,22 +48,13 @@ const AboutSection = () => {
                             className="w-full h-full object-contain z-0"
                             style={{ pointerEvents: 'none' }}
                         />
-                        <div className="hidden lg:block absolute bottom-20 right-16">
+                        <div className="hidden lg:block absolute bottom-28 right-2">
                             <ProductInfo
                                 title="محصول کلرد"
                                 subTitle="سفیدکننده و ترمیم کننده"
                                 price="۹۸۶,۰۰۰"
                                 linkColor="red"
                                 size="small"
-                            />
-                        </div>
-                        <div className="block lg:hidden absolute bottom-14 right-12">
-                            <ProductInfo
-                                title="محصول کلرد"
-                                subTitle="سفیدکننده و ترمیم کننده"
-                                price="۹۸۶,۰۰۰"
-                                linkColor="red"
-                                size="very-small"
                             />
                         </div>
                     </div>

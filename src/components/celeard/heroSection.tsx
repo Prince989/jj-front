@@ -20,32 +20,20 @@ const HeroSection = () => {
                         className="lg:absolute inset-0 w-full h-full object-contain z-0 hidden lg:block"
                         style={{ pointerEvents: 'none' }}
                     />
-                    <img
-                        src="/images/celeard/hero1M.svg"
-                        alt="Hero BG"
-                        className="lg:absolute inset-0 w-full h-full object-contain z-0 block lg:hidden"
-                        style={{ pointerEvents: 'none' }}
-                    />
-                    <div className="hidden lg:block absolute bottom-16 left-16">
+                    <div className="hidden lg:block absolute bottom-20 left-5">
                         <ProductInfo
                             title="محصول کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
                             linkColor="red"
+                            price="۹۸۶,۰۰۰"
+                            oldPrice="۱,۵۶۷,۰۰۰"
                             size="small"
-                        />
-                    </div>
-                    <div className="block lg:hidden absolute bottom-14 left-12">
-                        <ProductInfo
-                            title="محصول کلرد"
-                            subTitle="سفیدکننده و ترمیم کننده"
-                            linkColor="red"
-                            size="very-small"
                         />
                     </div>
                 </div>
                 {/* Left 50% (Text, absolute) */}
                 <div className="w-full lg:w-1/3 relative flex items-center justify-center">
-                    <div className="hidden md:block absolute -right-40 lg:top-20 top-10">
+                    <div className="hidden md:block absolute -right-28 lg:top-10 top-10">
                         <h1 className="text-2xl lg:text-3xl font-bold leading-6">
                             راز یک لبخند ماندگار <br />
                             <span className="text-[#FF3B57]">کلرد</span> معجزه زیبایی!

@@ -50,7 +50,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
     return (
         <div
-            className={`flex flex-col items-start box-border ${padding} ${className}`}
+            className={`flex flex-col items-center box-border ${padding} ${className}`}
         >
             <div className={`font-bold ${titleSize} text-[#232323] mb-1`}>
                 {title}

@@ -16,16 +16,16 @@ export default function CeleardFooter() {
     return (
         <>
 
-            <footer className="bg-[#FFE4E1] w-full pt-12 pb-8 px-4 md:px-12 lg:px-20">
+            <footer className="bg-[#F2FCF5] lg:bg-[#FFE4E1] w-full pt-12 pb-8 px-4 md:px-12 lg:px-20">
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-0">
                     {/* Quick Access Columns */}
-                    <div className="w-full lg:w-[35%] flex flex-col items-center lg:items-start text-center lg:text-right">
+                    <div className="w-full lg:w-[35%] flex flex-col lg:items-start text-center lg:text-right">
                         {/* Logo */}
-                        <div className="mb-4">
-                            <img src="/celeard-logo.webp" alt="Celeard Logo" className="h-14 w-auto mx-auto lg:mx-0 cursor-pointer" onClick={() => router.push('/services/clrd')} />
+                        <div className="mb-4 flex justify-start">
+                            <img src="/celeard-logo.webp" alt="Celeard Logo" className="h-10 w-auto lg:mx-0 cursor-pointer" onClick={() => router.push('/services/clrd')} />
                         </div>
                         {/* Description */}
-                        <p className="text-[15px] text-black mb-6 leading-7">
+                        <p className="text-sm text-justify lg:text-right lg:text-base text-black mb-6 leading-7">
                             ژل سفیدکننده دندان عملکردی مشابه بلیچینگ مطب‌های دندانپزشکی دارد، اما به دلیل استفاده از دوزهای پایین‌تر و اعمال آن به مرور زمان، نتایج به صورت تدریجی در طول یک تا دو هفته قابل مشاهده است.
                         </p>
                         {/* Social Icons */}
@@ -84,7 +84,7 @@ export default function CeleardFooter() {
                     </div>
                 </div>
             </footer >
-            <div className='w-full flex justify-center items-center py-2 bg-white'>
+            <div className='w-full flex justify-center items-center py-2 bg-[#F2FCF5]'>
                 <p className='text-center text-xs lg:text-sm text-black'>
                     کلیه حقوق این وبسایت متعلق به جی جی لاین میباشد.
                 </p>
