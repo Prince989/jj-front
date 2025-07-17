@@ -144,9 +144,9 @@ const FeaturesCeleardSection = () => {
 // About Section
 const AboutSection = () => {
     return (
-        <section className="w-full flex flex-col lg:mt-40 lg:mb-20 mt-20 gap-10">
+        <section className="w-full flex flex-col lg:mt-40 lg:mb-20 gap-10">
             <div className="w-full flex flex-col gap-5 px-5 bg-[url('/images/celeard/v2/hero4.svg')] bg-no-repeat bg-center bg-cover">
-                <div className="w-full flex flex-col items-start gap-4">
+                <div className="w-full flex flex-col items-start gap-4 pt-10">
                     <div className="w-full relative flex flex-col items-center justify-center">
                         <div className="flex flex-col gap-3">
                             <span className="text-xl font-bold leading-6">
@@ -188,7 +188,6 @@ const AboutSection = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
     );

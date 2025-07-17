@@ -19,7 +19,7 @@ const categories: CategoryItemProps[] = [
     },
     {
         title: 'سفید کننده دندان کلرد',
-        image: "/images/celeard/cleard-product.svg",
+        image: "/images/celeard/v2/celeard-product.svg",
         href: '/services/clrd',
         badge: ""
     },
