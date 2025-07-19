@@ -110,9 +110,15 @@ const VerifyOTP = () => {
 
             toast.success('ثبت نام و ورود با موفقیت انجام شد')
 
-            // Step 3: Redirect back to postal info page with form data
-            const returnUrl = router.query.returnUrl as string || '/services/clrd'
-            router.push(`${returnUrl}`)
+            // Step 3: Redirect to invoice page with form data
+            if (formData) {
+                const formDataString = encodeURIComponent(JSON.stringify(formData));
+                router.push(`/services/clrd/invoice?formData=${formDataString}`);
+            } else {
+                // Fallback to returnUrl if no form data
+                const returnUrl = router.query.returnUrl as string || '/services/clrd'
+                router.push(`${returnUrl}`)
+            }
         } catch (error: any) {
             handleApiError(error, 'خطا در تایید کد', toast)
         } finally {

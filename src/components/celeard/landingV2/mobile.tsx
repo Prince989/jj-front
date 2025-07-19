@@ -10,19 +10,19 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="w-full flex flex-col relative bg-white">
+        <section className="w-full flex flex-col items-center justify-start relative bg-white min-h-[450px]">
+            <img
+                src="/images/celeard/v2/hero1.svg"
+                alt="Celeard Product"
+                className="w-full h-[450px] object-cover absolute top-0 left-0"
+            />
             <Button
                 variant="contained"
-                className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#d0172b] font-medium h-[40px] absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#d0172b] font-medium h-[40px] w-[200px] mt-32"
                 onClick={handleLoginClick}
             >
                 همین حالا خرید کنید!
             </Button>
-            <img
-                src="/images/celeard/v2/hero1.svg"
-                alt="Celeard Product"
-                className="w-full h-[450px] object-cover"
-            />
         </section>
     );
 };
@@ -339,7 +339,7 @@ const CommentsSection = () => {
                             return (
                                 <div
                                     key={`${comment.id}-${index}`}
-                                    className={`flex-[0_0_220px] min-w-0 mr-3 transition-all duration-300 ${isActive ? 'mt-12 scale-110' : 'mt-0 scale-100'
+                                    className={`flex-[0_0_200px] min-w-0 mr-3 transition-all duration-300 ${isActive ? 'mt-12 scale-110' : 'mt-0 scale-100'
                                         }`}
                                 >
                                     <div className={`w-full bg-white rounded-lg min-h-[200px] shadow-md p-6 flex flex-col gap-4 transform transition-all duration-300 hover:scale-105 ${isActive ? 'shadow-lg' : 'shadow-md'

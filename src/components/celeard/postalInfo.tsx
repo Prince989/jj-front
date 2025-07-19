@@ -4,9 +4,6 @@ import CustomTextField from 'src/@core/components/mui/text-field';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import ContactUs from './contactUs';
-import { useCart } from 'src/hooks/useCart'
-import { useOrder } from 'src/hooks/useOrder'
-import toast from 'react-hot-toast'
 import { useState } from 'react'
 import { useCartQuantity } from 'src/context/CartContext';
 import { useProfile } from 'src/hooks/useProfile';
@@ -39,29 +36,6 @@ interface InvoiceCalculation {
         paymentCount: number;
     };
 }
-
-// Helper function to convert Persian numbers to English numbers
-const convertPersianToEnglishNumbers = (text: string): string => {
-    const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-    const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-    let result = text;
-    persianNumbers.forEach((persianNum, index) => {
-        result = result.replace(new RegExp(persianNum, 'g'), englishNumbers[index]);
-    });
-
-    return result;
-};
-
-// Helper function to process form data before submission
-const processFormData = (data: PostalInfoForm): PostalInfoForm => {
-    return {
-        ...data,
-        phone: convertPersianToEnglishNumbers(data.phone),
-        postalCode: convertPersianToEnglishNumbers(data.postalCode),
-        nationalCode: convertPersianToEnglishNumbers(data.nationalCode),
-    };
-};
 
 // Local storage keys
 const LOCAL_STORAGE_KEYS = {
@@ -204,18 +178,18 @@ const PostalInfo: React.FC = () => {
 
     const { profileData } = useProfile();
 
-    const [isProcessing, setIsProcessing] = useState(false)
     const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-
-    // Add hooks for cart and order
-    const { handleAddToCart } = useCart({})
-    const { handleCreateOrder } = useOrder({})
 
     // Handle authentication navigation
     const handleAuthNavigation = (formData: PostalInfoForm) => {
-        const currentPath = window.location.pathname + window.location.search;
         const formDataString = encodeURIComponent(JSON.stringify(formData));
-        router.push(`/verify-otp?returnUrl=${encodeURIComponent(currentPath)}&formData=${formDataString}`);
+        router.push(`/verify-otp?returnUrl=${encodeURIComponent('/services/clrd/invoice')}&formData=${formDataString}`);
+    };
+
+    // Navigate to invoice page
+    const navigateToInvoice = (formData: PostalInfoForm) => {
+        const formDataString = encodeURIComponent(JSON.stringify(formData));
+        router.push(`/services/clrd/invoice?formData=${formDataString}`);
     };
 
     // On form submit, check authentication and proceed accordingly
@@ -233,58 +207,10 @@ const PostalInfo: React.FC = () => {
             return;
         }
 
-        console.log('User is authenticated, proceeding with order creation');
+        console.log('User is authenticated, navigating to invoice page');
 
-        // If authenticated, proceed with order creation
-        setIsProcessing(true);
-        try {
-
-            // Process form data - for authenticated users, password is optional
-            const processedData = processFormData({
-                ...data,
-
-                // If user is authenticated and password is empty, set a default value
-                password: user && !data.password ? 'authenticated_user' : data.password
-            });
-            console.log('Processed data:', processedData);
-
-            // Add to cart
-            console.log('Adding to cart...');
-            await handleAddToCart({
-                products: [{ productId: 1, count: quantity }]
-            });
-
-            // Create order
-            console.log('Creating order...');
-            const orderDetail = await handleCreateOrder({
-                transportationId: 1,
-                hasInstallment: processedData.paymentType === 'installment',
-                address: processedData.address,
-                postalCode: processedData.postalCode
-            });
-
-            console.log('Order detail:', orderDetail);
-            const { data: { url, message } } = orderDetail?.data;
-            if (message === "Success") {
-                toast.success('سفارش با موفقیت ثبت شد');
-                window.open(url, "_blank")
-            }
-        } catch (err: any) {
-            console.error("order-error", err);
-
-            // Extract error message from response
-            let errorMessage = 'خطا در ثبت سفارش';
-
-            if (err?.response?.data?.message) {
-                errorMessage = err.response.data.message;
-            } else if (err?.message) {
-                errorMessage = err.message;
-            }
-
-            toast.error(errorMessage);
-        } finally {
-            setIsProcessing(false);
-        }
+        // If authenticated, navigate to invoice page
+        navigateToInvoice(data);
     }
 
     useEffect(() => {
@@ -342,12 +268,7 @@ const PostalInfo: React.FC = () => {
 
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-2 bg-[#F9FBFD]">
-            {/* Optionally show a loading overlay when processing */}
-            {isProcessing && (
-                <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-                    <div className="bg-white p-8 rounded-lg shadow-lg text-lg">در حال پردازش...</div>
-                </div>
-            )}
+
             <div className="w-full max-w-[1440px] bg-[#EAF6FF] rounded-2xl shadow-md px-6 py-10 flex flex-col gap-8 mb-16">
                 {/* Success Message */}
                 {showSuccessMessage && (
@@ -575,9 +496,8 @@ const PostalInfo: React.FC = () => {
                                     variant="contained"
                                     className="bg-[#ED1A31] text-white rounded-lg py-3 px-10 normal-case text-sm font-medium hover:bg-[#d0172b]"
                                     style={{ fontFamily: 'YekanBakh', minWidth: 120 }}
-                                    disabled={isProcessing}
                                 >
-                                    {user ? 'پرداخت نهایی' : 'احراز هویت'}
+                                    {user ? 'مشاهده فاکتور' : 'احراز هویت'}
                                 </Button>
                             </div>
                         </div>
