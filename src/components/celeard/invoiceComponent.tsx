@@ -184,7 +184,7 @@ export const InvoiceComponent = () => {
             const { data: { url, message } } = orderDetail?.data;
             if (message === "Success") {
                 toast.success('سفارش با موفقیت ثبت شد');
-                window.open(url, "_blank");
+                window.location.href = url;
             }
         } catch (err: any) {
             console.error("order-error", err);
