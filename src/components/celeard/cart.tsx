@@ -116,7 +116,7 @@ const Cart: React.FC = () => {
                 {/* Product Image */}
                 <div className="w-full lg:w-[40%] flex items-center justify-center bg-white rounded-2xl order-1 lg:order-2">
                     <img
-                        src="/images/celeard/product-image.svg"
+                        src="/images/celeard/v2/celeard-product.svg"
                         alt="سفید کننده دندان کلرد"
                         className="w-full max-w-xs h-[340px] object-contain"
                         style={{ pointerEvents: 'none' }}

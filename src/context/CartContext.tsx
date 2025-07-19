@@ -11,7 +11,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [quantity, setQuantity] = useState(1);
-    const [paymentType, setPaymentType] = useState<'installment' | 'online'>('installment');
+    const [paymentType, setPaymentType] = useState<'installment' | 'online'>('online');
 
     return (
         <CartContext.Provider value={{ quantity, setQuantity, paymentType, setPaymentType }}>

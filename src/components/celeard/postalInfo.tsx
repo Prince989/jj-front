@@ -63,6 +63,31 @@ const processFormData = (data: PostalInfoForm): PostalInfoForm => {
     };
 };
 
+// Local storage keys
+const LOCAL_STORAGE_KEYS = {
+    POSTAL_CODE: 'postalInfo_postalCode',
+    ADDRESS: 'postalInfo_address'
+};
+
+// Helper functions for local storage
+const saveToLocalStorage = (key: string, value: string) => {
+    try {
+        localStorage.setItem(key, value);
+    } catch (error) {
+        console.error('Error saving to localStorage:', error);
+    }
+};
+
+const getFromLocalStorage = (key: string): string => {
+    try {
+        return localStorage.getItem(key) || '';
+    } catch (error) {
+        console.error('Error reading from localStorage:', error);
+
+        return '';
+    }
+};
+
 const PostalInfo: React.FC = () => {
     const { quantity, paymentType, setPaymentType } = useCartQuantity();
     const { user, refreshAuth } = useAuth();
@@ -73,6 +98,7 @@ const PostalInfo: React.FC = () => {
         reset,
         formState: { errors },
         watch,
+        setValue,
     } = useForm<PostalInfoForm>({
         defaultValues: {
             fname: '',
@@ -80,13 +106,41 @@ const PostalInfo: React.FC = () => {
             nationalCode: '',
             phone: '',
             password: '',
-            postalCode: '',
-            address: '',
+            postalCode: getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE),
+            address: getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS),
             paymentType: paymentType,
         },
     });
 
     const watchedPaymentType = watch('paymentType');
+    const watchedPostalCode = watch('postalCode');
+    const watchedAddress = watch('address');
+
+    // Save postal code and address to local storage when they change
+    useEffect(() => {
+        if (watchedPostalCode) {
+            saveToLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE, watchedPostalCode);
+        }
+    }, [watchedPostalCode]);
+
+    useEffect(() => {
+        if (watchedAddress) {
+            saveToLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS, watchedAddress);
+        }
+    }, [watchedAddress]);
+
+    // Load saved data from local storage on component mount
+    useEffect(() => {
+        const savedPostalCode = getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE);
+        const savedAddress = getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS);
+
+        if (savedPostalCode) {
+            setValue('postalCode', savedPostalCode);
+        }
+        if (savedAddress) {
+            setValue('address', savedAddress);
+        }
+    }, [setValue]);
 
     // Invoice calculation method
     const calculateInvoice = (): InvoiceCalculation => {
