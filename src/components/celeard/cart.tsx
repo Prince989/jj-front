@@ -109,7 +109,7 @@ const Cart: React.FC = () => {
                             style={{ fontFamily: 'YekanBakh', minWidth: 120 }}
                             onClick={() => router.push('/services/clrd/postal-info')}
                         >
-                            پرداخت نهایی
+                            ثبت سفارش
                         </Button>
                     </div>
                 </div>

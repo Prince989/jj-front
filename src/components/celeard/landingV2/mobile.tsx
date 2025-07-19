@@ -70,7 +70,7 @@ const Consulting: React.FC = () => {
                 {/* Left Column - Image */}
                 <div className="w-full flex justify-end">
                     <div className="w-full max-w-md">
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                             <div>
                                 <label
                                     htmlFor="phoneNumber"
@@ -240,28 +240,28 @@ const comments = [
     {
         id: 1,
         name: "محمد رضا صادقی",
-        comment: "ژل سفید کننده دندان عملکردی مشابه بلیچینگ مطب های دندانپزشکی دارد.",
+        comment: "ژل سفید کننده دندان عملکردی مشابه بلیچینگ مطب های دندانپزشکی داشت، من خیلی راضی هستم..",
         rating: 4,
         avatar: "/images/avatars/1.png"
     },
     {
         id: 2,
         name: "مریم صدری",
-        comment: "ژل سفید کننده در بلیچینگ مطب ها",
+        comment: "حتما از مشاوره رایگانشون استفاده کنید، خیلی خوب راهنمایی میکنند.",
         rating: 5,
         avatar: "/images/avatars/2.png"
     },
     {
         id: 3,
         name: "افشین حسینی",
-        comment: "عملکردی مشابه ندانپزشکی دارد.",
+        comment: "واقعا راضی هستم، کاملا سفیدی رو روی دندون هام دیدم",
         rating: 4,
         avatar: "/images/avatars/3.png"
     },
     {
         id: 4,
         name: "سمیرا احمدی",
-        comment: "تجربه‌ی بسیار خوبی از استفاده این محصول داشتم.",
+        comment: "وقتی دیدم میتونم قسطی هم بخرم سریع سفارش دادم، واقعا بی نظیره.",
         rating: 5,
         avatar: "/images/avatars/4.png"
     },
@@ -342,7 +342,7 @@ const CommentsSection = () => {
                                     className={`flex-[0_0_200px] min-w-0 mr-3 transition-all duration-300 ${isActive ? 'mt-12 scale-110' : 'mt-0 scale-100'
                                         }`}
                                 >
-                                    <div className={`w-full bg-white rounded-lg min-h-[200px] shadow-md p-6 flex flex-col gap-4 transform transition-all duration-300 hover:scale-105 ${isActive ? 'shadow-lg' : 'shadow-md'
+                                    <div className={`w-full bg-white rounded-lg min-h-[250px] shadow-md p-6 flex flex-col gap-4 transform transition-all duration-300 hover:scale-105 ${isActive ? 'shadow-lg' : 'shadow-md'
                                         }`}>
                                         {/* Rating */}
                                         <div className="flex gap-1">
