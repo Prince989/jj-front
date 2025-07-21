@@ -3,11 +3,10 @@ import { BillIcon, ChartIcon, DashboardIcon, GuideIcon, LetterIcon, ProfileIcon,
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 import { useAuth } from 'src/hooks/useAuth'
 
-// ** Example of importing a custom icon component
-// import CustomIcon from 'path/to/your/CustomIcon'
 
 const useNavigation = (): VerticalNavItemsType => {
   // Get the authenticated user and role
+  // Also should add role in the acl.ts file. src/configs/acl.ts <----. ATTENTION .----->
   const { user } = useAuth()
   const userRole = user?.role?.name
 
@@ -96,11 +95,21 @@ const useNavigation = (): VerticalNavItemsType => {
     },
   ]
 
+  const sponserUserMenuItems = [
+    {
+      title: 'گزارشات',
+      icon: <ChartIcon />,
+      path: "/sponsor-reports"
+    },
+  ]
+
   // Return navigation items based on user role
   if (userRole === 'user') {
     return [...commonMenuItems, ...userMenuItems]
   } else if (userRole === 'businessUser') {
     return [...commonMenuItems, ...userBusinessMenuItems]
+  } else if (userRole === 'sponserUser') {
+    return [...commonMenuItems, ...sponserUserMenuItems]
   }
 
   // Return common items as fallback

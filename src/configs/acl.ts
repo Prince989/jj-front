@@ -29,7 +29,10 @@ const defineRulesFor = (role: string) => {
       // Business user has full access to everything
       can('manage', 'all')
       break
-
+    case 'sponserUser':
+      // Business user has full access to everything
+      can('manage', 'all')
+      break
     case 'user':
       // User has access to most pages but not admission
       can('manage', 'all')

@@ -19,6 +19,7 @@ const CeleardPanel = () => {
     const { query, replace } = useRouter();
 
     useEffect(() => {
+        console.log("query", query)
         if (query?.sId) {
             const sId = query.sId;
             mAxios.get("/sponser/validate?sId=" + query.sId).then(() => {

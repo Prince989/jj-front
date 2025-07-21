@@ -71,6 +71,8 @@ const AuthProvider = ({ children }: Props) => {
                 router.replace('/admission')
               } else if (response.data.data.role.name === 'user') {
                 router.replace('/validation')
+              } else if (response.data.data.role.name === 'sponserUser') {
+                router.replace('/services/clrd')
               }
             }
           })

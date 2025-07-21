@@ -15,4 +15,6 @@ export const BellIcon = createIconComponent('bell');
 export const MagnifierIcon = createIconComponent('magnifier');
 export const DangerIcon = createIconComponent('danger');
 export const SearchIcon = createIconComponent('search');
+export const DownloadIcon = createIconComponent('download');
+export const ListIcon = createIconComponent('list');
 

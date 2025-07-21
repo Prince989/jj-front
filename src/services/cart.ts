@@ -1,4 +1,5 @@
 import mAxios from 'src/configs/axios'
+import { withSId } from './auth'
 
 interface CartProduct {
     productId: number
@@ -28,7 +29,7 @@ export const getCartInfo = async () => {
 
 
 export const addConsulting = async (data: AddConsultingParams) => {
-    const response = await mAxios.post('clrd/request', data);
+    const response = await mAxios.post('clrd/request', withSId(data));
 
     return response.data
 } 
