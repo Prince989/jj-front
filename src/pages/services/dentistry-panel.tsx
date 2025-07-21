@@ -21,7 +21,7 @@ const DentistryPanel = () => {
     useEffect(() => {
         if (query?.sId) {
             const sId = query.sId;
-            mAxios.get("/sponser/validate").then(() => {
+            mAxios.get("/sponser/validate?sId=" + query.sId).then(() => {
                 localStorage.setItem("jj-sid", sId?.toString())
                 replace("/services/dentistry-panel")
             })
