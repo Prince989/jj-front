@@ -1,4 +1,5 @@
 import mAxios from 'src/configs/axios'
+import { withSId } from './auth'
 
 interface CreateOrderParams {
     transportationId: number
@@ -54,7 +55,7 @@ export interface PaymentRetryResponse {
 }
 
 export const createOrder = async (data: CreateOrderParams) => {
-    const response = await mAxios.post('clrd/order', data)
+    const response = await mAxios.post('clrd/order', withSId(data))
 
     return response.data
 }
