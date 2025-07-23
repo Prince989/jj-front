@@ -27,7 +27,7 @@ const WhyCeleardSection = () => {
                                 size="large"
                                 addToCart
                                 handleClick={() => setIsOpen(!isOpen)}
-                                countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                                countdownTargetDate={new Date("2025-07-25T23:59:59Z")}
                                 countdownTextSize="text-2xl"
                             />
                         </div>

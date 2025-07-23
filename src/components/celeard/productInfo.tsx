@@ -12,7 +12,7 @@ interface ProductInfoProps {
     className?: string;
     href?: string;
     handleClick?: () => void;
-    countdownSeconds?: number; // seconds to count down from
+    countdownTargetDate?: Date | number; // target date for countdown
     countdownTextSize?: string; // tailwind text size class
 }
 
@@ -27,17 +27,28 @@ const CartIcon = ({ color = '#fff', size = 28 }: { color?: string; size?: number
 );
 
 // CountdownTimer component
-const CountdownTimer: React.FC<{ seconds: number; textSize?: string }> = ({ seconds, textSize = 'text-[18px]' }) => {
-    const [timeLeft, setTimeLeft] = React.useState(seconds);
+const CountdownTimer: React.FC<{ targetDate: Date | number; textSize?: string }> = ({ targetDate, textSize = 'text-[18px]' }) => {
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => { setMounted(true); }, []);
+
+    const getTimeLeft = () => {
+        const now = Date.now();
+        const target = typeof targetDate === 'number' ? targetDate : targetDate.getTime();
+
+        return Math.max(0, Math.floor((target - now) / 1000));
+    };
+    const [timeLeft, setTimeLeft] = React.useState(getTimeLeft());
 
     React.useEffect(() => {
-        if (timeLeft <= 0) return;
+        if (!mounted || timeLeft <= 0) return;
         const interval = setInterval(() => {
-            setTimeLeft(t => (t > 0 ? t - 1 : 0));
+            setTimeLeft(getTimeLeft());
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timeLeft]);
+    }, [targetDate, timeLeft, mounted]);
+
+    if (!mounted || timeLeft <= 0) return null;
 
     const pad = (n: number) => n.toLocaleString('fa-IR').padStart(2, '۰');
     const hours = Math.floor(timeLeft / 3600);
@@ -51,7 +62,7 @@ const CountdownTimer: React.FC<{ seconds: number; textSize?: string }> = ({ seco
     );
 };
 
-const ProductInfo: React.FC<ProductInfoProps> = ({
+const ProductInfo: React.FC<ProductInfoProps & { countdownTargetDate?: Date | number }> = ({
     title,
     subTitle,
     price,
@@ -62,7 +73,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     className = '',
     href = "/services/clrd/cart",
     handleClick,
-    countdownSeconds,
+    countdownTargetDate,
     countdownTextSize
 }) => {
     // Color and background based on link prop
@@ -104,8 +115,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
             </div>
             {/* Countdown Timer */}
-            {typeof countdownSeconds === 'number' && countdownSeconds > 0 && (
-                <CountdownTimer seconds={countdownSeconds} textSize={countdownTextSize} />
+            {typeof countdownTargetDate !== 'undefined' && (
+                <CountdownTimer targetDate={countdownTargetDate} textSize={countdownTextSize} />
             )}
             {addToCart ? (
                 <button

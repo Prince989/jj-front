@@ -28,7 +28,7 @@ const HeroSection = () => {
                             price="۹۸۶,۰۰۰"
                             oldPrice="۱,۵۶۷,۰۰۰"
                             size="small"
-                            countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                            countdownTargetDate={new Date("2025-07-25T23:59:59Z")}
                             countdownTextSize="text-lg"
                         />
                     </div>

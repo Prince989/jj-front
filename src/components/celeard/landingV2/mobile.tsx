@@ -18,7 +18,7 @@ const HeroSection = () => {
             />
             <Button
                 variant="contained"
-                className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#d0172b] font-medium h-[40px] w-[200px] mt-32"
+                className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#d0172b] font-medium h-[40px] w-[220px] mt-32"
                 onClick={handleLoginClick}
             >
                 همین حالا سفارش دهید!
@@ -178,7 +178,7 @@ const FeaturesCeleardSection = () => {
                     size="small"
                     addToCart
                     handleClick={() => router.push('/services/clrd/postal-info')}
-                    countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                    countdownTargetDate={new Date("2025-07-25T23:59:59Z")}
                     countdownTextSize="text-xl"
                 />
             </div>
@@ -271,7 +271,7 @@ const HowToUseCeleardSection = () => {
                     size="small"
                     addToCart
                     handleClick={() => router.push('/services/clrd/postal-info')}
-                    countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                    countdownTargetDate={new Date("2025-07-25T23:59:59Z")}
                     countdownTextSize="text-xl"
                 />
             </div>
