@@ -1,8 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRequestClrd } from 'src/hooks/useConsultingClrd';
+import { persianToEnglish } from 'src/utils/dentistry-panel/validation';
 
 interface ConsultationFormData {
+    name: string;
     phoneNumber: string;
 }
 
@@ -21,8 +23,10 @@ const Consulting: React.FC = () => {
     });
 
     const onSubmit = async (data: ConsultationFormData) => {
+        const normalizedPhone = persianToEnglish(data.phoneNumber);
         await handleConsulting({
-            phoneNumber: data.phoneNumber,
+            name: data.name,
+            phoneNumber: normalizedPhone,
         });
     };
 
@@ -53,7 +57,33 @@ const Consulting: React.FC = () => {
                 {/* Left Column - Image */}
                 <div className="w-full lg:w-1/2 flex justify-end lg:justify-center">
                     <div className="w-full max-w-md">
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                            <div>
+                                <label
+                                    htmlFor="name"
+                                    className="block text-sm font-medium text-gray-700 mb-2"
+                                >
+                                    نام
+                                </label>
+                                <input
+                                    {...register('name', {
+                                        required: 'نام الزامی است',
+                                        minLength: {
+                                            value: 2,
+                                            message: 'نام باید حداقل ۲ حرف باشد'
+                                        }
+                                    })}
+                                    type="text"
+                                    id="name"
+                                    placeholder="مثال: علی رضایی"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-right bg-white"
+                                />
+                                {errors.name && (
+                                    <p className="mt-2 text-sm text-red-600">
+                                        {errors.name.message}
+                                    </p>
+                                )}
+                            </div>
                             <div>
                                 <label
                                     htmlFor="phoneNumber"
@@ -65,9 +95,10 @@ const Consulting: React.FC = () => {
                                     {...register('phoneNumber', {
                                         required: 'شماره تماس الزامی است',
                                         pattern: {
-                                            value: /^(\+98|0)?9\d{9}$/,
+                                            value: /^( 2B98|0)?9\d{9}$/,
                                             message: 'لطفا شماره تماس معتبر وارد کنید'
-                                        }
+                                        },
+                                        setValueAs: (value) => persianToEnglish(value)
                                     })}
                                     type="tel"
                                     id="phoneNumber"

@@ -75,17 +75,17 @@ export const InvoiceComponent = () => {
         const shippingCost = 60000; // هزینه ارسال
 
         if (paymentType === 'online') {
-            // پرداخت آنلاین: (تعداد محصول × قیمت × 1.1) + 60000
+            // پرداخت آنلاین - ارسال رایگان: (تعداد محصول × قیمت × 1.1)
             const subtotal = productCount * unitPrice;
             const tax = subtotal * taxRate;
-            const total = subtotal + tax + shippingCost;
+            const total = subtotal + tax; // No shipping cost for online payment
 
             return {
                 productCount,
                 unitPrice,
                 subtotal,
                 tax,
-                shipping: shippingCost,
+                shipping: 0, // No shipping cost for online payment
                 total,
             };
         } else {
@@ -213,7 +213,7 @@ export const InvoiceComponent = () => {
     }
 
     return (
-        <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-3 lg:px-24 bg-[#F9FBFD]">
+        <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-1 lg:px-24 bg-[#F9FBFD]">
             {/* Loading overlay when processing */}
             {isProcessing && (
                 <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
@@ -221,7 +221,7 @@ export const InvoiceComponent = () => {
                 </div>
             )}
 
-            <div className="w-full max-w-[1440px] bg-white rounded-2xl shadow-md px-6 py-10 flex flex-col gap-8 mb-16">
+            <div className="w-full max-w-[1440px] bg-white rounded-2xl shadow-md px-2 py-6 lg:px-6 lg:py-10 flex flex-col gap-8 mb-16">
                 {/* Header */}
                 <div className="w-full flex flex-col gap-4 mb-6">
                     <div className="flex items-center justify-between">
@@ -278,12 +278,12 @@ export const InvoiceComponent = () => {
                         </div>
 
                         {/* Payment Method */}
-                        <div className="text-lg font-bold text-right text-[#222]">روش پرداخت</div>
+                        <div className="text-lg font-bold text-right text-[#222]">روش پرداخت <span className="text-[#FF3B57] text-xs">با انتخاب روش پرداخت آنلاین، محصول را به صورت <span className="text-[#FF3B57]">رایگان</span>  دریافت کنید.</span></div>
                         <div className="bg-[#F9FBFD] rounded-lg p-6">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600">نوع پرداخت:</span>
                                 <span className="font-semibold text-[#008EFF]">
-                                    {paymentType === 'installment' ? 'پرداخت اقساطی' : 'پرداخت آنلاین'}
+                                    {paymentType === 'installment' ? 'پرداخت اقساطی' : 'پرداخت آنلاین - ارسال رایگان'}
                                 </span>
                             </div>
                             {paymentType === 'installment' && (
@@ -339,15 +339,18 @@ export const InvoiceComponent = () => {
                                 <span className="font-semibold">{formatCurrency(invoice.tax)} تومان</span>
                             </div>
 
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-600">هزینه ارسال:</span>
-                                <span className="font-semibold">{formatCurrency(invoice.shipping)} تومان</span>
-                            </div>
+                            {/* Only show shipping if paymentType is installment */}
+                            {paymentType === 'installment' && (
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">هزینه ارسال:</span>
+                                    <span className="font-semibold">{formatCurrency(invoice.shipping)} تومان</span>
+                                </div>
+                            )}
 
                             <div className="border-t border-gray-300 pt-4">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-lg font-bold text-gray-800">مبلغ قابل پرداخت:</span>
-                                    <span className="text-xl font-bold text-[#ED1A31]">{formatCurrency(invoice.total)} تومان</span>
+                                    <span className="text-base lg:text-lg font-bold text-gray-800">مبلغ قابل پرداخت:</span>
+                                    <span className="text-base lg:text-xl font-bold text-[#ED1A31]">{formatCurrency(invoice.total)} تومان</span>
                                 </div>
                             </div>
                         </div>
@@ -361,7 +364,7 @@ export const InvoiceComponent = () => {
                                 style={{ fontFamily: 'YekanBakh', minWidth: 200 }}
                                 disabled={isProcessing || !user}
                             >
-                                {!user ? 'لطفا ابتدا وارد شوید' : isProcessing ? 'در حال پردازش...' : 'پرداخت نهایی'}
+                                {!user ? 'لطفا ابتدا وارد شوید' : isProcessing ? 'در حال پردازش...' : 'تکمیل پرداخت'}
                             </Button>
                         </div>
 

@@ -62,6 +62,9 @@ const getFromLocalStorage = (key: string): string => {
     }
 };
 
+const pricePerItem = 986000;
+const oldPricePerItem = 1567000;
+
 const PostalInfo: React.FC = () => {
     const { quantity, paymentType, setPaymentType } = useCartQuantity();
     const { user, refreshAuth } = useAuth();
@@ -124,31 +127,24 @@ const PostalInfo: React.FC = () => {
         const shippingCost = 60000; // هزینه ارسال
 
         if (watchedPaymentType === 'online') {
-            // پرداخت آنلاین: (تعداد محصول × قیمت × 1.1) + 60000
+            // پرداخت آنلاین - ارسال رایگان: (تعداد محصول × قیمت × 1.1)
             const subtotal = productCount * unitPrice;
             const tax = subtotal * taxRate;
-            const total = subtotal + tax + shippingCost;
+            const total = subtotal + tax; // No shipping for online
 
             return {
                 productCount,
                 unitPrice,
                 subtotal,
                 tax,
-                shipping: shippingCost,
+                shipping: 0, // No shipping for online
                 total,
             };
         } else {
             // پرداخت اقساطی
-            // مبلغ قسط اول: ((25%*unitPrice)+((count-1)*unitPrice))
             const firstInstallmentBase = (unitPrice * 0.25) + ((productCount - 1) * unitPrice);
-
-            // مالیات بر ارزش افزوده مبلغ قسط اول: value*1.1
             const firstInstallmentWithTax = firstInstallmentBase * (1 + taxRate);
-
-            // مبلغ قابل پرداخت: مبلغ قسط اول + مالیات + هزینه ارسال
             const totalPayment = firstInstallmentWithTax + shippingCost;
-
-            // مبلغ باقی مانده اقساط: (75%*unitPrice)
             const remainingInstallment = unitPrice * 0.75;
 
             return {
@@ -266,20 +262,49 @@ const PostalInfo: React.FC = () => {
     // Fields should be disabled if returning from OTP or if profile data exists
     const shouldDisableFields = Boolean(isReturningFromOTP || hasProfileData);
 
+    // Helper to format numbers in Persian
+    const toPersianNumber = (num: number) => num.toLocaleString('fa-IR');
+
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen py-10 px-2 bg-[#F9FBFD]">
-
-            <div className="w-full max-w-[1440px] bg-[#EAF6FF] rounded-2xl shadow-md px-6 py-10 flex flex-col gap-8 mb-16">
+            <div className="w-full max-w-[1440px] bg-[#EAF6FF] rounded-2xl shadow-md px-2 py-4 lg:px-6 lg:py-10 flex flex-col gap-8 mb-16">
                 {/* Success Message */}
                 {showSuccessMessage && (
                     <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-center">
                         <strong>تبریک!</strong> ثبت نام شما با موفقیت انجام شد. لطفا اطلاعات باقی مانده را تکمیل کنید.
                     </div>
                 )}
-                <div className="w-full flex flex-col gap-4 mb-6">
-                    <div className="text-xl lg:text-2xl font-bold text-[#222] text-center lg:text-right">کاربر گرامی، لطفا فرم زیر را تکمیل نمایید.</div>
+
+                <div className="w-full flex flex-col lg:flex-row gap-6 items-center">
+                    {/* Product Image */}
+                    <div className="w-full lg:w-[40%] flex items-center justify-center bg-white rounded-2xl">
+                        <img
+                            src="/images/celeard/v2/celeard-product.svg"
+                            alt="سفید کننده دندان کلرد"
+                            className="w-full max-w-xs h-[340px] object-contain"
+                            style={{ pointerEvents: 'none' }}
+                        />
+                    </div>
+                    {/* Product Info */}
+                    <div>
+                        <div className="flex flex-col justify-center items-center gap-4">
+                            <div className="text-xl lg:text-2xl font-extrabold mb-2 text-[#222]">سفید کننده دندان <span className="text-[#FF3B57]">کلرد</span></div>
+                            <div className="flex items-center gap-4 mb-4">
+                                <span className="text-lg lg:text-xl text-[#B0B0B0] line-through">{toPersianNumber(oldPricePerItem)} ت</span>
+                                <span className="text-lg lg:text-2xl text-[#222] font-bold">{toPersianNumber(pricePerItem)} ت</span>
+                            </div>
+                        </div>
+                        <div className="text-sm text-[#555] leading-7 mb-4 mt-2 lg:mt-5 text-center lg:text-right">
+                            <span className='text-lg lg:text-xl text-[#222] mb-4'>سفیدکننده و ترمیم کننده</span>
+                        </div>
+                    </div>
 
                 </div>
+                <div className="w-full flex flex-col gap-4 my-6">
+                    <div className="text-xl lg:text-2xl font-bold text-[#222] text-center lg:text-right">کاربر گرامی، لطفا فرم زیر را تکمیل نمایید.</div>
+                </div>
+
+                {/* Form */}
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-8">
                     {/* Top Row */}
                     <div className="w-full flex flex-col lg:flex-row gap-6">
@@ -485,7 +510,7 @@ const PostalInfo: React.FC = () => {
                                                 />
                                             )}
                                         />
-                                        <span className="text-sm">پرداخت آنلاین</span>
+                                        <span className="text-sm">پرداخت آنلاین - ارسال رایگان</span>
                                     </label>
                                 </div>
                             </div>
@@ -553,6 +578,7 @@ const PostalInfo: React.FC = () => {
                                             <span className="text-sm text-gray-600">مالیات بر ارزش افزوده (۱۰٪):</span>
                                             <span className="font-semibold">{formatCurrency(invoice.tax)} تومان</span>
                                         </div>
+                                        {/* Only show shipping for installment */}
                                         <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
                                             <span className="text-sm text-gray-600">هزینه ارسال:</span>
                                             <span className="font-semibold">{formatCurrency(invoice.shipping)} تومان</span>
@@ -568,10 +594,7 @@ const PostalInfo: React.FC = () => {
                                             <span className="text-sm text-gray-600">مالیات بر ارزش افزوده (۱۰٪):</span>
                                             <span className="font-semibold">{formatCurrency(invoice.tax)} تومان</span>
                                         </div>
-                                        <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
-                                            <span className="text-sm text-gray-600">هزینه ارسال:</span>
-                                            <span className="font-semibold">{formatCurrency(invoice.shipping)} تومان</span>
-                                        </div>
+                                        {/* Do not show shipping for online */}
                                     </>
                                 )}
 

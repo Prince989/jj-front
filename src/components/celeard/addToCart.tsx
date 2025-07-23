@@ -92,7 +92,7 @@ const AddToCart: React.FC<AddToCartProps> = ({ isOpen }) => {
                                     value="online"
                                     color="primary"
                                 />
-                                <span className="text-sm">پرداخت آنلاین</span>
+                                <span className="text-sm">پرداخت آنلاین - ارسال رایگان</span>
                             </label>
                         </div>
                         <Button
@@ -101,7 +101,7 @@ const AddToCart: React.FC<AddToCartProps> = ({ isOpen }) => {
                             style={{ fontFamily: 'YekanBakh', minWidth: 120 }}
                             onClick={() => router.push('/services/clrd/postal-info')}
                         >
-                            پرداخت
+                            ثبت سفارش
                         </Button>
                     </div>
                 </div>

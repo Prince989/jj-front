@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const HeroSection = () => {
     const router = useRouter();
     const handleLoginClick = () => {
-        router.push('/services/clrd/cart')
+        router.push('/services/clrd/postal-info')
     };
 
     return (
@@ -21,7 +21,7 @@ const HeroSection = () => {
                 className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#d0172b] font-medium h-[40px] w-[200px] mt-32"
                 onClick={handleLoginClick}
             >
-                همین حالا خرید کنید!
+                همین حالا سفارش دهید!
             </Button>
         </section>
     );
@@ -32,6 +32,7 @@ import { useForm } from 'react-hook-form';
 import { useRequestClrd } from 'src/hooks/useConsultingClrd';
 
 interface ConsultationFormData {
+    name: string;
     phoneNumber: string;
 }
 
@@ -40,19 +41,33 @@ const Consulting: React.FC = () => {
         register,
         handleSubmit,
         formState: { errors },
-        reset
+        reset,
+        setValue
     } = useForm<ConsultationFormData>();
+
+    const [phoneValue, setPhoneValue] = useState('');
 
     const { isConsulting, handleConsulting } = useRequestClrd({
         onSuccess: () => {
             reset();
+            setPhoneValue('');
         }
     });
 
     const onSubmit = async (data: ConsultationFormData) => {
+        // Always send English digits to API
+        const normalizedPhone = persianToEnglish(data.phoneNumber);
         await handleConsulting({
-            phoneNumber: data.phoneNumber,
+            name: data.name,
+            phoneNumber: normalizedPhone,
         });
+    };
+
+    // Controlled input for phoneNumber
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const englishValue = persianToEnglish(e.target.value);
+        setPhoneValue(englishValue);
+        setValue('phoneNumber', englishValue, { shouldValidate: true });
     };
 
     return (
@@ -73,6 +88,32 @@ const Consulting: React.FC = () => {
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                             <div>
                                 <label
+                                    htmlFor="name"
+                                    className="block text-sm font-medium text-gray-700 mb-2"
+                                >
+                                    نام
+                                </label>
+                                <input
+                                    {...register('name', {
+                                        required: 'نام الزامی است',
+                                        minLength: {
+                                            value: 2,
+                                            message: 'نام باید حداقل ۲ کاراکتر باشد'
+                                        }
+                                    })}
+                                    type="text"
+                                    id="name"
+                                    placeholder="مثال: علی رضایی"
+                                    className="w-full px-4 text-[#9F9F9F] py-3 border border-[#FCE2D2] rounded-lg focus:ring-2 focus:ring-[#FCE2D2] focus:border-[#FCE2D2] transition-colors duration-200 text-right bg-[#FCE2D2]"
+                                />
+                                {errors.name && (
+                                    <p className="mt-2 text-sm text-red-600">
+                                        {errors.name.message}
+                                    </p>
+                                )}
+                            </div>
+                            <div>
+                                <label
                                     htmlFor="phoneNumber"
                                     className="block text-sm font-medium text-gray-700 mb-2"
                                 >
@@ -82,7 +123,7 @@ const Consulting: React.FC = () => {
                                     {...register('phoneNumber', {
                                         required: 'شماره تماس الزامی است',
                                         pattern: {
-                                            value: /^(\+98|0)?9\d{9}$/,
+                                            value: /^(8|0)?9\d{9}$/,
                                             message: 'لطفا شماره تماس معتبر وارد کنید'
                                         }
                                     })}
@@ -90,6 +131,8 @@ const Consulting: React.FC = () => {
                                     id="phoneNumber"
                                     placeholder="مثال: 09123456789"
                                     className="w-full px-4 text-[#9F9F9F] py-3 border border-[#FCE2D2] rounded-lg focus:ring-2 focus:ring-[#FCE2D2] focus:border-[#FCE2D2] transition-colors duration-200 text-right bg-[#FCE2D2]"
+                                    value={phoneValue}
+                                    onChange={handlePhoneChange}
                                 />
                                 {errors.phoneNumber && (
                                     <p className="mt-2 text-sm text-red-600">
@@ -134,7 +177,9 @@ const FeaturesCeleardSection = () => {
                     oldPrice="۱,۵۶۷,۰۰۰"
                     size="small"
                     addToCart
-                    handleClick={() => router.push('/services/clrd/cart')}
+                    handleClick={() => router.push('/services/clrd/postal-info')}
+                    countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                    countdownTextSize="text-xl"
                 />
             </div>
         </div>
@@ -225,7 +270,9 @@ const HowToUseCeleardSection = () => {
                     oldPrice="۱,۵۶۷,۰۰۰"
                     size="small"
                     addToCart
-                    handleClick={() => router.push('/services/clrd/cart')}
+                    handleClick={() => router.push('/services/clrd/postal-info')}
+                    countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                    countdownTextSize="text-xl"
                 />
             </div>
         </div>
@@ -378,6 +425,7 @@ const CommentsSection = () => {
 
 // --- Main Landing Page ---
 import * as React from "react";
+import { persianToEnglish } from "src/utils/dentistry-panel/validation";
 
 function CeleardLandingV2() {
     return (

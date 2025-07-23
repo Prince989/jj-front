@@ -11,7 +11,9 @@ interface ProductInfoProps {
     size?: 'small' | 'large' | 'very-small';
     className?: string;
     href?: string;
-    handleClick?: () => void
+    handleClick?: () => void;
+    countdownSeconds?: number; // seconds to count down from
+    countdownTextSize?: string; // tailwind text size class
 }
 
 const CartIcon = ({ color = '#fff', size = 28 }: { color?: string; size?: number }) => (
@@ -24,6 +26,31 @@ const CartIcon = ({ color = '#fff', size = 28 }: { color?: string; size?: number
     </svg>
 );
 
+// CountdownTimer component
+const CountdownTimer: React.FC<{ seconds: number; textSize?: string }> = ({ seconds, textSize = 'text-[18px]' }) => {
+    const [timeLeft, setTimeLeft] = React.useState(seconds);
+
+    React.useEffect(() => {
+        if (timeLeft <= 0) return;
+        const interval = setInterval(() => {
+            setTimeLeft(t => (t > 0 ? t - 1 : 0));
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [timeLeft]);
+
+    const pad = (n: number) => n.toLocaleString('fa-IR').padStart(2, '۰');
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const secondsDisplay = timeLeft % 60;
+
+    return (
+        <div className={`font-bold text-[#ED1A31] ${textSize} mb-2`}>
+            {pad(hours)}:{pad(minutes)}:{pad(secondsDisplay)}
+        </div>
+    );
+};
+
 const ProductInfo: React.FC<ProductInfoProps> = ({
     title,
     subTitle,
@@ -34,7 +61,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     size = 'small',
     className = '',
     href = "/services/clrd/cart",
-    handleClick
+    handleClick,
+    countdownSeconds,
+    countdownTextSize
 }) => {
     // Color and background based on link prop
     const color = linkColor === 'red' ? 'text-[#ED1A31]' : 'text-[#1B94FF]';
@@ -58,6 +87,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             <div className={`font-normal ${subTitleSize} text-[#444] mb-4`}>
                 {subTitle}
             </div>
+
             <div className={`flex items-center`}>
                 {oldPrice && (
                     <span
@@ -73,6 +103,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                 </span>}
 
             </div>
+            {/* Countdown Timer */}
+            {typeof countdownSeconds === 'number' && countdownSeconds > 0 && (
+                <CountdownTimer seconds={countdownSeconds} textSize={countdownTextSize} />
+            )}
             {addToCart ? (
                 <button
                     className={`bg-[#ED1A31] text-white font-medium ${buttonSize} border-none ${borderRadius} ${buttonPadding} cursor-pointer flex items-center mt-4`}

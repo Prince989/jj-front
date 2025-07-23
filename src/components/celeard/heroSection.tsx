@@ -20,7 +20,7 @@ const HeroSection = () => {
                         className="lg:absolute inset-0 w-full h-full object-contain z-0 hidden lg:block"
                         style={{ pointerEvents: 'none' }}
                     />
-                    <div className="hidden lg:block absolute bottom-20 left-5">
+                    <div className="hidden lg:block absolute bottom-16 left-5">
                         <ProductInfo
                             title="محصول کلرد"
                             subTitle="سفیدکننده و ترمیم کننده"
@@ -28,6 +28,8 @@ const HeroSection = () => {
                             price="۹۸۶,۰۰۰"
                             oldPrice="۱,۵۶۷,۰۰۰"
                             size="small"
+                            countdownSeconds={48 * 3600 + 23 * 60 + 3} // 48:23:03
+                            countdownTextSize="text-lg"
                         />
                     </div>
                 </div>
@@ -35,7 +37,7 @@ const HeroSection = () => {
                 <div className="w-full lg:w-1/3 relative flex items-center justify-center">
                     <div className="hidden md:block absolute -right-28 lg:top-10 top-10">
                         <h1 className="text-2xl lg:text-3xl font-bold leading-6">
-                            راز یک لبخند ماندگار <br />
+                            بیلیچینگ خانگی دندان<br />
                             <span className="text-[#FF3B57]">کلرد</span> معجزه زیبایی!
                         </h1>
                     </div>

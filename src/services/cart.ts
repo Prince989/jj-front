@@ -11,6 +11,7 @@ interface AddToCartParams {
 }
 
 export interface AddConsultingParams {
+    name: string;
     phoneNumber: string
 }
 

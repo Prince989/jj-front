@@ -111,7 +111,7 @@ const CeleardHeader = () => {
                 <Button
                     variant="contained"
                     className="border border-solid border-[#ED1A31] text-[#ED1A31] rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#fff] hover:text-[#ED1A31] font-medium h-[40px]"
-                    onClick={() => router.push('/services/clrd/cart')}
+                    onClick={() => router.push('/services/clrd/postal-info')}
                     startIcon={<img src="/images/celeard/cart.svg" className='w-[20px] h-[20px]' />}
                 >
                     سبد خرید
@@ -159,7 +159,7 @@ const CeleardHeader = () => {
 
             {/* Mobile: Action Button */}
             <div className="flex lg:hidden items-center gap-1">
-                <IconButton onClick={() => router.push('/services/clrd/cart')} className='border border-solid border-[#ED1A31] rounded-[3px] w-[24px] h-[24px] p-0'>
+                <IconButton onClick={() => router.push('/services/clrd/postal-info')} className='border border-solid border-[#ED1A31] rounded-[3px] w-[24px] h-[24px] p-0'>
                     <img src="/images/celeard/cart.svg" className='w-[20px] h-[20px]' />
                 </IconButton>
                 {isLoggedIn ? (
@@ -210,7 +210,7 @@ const CeleardHeader = () => {
                             fullWidth
                             variant="contained"
                             className="bg-[#ED1A31] text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-[#d0172b] h-[40px]"
-                            onClick={() => { router.push('/services/clrd/cart'); setDrawerOpen(false); }}
+                            onClick={() => { router.push('/services/clrd/postal-info'); setDrawerOpen(false); }}
                         >
                             سبد خرید
                         </Button>

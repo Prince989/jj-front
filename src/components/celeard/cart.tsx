@@ -97,7 +97,7 @@ const Cart: React.FC = () => {
                                         value="online"
                                         color="primary"
                                     />
-                                    <span className="text-sm">پرداخت آنلاین</span>
+                                    <span className="text-sm">پرداخت آنلاین - ارسال رایگان</span>
                                 </label>
                             </div>
                         </div>
