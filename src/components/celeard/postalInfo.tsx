@@ -40,7 +40,8 @@ interface InvoiceCalculation {
 // Local storage keys
 const LOCAL_STORAGE_KEYS = {
     POSTAL_CODE: 'postalInfo_postalCode',
-    ADDRESS: 'postalInfo_address'
+    ADDRESS: 'postalInfo_address',
+    JJ_SID: 'jj-sid'
 };
 
 // Helper functions for local storage
@@ -69,6 +70,10 @@ const PostalInfo: React.FC = () => {
     const { quantity, paymentType, setPaymentType } = useCartQuantity();
     const { user, refreshAuth } = useAuth();
     const router = useRouter();
+
+    // Check if jj-sid exists in localStorage
+    const hasJjSid = typeof window !== 'undefined' && localStorage.getItem(LOCAL_STORAGE_KEYS.JJ_SID);
+
     const {
         handleSubmit,
         control,
@@ -79,12 +84,12 @@ const PostalInfo: React.FC = () => {
     } = useForm<PostalInfoForm>({
         defaultValues: {
             fname: '',
-            lname: '',
+            lname: '', // Always empty string
             nationalCode: '',
             phone: '',
             password: '',
-            postalCode: getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE),
-            address: getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS),
+            postalCode: hasJjSid ? '' : getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE),
+            address: hasJjSid ? '' : getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS),
             paymentType: paymentType,
         },
     });
@@ -93,31 +98,33 @@ const PostalInfo: React.FC = () => {
     const watchedPostalCode = watch('postalCode');
     const watchedAddress = watch('address');
 
-    // Save postal code and address to local storage when they change
+    // Save postal code and address to local storage when they change (only if not jj-sid mode)
     useEffect(() => {
-        if (watchedPostalCode) {
+        if (!hasJjSid && watchedPostalCode) {
             saveToLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE, watchedPostalCode);
         }
-    }, [watchedPostalCode]);
+    }, [watchedPostalCode, hasJjSid]);
 
     useEffect(() => {
-        if (watchedAddress) {
+        if (!hasJjSid && watchedAddress) {
             saveToLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS, watchedAddress);
         }
-    }, [watchedAddress]);
+    }, [watchedAddress, hasJjSid]);
 
-    // Load saved data from local storage on component mount
+    // Load saved data from local storage on component mount (only if not jj-sid mode)
     useEffect(() => {
-        const savedPostalCode = getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE);
-        const savedAddress = getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS);
+        if (!hasJjSid) {
+            const savedPostalCode = getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE);
+            const savedAddress = getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS);
 
-        if (savedPostalCode) {
-            setValue('postalCode', savedPostalCode);
+            if (savedPostalCode) {
+                setValue('postalCode', savedPostalCode);
+            }
+            if (savedAddress) {
+                setValue('address', savedAddress);
+            }
         }
-        if (savedAddress) {
-            setValue('address', savedAddress);
-        }
-    }, [setValue]);
+    }, [setValue, hasJjSid]);
 
     // Invoice calculation method
     const calculateInvoice = (): InvoiceCalculation => {
@@ -214,7 +221,7 @@ const PostalInfo: React.FC = () => {
             reset(prev => ({
                 ...prev,
                 fname: profileData.fName || '',
-                lname: profileData.lName || '',
+                lname: '', // Always empty string
                 nationalCode: profileData.nationalCode || '',
                 phone: profileData.phoneNumber || '',
             }));
@@ -230,6 +237,7 @@ const PostalInfo: React.FC = () => {
                 reset(prev => ({
                     ...prev,
                     ...parsedFormData,
+                    lname: '', // Always empty string
                 }));
 
                 // Show success message when returning from OTP verification
@@ -308,20 +316,20 @@ const PostalInfo: React.FC = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-8">
                     {/* Top Row */}
                     <div className="w-full flex flex-col lg:flex-row gap-6">
-                        <div className="w-full lg:w-1/3 flex flex-col gap-2">
+                        <div className="w-full lg:w-1/2 flex flex-col gap-2">
                             <label className="text-right font-semibold">
-                                نام:
+                                نام و نام خانوادگی:
                                 {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
                             </label>
                             <Controller
                                 name="fname"
                                 control={control}
-                                rules={{ required: 'نام الزامی است' }}
+                                rules={{ required: 'نام و نام خانوادگی الزامی است' }}
                                 render={({ field }) => (
                                     <CustomTextField
                                         {...field}
                                         fullWidth
-                                        placeholder="نام"
+                                        placeholder="نام و نام خانوادگی"
                                         error={!!errors.fname}
                                         helperText={errors.fname?.message}
                                         disabled={shouldDisableFields}
@@ -329,28 +337,7 @@ const PostalInfo: React.FC = () => {
                                 )}
                             />
                         </div>
-                        <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">
-                                نام خانوادگی:
-                                {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
-                            </label>
-                            <Controller
-                                name="lname"
-                                control={control}
-                                rules={{ required: 'نام خانوادگی الزامی است' }}
-                                render={({ field }) => (
-                                    <CustomTextField
-                                        {...field}
-                                        fullWidth
-                                        placeholder="نام خانوادگی"
-                                        error={!!errors.lname}
-                                        helperText={errors.lname?.message}
-                                        disabled={shouldDisableFields}
-                                    />
-                                )}
-                            />
-                        </div>
-                        <div className="w-full lg:w-1/3 flex flex-col gap-2">
+                        <div className="w-full lg:w-1/2 flex flex-col gap-2">
                             <label className="text-right font-semibold">
                                 کد ملی:
                                 {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
@@ -372,42 +359,109 @@ const PostalInfo: React.FC = () => {
                             />
                         </div>
                     </div>
-                    {/* Second Row */}
-                    <div className="w-full flex flex-col lg:flex-row gap-6">
-                        <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">
-                                پسورد:
-                                {user && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
-                                {shouldDisableFields && !user && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
-                            </label>
-                            <Controller
-                                name="password"
-                                control={control}
-                                rules={{
-                                    required: user ? false : 'پسورد الزامی است',
-                                    validate: (value) => {
 
-                                        // If user is authenticated, password is optional
-                                        if (user) return true;
+                    {/* Second Row - Only show if not jj-sid mode */}
+                    {!hasJjSid && (
+                        <>
+                            <div className="w-full flex flex-col lg:flex-row gap-6">
+                                <div className="w-full lg:w-1/3 flex flex-col gap-2">
+                                    <label className="text-right font-semibold">
+                                        پسورد:
+                                        {user && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                                        {shouldDisableFields && !user && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                                    </label>
+                                    <Controller
+                                        name="password"
+                                        control={control}
+                                        rules={{
+                                            required: user ? false : 'پسورد الزامی است',
+                                            validate: (value) => {
 
-                                        // If user is not authenticated, password is required
-                                        return value && value.length > 0 ? true : 'پسورد الزامی است';
-                                    }
-                                }}
-                                render={({ field }) => (
-                                    <CustomTextField
-                                        {...field}
-                                        fullWidth
-                                        placeholder={user ? "اختیاری (احراز هویت انجام شده)" : "********"}
-                                        error={!!errors.password}
-                                        helperText={errors.password?.message}
-                                        disabled={shouldDisableFields}
-                                        type="password"
+                                                // If user is authenticated, password is optional
+                                                if (user) return true;
+
+                                                // If user is not authenticated, password is required
+                                                return value && value.length > 0 ? true : 'پسورد الزامی است';
+                                            }
+                                        }}
+                                        render={({ field }) => (
+                                            <CustomTextField
+                                                {...field}
+                                                fullWidth
+                                                placeholder={user ? "اختیاری (احراز هویت انجام شده)" : "********"}
+                                                error={!!errors.password}
+                                                helperText={errors.password?.message}
+                                                disabled={shouldDisableFields}
+                                                type="password"
+                                            />
+                                        )}
                                     />
-                                )}
-                            />
-                        </div>
-                        <div className="w-full lg:w-1/3 flex flex-col gap-2">
+                                </div>
+                                <div className="w-full lg:w-1/3 flex flex-col gap-2">
+                                    <label className="text-right font-semibold">
+                                        شماره تماس:
+                                        {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                                    </label>
+                                    <Controller
+                                        name="phone"
+                                        control={control}
+                                        rules={{ required: 'شماره تماس الزامی است' }}
+                                        render={({ field }) => (
+                                            <CustomTextField
+                                                {...field}
+                                                fullWidth
+                                                placeholder="شماره تماس"
+                                                error={!!errors.phone}
+                                                helperText={errors.phone?.message}
+                                                disabled={shouldDisableFields}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div className="w-full lg:w-1/3 flex flex-col gap-2">
+                                    <label className="text-right font-semibold">کد پستی:</label>
+                                    <Controller
+                                        name="postalCode"
+                                        control={control}
+                                        rules={{ required: 'کد پستی الزامی است' }}
+                                        render={({ field }) => (
+                                            <CustomTextField
+                                                {...field}
+                                                fullWidth
+                                                placeholder="کدپستی"
+                                                error={!!errors.postalCode}
+                                                helperText={errors.postalCode?.message}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                            {/* Address Row */}
+                            <div className="w-full flex flex-col gap-2">
+                                <label className="text-right font-semibold">آدرس:</label>
+                                <Controller
+                                    name="address"
+                                    control={control}
+                                    rules={{ required: 'آدرس الزامی است' }}
+                                    render={({ field }) => (
+                                        <CustomTextField
+                                            {...field}
+                                            fullWidth
+                                            multiline
+                                            minRows={2}
+                                            placeholder="آدرس"
+                                            error={!!errors.address}
+                                            helperText={errors.address?.message}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </>
+                    )}
+
+                    {/* Show phone field separately if jj-sid mode */}
+                    {hasJjSid && (
+                        <div className="w-full flex flex-col gap-2">
                             <label className="text-right font-semibold">
                                 شماره تماس:
                                 {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
@@ -428,44 +482,8 @@ const PostalInfo: React.FC = () => {
                                 )}
                             />
                         </div>
-                        <div className="w-full lg:w-1/3 flex flex-col gap-2">
-                            <label className="text-right font-semibold">کد پستی:</label>
-                            <Controller
-                                name="postalCode"
-                                control={control}
-                                rules={{ required: 'کد پستی الزامی است' }}
-                                render={({ field }) => (
-                                    <CustomTextField
-                                        {...field}
-                                        fullWidth
-                                        placeholder="کدپستی"
-                                        error={!!errors.postalCode}
-                                        helperText={errors.postalCode?.message}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-                    {/* Address Row */}
-                    <div className="w-full flex flex-col gap-2">
-                        <label className="text-right font-semibold">آدرس:</label>
-                        <Controller
-                            name="address"
-                            control={control}
-                            rules={{ required: 'آدرس الزامی است' }}
-                            render={({ field }) => (
-                                <CustomTextField
-                                    {...field}
-                                    fullWidth
-                                    multiline
-                                    minRows={2}
-                                    placeholder="آدرس"
-                                    error={!!errors.address}
-                                    helperText={errors.address?.message}
-                                />
-                            )}
-                        />
-                    </div>
+                    )}
+
                     {/* Third Row */}
                     <div className="w-full flex flex-col lg:flex-row gap-4">
                         {/* Payment Method */}
@@ -615,4 +633,4 @@ const PostalInfo: React.FC = () => {
     );
 };
 
-export default PostalInfo;
+export default PostalInfo; 
