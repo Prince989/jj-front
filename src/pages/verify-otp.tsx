@@ -16,7 +16,7 @@ interface FormData {
     password: string;
     postalCode: string;
     address: string;
-    paymentType: 'installment' | 'online';
+    paymentType: 'installment' | 'online' | 'doorstep';
 }
 
 const VerifyOTP = () => {

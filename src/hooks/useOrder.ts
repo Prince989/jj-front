@@ -13,13 +13,14 @@ interface UseOrderReturn {
         hasInstallment: boolean
         address: string
         postalCode: string
+        isDestPay?: boolean
     }) => Promise<any>
 }
 
 export const useOrder = ({ onSuccess }: UseOrderProps): UseOrderReturn => {
     const [isUpdating, setIsUpdating] = useState(false)
 
-    const handleCreateOrder = async (data: { transportationId: number; hasInstallment: boolean; address: string; postalCode: string }) => {
+    const handleCreateOrder = async (data: { transportationId: number; hasInstallment: boolean; address: string; postalCode: string; isDestPay?: boolean }) => {
         try {
             setIsUpdating(true)
             const result = await createOrder(data)

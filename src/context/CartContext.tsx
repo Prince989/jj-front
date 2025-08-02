@@ -3,15 +3,15 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface CartContextType {
     quantity: number;
     setQuantity: React.Dispatch<React.SetStateAction<number>>;
-    paymentType: 'installment' | 'online';
-    setPaymentType: React.Dispatch<React.SetStateAction<'installment' | 'online'>>;
+    paymentType: 'installment' | 'online' | 'doorstep';
+    setPaymentType: React.Dispatch<React.SetStateAction<'installment' | 'online' | 'doorstep'>>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [quantity, setQuantity] = useState(1);
-    const [paymentType, setPaymentType] = useState<'installment' | 'online'>('online');
+    const [paymentType, setPaymentType] = useState<'installment' | 'online' | 'doorstep'>('online');
 
     return (
         <CartContext.Provider value={{ quantity, setQuantity, paymentType, setPaymentType }}>

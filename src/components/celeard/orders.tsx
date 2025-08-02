@@ -57,6 +57,11 @@ const Cart: React.FC = () => {
                                                     <CheckCircleIcon className="w-4 h-4" />
                                                     <span>پرداخت موفق</span>
                                                 </div>
+                                            ) : order.isDestPay ? (
+                                                <div className="flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                                                    <CheckCircleIcon className="w-4 h-4" />
+                                                    <span>پرداخت درب منزل</span>
+                                                </div>
                                             ) : (
                                                 <Button
                                                     variant="outlined"

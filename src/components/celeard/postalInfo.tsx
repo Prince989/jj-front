@@ -18,7 +18,7 @@ interface PostalInfoForm {
     password: string;
     postalCode: string;
     address: string;
-    paymentType: 'installment' | 'online';
+    paymentType: 'installment' | 'online' | 'doorstep';
 }
 
 interface InvoiceCalculation {
@@ -145,6 +145,20 @@ const PostalInfo: React.FC = () => {
                 subtotal,
                 tax,
                 shipping: 0, // No shipping for online
+                total,
+            };
+        } else if (watchedPaymentType === 'doorstep') {
+            // پرداخت درب منزل - مشابه آنلاین + هزینه ارسال
+            const subtotal = productCount * unitPrice;
+            const tax = subtotal * taxRate;
+            const total = subtotal + tax + shippingCost; // Add tracking cost for doorstep payment
+
+            return {
+                productCount,
+                unitPrice,
+                subtotal,
+                tax,
+                shipping: 0, // No shipping for doorstep
                 total,
             };
         } else {
@@ -530,6 +544,24 @@ const PostalInfo: React.FC = () => {
                                         />
                                         <span className="text-sm">پرداخت آنلاین - ارسال رایگان</span>
                                     </label>
+                                    <label className="flex items-center cursor-pointer gap-2">
+                                        <Controller
+                                            name="paymentType"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Radio
+                                                    checked={paymentType === 'doorstep'}
+                                                    onChange={() => {
+                                                        field.onChange('doorstep');
+                                                        setPaymentType('doorstep');
+                                                    }}
+                                                    value="doorstep"
+                                                    color="primary"
+                                                />
+                                            )}
+                                        />
+                                        <span className="text-sm">پرداخت درب منزل</span>
+                                    </label>
                                 </div>
                             </div>
                             {/* Submit Button */}
@@ -570,7 +602,7 @@ const PostalInfo: React.FC = () => {
                                     <span className="font-semibold">{formatCurrency(invoice.unitPrice)} تومان</span>
                                 </div>
 
-                                {watchedPaymentType !== 'installment' && (
+                                {(watchedPaymentType === 'online' || watchedPaymentType === 'doorstep') && (
                                     <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
                                         <span className="text-sm text-gray-600">جمع کل:</span>
                                         <span className="font-semibold">{formatCurrency(invoice.subtotal)} تومان</span>
@@ -600,6 +632,21 @@ const PostalInfo: React.FC = () => {
                                         <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
                                             <span className="text-sm text-gray-600">هزینه ارسال:</span>
                                             <span className="font-semibold">{formatCurrency(invoice.shipping)} تومان</span>
+                                        </div>
+                                    </>
+                                ) : watchedPaymentType === 'doorstep' ? (
+                                    <>
+                                        <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                                            <span className="text-sm text-gray-600">پرداخت درب منزل:</span>
+                                            <span className="font-semibold text-[#ED1A31]">{formatCurrency(invoice.subtotal + invoice.tax)} تومان</span>
+                                        </div>
+                                        <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                                            <span className="text-sm text-gray-600">مالیات بر ارزش افزوده (۱۰٪):</span>
+                                            <span className="font-semibold">{formatCurrency(invoice.tax)} تومان</span>
+                                        </div>
+                                        <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                                            <span className="text-sm text-gray-600">هزینه ارسال:</span>
+                                            <span className="font-semibold">{formatCurrency(60000)} تومان</span>
                                         </div>
                                     </>
                                 ) : (

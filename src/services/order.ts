@@ -6,6 +6,7 @@ interface CreateOrderParams {
     hasInstallment: boolean
     address: string
     postalCode: string
+    isDestPay?: boolean
 }
 
 // Order item types based on the real API response
@@ -30,6 +31,7 @@ export interface OrderData {
     updatedAt: string
     products: OrderProductItem[]
     isPaid: boolean
+    isDestPay?: boolean
 }
 
 export interface OrderResponse {

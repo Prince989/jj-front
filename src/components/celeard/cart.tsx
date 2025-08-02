@@ -99,6 +99,15 @@ const Cart: React.FC = () => {
                                     />
                                     <span className="text-sm">پرداخت آنلاین - ارسال رایگان</span>
                                 </label>
+                                <label className="flex items-center cursor-pointer gap-2">
+                                    <Radio
+                                        checked={paymentType === 'doorstep'}
+                                        onChange={() => setPaymentType('doorstep')}
+                                        value="doorstep"
+                                        color="primary"
+                                    />
+                                    <span className="text-sm">پرداخت درب منزل</span>
+                                </label>
                             </div>
                         </div>
                     </div>

@@ -14,7 +14,7 @@ interface InvoiceData {
     phone: string;
     postalCode: string;
     address: string;
-    paymentType: 'installment' | 'online';
+    paymentType: 'installment' | 'online' | 'doorstep';
 }
 
 interface InvoiceCalculation {
@@ -73,6 +73,7 @@ export const InvoiceComponent = () => {
         const unitPrice = 986000; // قیمت واحد محصول
         const taxRate = 0.1; // 10% مالیات بر ارزش افزوده
         const shippingCost = 60000; // هزینه ارسال
+        const trackingCost = 60000; // هزینه ارسال برای پرداخت درب منزل
 
         if (paymentType === 'online') {
             // پرداخت آنلاین - ارسال رایگان: (تعداد محصول × قیمت × 1.1)
@@ -86,6 +87,20 @@ export const InvoiceComponent = () => {
                 subtotal,
                 tax,
                 shipping: 0, // No shipping cost for online payment
+                total,
+            };
+        } else if (paymentType === 'doorstep') {
+            // پرداخت درب منزل - مشابه آنلاین + هزینه ارسال
+            const subtotal = productCount * unitPrice;
+            const tax = subtotal * taxRate;
+            const total = subtotal + tax + trackingCost; // Add tracking cost for doorstep payment
+
+            return {
+                productCount,
+                unitPrice,
+                subtotal,
+                tax,
+                shipping: 0, // No shipping cost for doorstep payment
                 total,
             };
         } else {
@@ -177,14 +192,21 @@ export const InvoiceComponent = () => {
                 transportationId: 1,
                 hasInstallment: processedData.paymentType === 'installment',
                 address: processedData.address,
-                postalCode: processedData.postalCode
+                postalCode: processedData.postalCode,
+                isDestPay: processedData.paymentType === 'doorstep'
             });
 
             console.log('Order detail:', orderDetail);
             const { data: { url, message } } = orderDetail?.data;
             if (message === "Success") {
                 toast.success('سفارش با موفقیت ثبت شد');
-                window.location.href = url;
+
+                // For doorstep payment, navigate to orders page instead of payment gateway
+                if (paymentType === 'doorstep') {
+                    router.push('/services/clrd/orders');
+                } else {
+                    window.location.href = url;
+                }
             }
         } catch (err: any) {
             console.error("order-error", err);
@@ -278,17 +300,24 @@ export const InvoiceComponent = () => {
                         </div>
 
                         {/* Payment Method */}
-                        <div className="text-lg font-bold text-right text-[#222]">روش پرداخت <span className="text-[#FF3B57] text-xs">با انتخاب روش پرداخت آنلاین، محصول را به صورت <span className="text-[#FF3B57]">رایگان</span>  دریافت کنید.</span></div>
+                        <div className="text-lg font-bold text-right text-[#222]">روش پرداخت <span className="text-[#FF3B57] text-xs">با انتخاب روش پرداخت آنلاین محصول را به صورت <span className="text-[#FF3B57]">رایگان</span>  دریافت کنید.</span></div>
                         <div className="bg-[#F9FBFD] rounded-lg p-6">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600">نوع پرداخت:</span>
                                 <span className="font-semibold text-[#008EFF]">
-                                    {paymentType === 'installment' ? 'پرداخت اقساطی' : 'پرداخت آنلاین - ارسال رایگان'}
+                                    {paymentType === 'installment' ? 'پرداخت اقساطی' :
+                                        paymentType === 'doorstep' ? 'پرداخت درب منزل' :
+                                            'پرداخت آنلاین - ارسال رایگان'}
                                 </span>
                             </div>
                             {paymentType === 'installment' && (
                                 <div className="mt-2 text-xs text-gray-600 text-right">
                                     ۴ قسط <span className="text-[#008EFF] font-bold">۲۴۶/۵۰۰</span> تومانی
+                                </div>
+                            )}
+                            {paymentType === 'doorstep' && (
+                                <div className="mt-2 text-xs text-gray-600 text-right">
+                                    پرداخت در زمان تحویل + هزینه ارسال
                                 </div>
                             )}
                         </div>
@@ -309,7 +338,7 @@ export const InvoiceComponent = () => {
                                 <span className="font-semibold">{formatCurrency(invoice.unitPrice)} تومان</span>
                             </div>
 
-                            {paymentType !== 'installment' && (
+                            {(paymentType === 'online' || paymentType === 'doorstep') && (
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm text-gray-600">جمع کل:</span>
                                     <span className="font-semibold">{formatCurrency(invoice.subtotal)} تومان</span>
@@ -331,6 +360,13 @@ export const InvoiceComponent = () => {
                                             <span className="font-semibold text-[#ED1A31]">{formatCurrency(invoice.fullPaymentAmount)} تومان</span>
                                         </div>
                                     )}
+                                </>
+                            ) : paymentType === 'doorstep' ? (
+                                <>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm text-gray-600">هزینه ارسال:</span>
+                                        <span className="font-semibold text-[#008EFF]">{formatCurrency(60000)} تومان</span>
+                                    </div>
                                 </>
                             ) : null}
 
@@ -364,7 +400,9 @@ export const InvoiceComponent = () => {
                                 style={{ fontFamily: 'YekanBakh', minWidth: 200 }}
                                 disabled={isProcessing || !user}
                             >
-                                {!user ? 'لطفا ابتدا وارد شوید' : isProcessing ? 'در حال پردازش...' : 'تکمیل پرداخت'}
+                                {!user ? 'لطفا ابتدا وارد شوید' :
+                                    isProcessing ? 'در حال پردازش...' :
+                                        paymentType === 'doorstep' ? 'تکمیل سفارش' : 'تکمیل پرداخت'}
                             </Button>
                         </div>
 
