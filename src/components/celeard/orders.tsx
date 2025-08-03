@@ -43,17 +43,16 @@ const Cart: React.FC = () => {
         >
             {/* Card info */}
             {user && (
-                <div className="w-full bg-white rounded-2xl shadow-md px-6 py-8 mb-8">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-4">
+                <div className="w-full bg-white rounded-2xl shadow-md px-2 lg:px-6 py-8 mb-8">
+                    <div className="flex flex-col lg:flex-row items-center justify-between mb-6 gap-6">
+                        <div className="w-full lg:w-auto flex items-center justify-between gap-4">
                             <h2 className="text-2xl font-bold text-[#222]">سفارشات شما</h2>
                             <div className="text-sm text-[#666]">
                                 {totalProducts} محصول
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-
-                            <FormControl size="small" sx={{ minWidth: 200 }}>
+                        <div className="flex items-center justify-between w-full md:w-auto">
+                            <FormControl size="small" className="w-full md:w-52">
                                 <InputLabel id="sort-order-label">مرتب‌سازی</InputLabel>
                                 <Select
                                     labelId="sort-order-label"

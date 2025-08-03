@@ -12,7 +12,7 @@ const OrderPage = () => {
             <div className="flex flex-col mb-10 lg:mb-24 relative">
                 <CeleardHeader />
             </div>
-            <div className="flex flex-col px-3 lg:px-24 mb-24">
+            <div className="flex flex-col px-1 lg:px-24 mb-24">
                 <Order />
             </div>
             <CeleardFooter />
