@@ -197,17 +197,17 @@ export const InvoiceComponent = () => {
             });
 
             console.log('Order detail:', orderDetail);
-            const { data: { url, message } } = orderDetail?.data;
-            if (message === "Success") {
-                toast.success('سفارش با موفقیت ثبت شد');
+            const { data: { url } } = orderDetail?.data;
 
-                // For doorstep payment, navigate to orders page instead of payment gateway
-                if (paymentType === 'doorstep') {
-                    router.push('/services/clrd/orders');
-                } else {
-                    window.location.href = url;
-                }
+            toast.success('سفارش با موفقیت ثبت شد');
+
+            // For doorstep payment, navigate to orders page instead of payment gateway
+            if (paymentType === 'doorstep') {
+                router.push('/services/clrd/orders');
+            } else {
+                window.location.href = url;
             }
+
         } catch (err: any) {
             console.error("order-error", err);
 

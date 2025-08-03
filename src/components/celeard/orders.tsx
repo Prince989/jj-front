@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import ContactUs from './contactUs';
 import { useOrderInfo } from '../../hooks/useOrderInfo';
@@ -6,14 +6,31 @@ import { useAuth } from '../../hooks/useAuth';
 import { usePaymentRetry } from '../../hooks/usePaymentRetry';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
     const { orderInfo, isLoading: orderLoading } = useOrderInfo();
     const { retryPayment, isLoading: paymentLoading } = usePaymentRetry();
+    const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
     // Helper to format numbers in Persian
     const toPersianNumber = (num: number) => num.toLocaleString('fa-IR');
+
+    // Sort orders based on selected filter
+    const sortedOrders = useMemo(() => {
+        if (!orderInfo?.data) return [];
+
+        return [...orderInfo.data].sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+
+            return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+    }, [orderInfo?.data, sortOrder]);
 
     // Calculate total products across all orders
     const totalProducts = orderInfo?.data?.reduce((total, order) =>
@@ -28,9 +45,31 @@ const Cart: React.FC = () => {
             {user && (
                 <div className="w-full bg-white rounded-2xl shadow-md px-6 py-8 mb-8">
                     <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-[#222]">سفارشات شما</h2>
-                        <div className="text-sm text-[#666]">
-                            {totalProducts} محصول
+                        <div className="flex items-center gap-4">
+                            <h2 className="text-2xl font-bold text-[#222]">سفارشات شما</h2>
+                            <div className="text-sm text-[#666]">
+                                {totalProducts} محصول
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+
+                            <FormControl size="small" sx={{ minWidth: 200 }}>
+                                <InputLabel id="sort-order-label">مرتب‌سازی</InputLabel>
+                                <Select
+                                    labelId="sort-order-label"
+                                    value={sortOrder}
+                                    label="مرتب‌سازی"
+                                    onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            textAlign: 'right',
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="newest">سفارشات تازه ثبت شده</MenuItem>
+                                    <MenuItem value="oldest">سفارشات قدیمی</MenuItem>
+                                </Select>
+                            </FormControl>
                         </div>
                     </div>
 
@@ -39,9 +78,9 @@ const Cart: React.FC = () => {
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#ED1A31]"></div>
                             <span className="mr-3 text-[#666]">در حال بارگذاری...</span>
                         </div>
-                    ) : orderInfo?.data && orderInfo.data.length > 0 ? (
+                    ) : sortedOrders && sortedOrders.length > 0 ? (
                         <div className="space-y-6">
-                            {orderInfo.data.map((order) => (
+                            {sortedOrders.map((order) => (
                                 <div key={order.id} className="border border-gray-200 rounded-lg p-4">
                                     {/* Order Header */}
                                     <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
