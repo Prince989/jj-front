@@ -1,10 +1,14 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import { useAuth } from 'src/hooks/useAuth';
 
 const RoshaHeroSection = () => {
+    const { user } = useAuth();
+
     const handleWhatsAppClick = () => {
         const phoneNumber = '989390614113';
-        const message = 'سلام، می‌خواهم نوبت دریافت کنم.';
+        const userName = user?.name || 'کاربر گرامی';
+        const message = `سلام ${userName}، می‌خواهم نوبت دریافت کنم.`;
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
