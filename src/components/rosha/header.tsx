@@ -58,8 +58,7 @@ const RoshaHeader = () => {
     }, []);
 
     const handleLoginClick = () => {
-        const currentPath = window.location.pathname + window.location.search;
-        router.push(`/verify-otp?returnUrl=${encodeURIComponent(currentPath)}`);
+        router.push(`/rosha-dashboard`);
     };
 
     const handleProfileClick = () => {

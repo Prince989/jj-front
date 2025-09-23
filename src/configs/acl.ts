@@ -30,8 +30,13 @@ const defineRulesFor = (role: string) => {
       can('manage', 'all')
       break
     case 'sponserUser':
-      // Business user has full access to everything
+      // Sponsor user has full access to everything
       can('manage', 'all')
+      break
+    case 'roshaOp':
+      // Rosha operator has access to rosha dashboard and common items
+      can('read', 'dashboard')
+      can('read', 'rosha-dashboard')
       break
     case 'user':
       // User has access to most pages but not admission
