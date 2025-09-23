@@ -249,7 +249,7 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                             // Navigate to payment gateway if URL exists
                             if (orderResponse?.data?.data?.url) {
                                 const gatewayUrl = orderResponse.data.data.url;
-                                window.open(gatewayUrl);
+                                window.location.href = gatewayUrl;
                             } else {
                                 // Fallback: navigate to rosha services page
                                 router.push('/services/rosha');
