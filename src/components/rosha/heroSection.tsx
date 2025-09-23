@@ -2,6 +2,13 @@ import React from 'react';
 import Button from '@mui/material/Button';
 
 const RoshaHeroSection = () => {
+    const handleWhatsAppClick = () => {
+        const phoneNumber = '09390614113';
+        const message = 'سلام، می‌خواهم نوبت دریافت کنم.';
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    };
+
     return (
         <section className="w-full bg-white relative overflow-hidden">
             {/* Main Content Container */}
@@ -47,6 +54,7 @@ const RoshaHeroSection = () => {
                                 variant="contained"
                                 className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-lg py-2 px-8 text-lg font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                                 size="large"
+                                onClick={handleWhatsAppClick}
                             >
                                 دریافت نوبت
                             </Button>

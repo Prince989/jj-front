@@ -1,58 +1,154 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from 'src/@core/components/icon';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import CustomOtpInput from 'src/components/validation/validation/CustomOTPInput';
+import { roshaSignup, roshaOrder } from 'src/services/rosha';
+import { requestOtp } from 'src/services/auth';
+import { handleApiError } from 'src/utils/errorHandler';
+import { useAuth } from 'src/hooks/useAuth';
 
 interface CreditRequestModalProps {
     open: boolean;
     onClose: () => void;
+    productId?: number | null;
 }
 
 interface FormData {
-    fullName: string;
-    dateOfBirth: Date | null;
+    fname: string;
+    lname: string;
+    birthdate: string;
     phoneNumber: string;
-    nationalId: string;
-    acknowledgeWarning: boolean;
+    nationalCode: string;
 }
 
 interface FormErrors {
-    fullName?: string;
-    dateOfBirth?: string;
+    fname?: string;
+    lname?: string;
+    birthdate?: string;
     phoneNumber?: string;
-    nationalId?: string;
-    acknowledgeWarning?: string;
+    nationalCode?: string;
 }
 
-const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose }) => {
+type Step = 'form' | 'otp' | 'success';
+
+const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, productId }) => {
+    const router = useRouter();
+    const { otpLogin } = useAuth();
+    const [currentStep, setCurrentStep] = useState<Step>('form');
+    const [otpToken, setOtpToken] = useState<number | null>(null);
+    const [timer, setTimer] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const [formData, setFormData] = useState<FormData>({
-        fullName: '',
-        dateOfBirth: null,
+        fname: '',
+        lname: '',
+        birthdate: '',
         phoneNumber: '',
-        nationalId: '',
-        acknowledgeWarning: false
+        nationalCode: ''
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
 
+    // Utility function to convert Persian/Arabic numbers to English
+    const convertToEnglishNumbers = (text: string): string => {
+        const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        let result = text;
+
+        // Convert Persian numbers
+        persianNumbers.forEach((persian, index) => {
+            result = result.replace(new RegExp(persian, 'g'), englishNumbers[index]);
+        });
+
+        // Convert Arabic numbers
+        arabicNumbers.forEach((arabic, index) => {
+            result = result.replace(new RegExp(arabic, 'g'), englishNumbers[index]);
+        });
+
+        return result;
+    };
+
+    // Utility function to validate Jalali date format (YYYY/MM/DD)
+    const isValidJalaliDate = (dateString: string): boolean => {
+        const jalaliDateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
+        if (!jalaliDateRegex.test(dateString)) {
+            return false;
+        }
+
+        const [year, month, day] = dateString.split('/').map(Number);
+
+        // Basic validation
+        if (year < 1300 || year > 1400) return false; // Reasonable year range
+        if (month < 1 || month > 12) return false;
+        if (day < 1 || day > 31) return false;
+
+        // Month-specific day validation
+        if (month <= 6 && day > 31) return false;
+        if (month > 6 && day > 30) return false;
+        if (month === 12 && day > 29) return false; // Leap year not handled for simplicity
+
+        return true;
+    };
+
+    // Utility function to convert Jalali date to Gregorian date (ISO format)
+    const jalaliToGregorian = (jalaliDate: string): string => {
+        // This is a simplified conversion - for production use a proper Jalali library
+        const [year, month, day] = jalaliDate.split('/').map(Number);
+
+        // Approximate conversion (not 100% accurate but sufficient for most cases)
+        const gregorianYear = year + 621;
+        const gregorianMonth = month + 3; // Approximate month offset
+        const gregorianDay = day;
+
+        // Create a date object and return ISO string
+        const date = new Date(gregorianYear, gregorianMonth - 1, gregorianDay);
+
+        return date.toISOString();
+    };
+
+    // Timer effect
+    useEffect(() => {
+        if (!timer) return;
+
+        const intervalId = setInterval(() => {
+            setTimer(timer - 1);
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [timer]);
+
     const resetForm = () => {
         setFormData({
-            fullName: '',
-            dateOfBirth: null,
+            fname: '',
+            lname: '',
+            birthdate: '',
             phoneNumber: '',
-            nationalId: '',
-            acknowledgeWarning: false
+            nationalCode: ''
         });
         setErrors({});
+        setCurrentStep('form');
+        setOtpToken(null);
+        setTimer(0);
     };
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
 
-        if (!formData.fullName.trim()) {
-            newErrors.fullName = 'نام و نام خانوادگی الزامی است';
+        if (!formData.fname.trim()) {
+            newErrors.fname = 'نام الزامی است';
         }
 
-        if (!formData.dateOfBirth) {
-            newErrors.dateOfBirth = 'تاریخ تولد الزامی است';
+        if (!formData.lname.trim()) {
+            newErrors.lname = 'نام خانوادگی الزامی است';
+        }
+
+        if (!formData.birthdate.trim()) {
+            newErrors.birthdate = 'تاریخ تولد الزامی است';
+        } else if (!isValidJalaliDate(formData.birthdate)) {
+            newErrors.birthdate = 'فرمت تاریخ تولد صحیح نیست. مثال: 1377/10/29';
         }
 
         if (!formData.phoneNumber.trim()) {
@@ -61,21 +157,27 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose }
             newErrors.phoneNumber = 'شماره تماس باید با 09 شروع شود و 11 رقم باشد';
         }
 
-        if (!formData.nationalId.trim()) {
-            newErrors.nationalId = 'کد ملی الزامی است';
-        } else if (!/^\d{10}$/.test(formData.nationalId)) {
-            newErrors.nationalId = 'کد ملی باید 10 رقم باشد';
+        if (!formData.nationalCode.trim()) {
+            newErrors.nationalCode = 'کد ملی الزامی است';
+        } else if (!/^\d{10}$/.test(formData.nationalCode)) {
+            newErrors.nationalCode = 'کد ملی باید 10 رقم باشد';
         }
 
-        if (!formData.acknowledgeWarning) {
-            newErrors.acknowledgeWarning = 'لطفا متن هشدار را مطالعه کرده و تایید کنید';
-        }
         setErrors(newErrors);
 
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleInputChange = (field: keyof FormData, value: any) => {
+    const handleInputChange = (field: keyof FormData, value: string) => {
+        // Convert Persian numbers to English for phone number, national code, and birthdate
+        if (field === 'phoneNumber') {
+            value = convertToEnglishNumbers(value);
+        } else if (field === 'nationalCode') {
+            value = convertToEnglishNumbers(value);
+        } else if (field === 'birthdate') {
+            value = convertToEnglishNumbers(value);
+        }
+
         setFormData(prev => ({
             ...prev,
             [field]: value
@@ -90,14 +192,99 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose }
         }
     };
 
-    const handleSubmit = () => {
-        if (validateForm()) {
+    const handleFormSubmit = async () => {
+        if (!validateForm()) {
+            return;
+        }
 
-            // Handle form submission here
-            console.log('Form submitted:', formData);
+        try {
+            setIsLoading(true);
 
-            // You can add API call here
-            onClose();
+            // Step 1: Register user with Rosha
+            await roshaSignup({
+                fname: formData.fname,
+                lname: formData.lname,
+                birthdate: jalaliToGregorian(formData.birthdate),
+                nationalCode: formData.nationalCode,
+                phoneNumber: formData.phoneNumber
+            });
+            setCurrentStep('otp');
+            setTimer(75);
+            toast.success('کد تایید ارسال شد');
+        } catch (error: any) {
+            handleApiError(error, 'خطا در ثبت نام یا ارسال کد تایید', toast);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleOtpVerify = async () => {
+        if (!otpToken || otpToken.toString().length !== 4) {
+            toast.error('لطفا کد 4 رقمی را وارد کنید');
+
+            return;
+        }
+
+        if (!productId) {
+            toast.error('شناسه محصول یافت نشد');
+
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            // Step 3: Login user with OTP
+            otpLogin(
+                {
+                    phoneNumber: formData.phoneNumber,
+                    token: otpToken.toString()
+                },
+                () => {
+                    // On successful login, create order
+                    roshaOrder({ productId })
+                        .then((orderResponse) => {
+                            toast.success('سفارش با موفقیت ثبت شد');
+
+                            // Navigate to payment gateway if URL exists
+                            if (orderResponse?.data?.data?.url) {
+                                const gatewayUrl = orderResponse.data.data.url;
+                                window.open(gatewayUrl);
+                            } else {
+                                // Fallback: navigate to rosha services page
+                                router.push('/services/rosha');
+                            }
+
+                            setCurrentStep('success');
+                        })
+                        .catch((error: any) => {
+                            handleApiError(error, 'خطا در ایجاد سفارش', toast);
+                        })
+                        .finally(() => {
+                            setIsLoading(false);
+                        });
+                },
+                (error: any) => {
+                    handleApiError(error, 'کد تایید اشتباه است', toast);
+                    setIsLoading(false);
+                }
+            );
+        } catch (error: any) {
+            handleApiError(error, 'خطا در تایید کد', toast);
+            setIsLoading(false);
+        }
+    };
+
+    const handleResendOTP = async () => {
+        try {
+            setIsLoading(true);
+            await requestOtp({ phoneNumber: formData.phoneNumber });
+            setTimer(75);
+            toast.success('کد تایید مجددا ارسال شد');
+        } catch (error: any) {
+            handleApiError(error, 'خطا در ارسال کد تایید', toast);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -121,7 +308,9 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose }
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 pb-4 border-b border-gray-200">
                     <h2 className="text-xl font-bold text-[#6A8358]">
-                        لطفا اطلاعات زیر را وارد نمایید.
+                        {currentStep === 'form' ? 'اطلاعات ثبت نام' :
+                            currentStep === 'otp' ? 'تایید شماره موبایل' :
+                                'سفارش ثبت شد'}
                     </h2>
                     <button
                         onClick={handleClose}
@@ -134,123 +323,190 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose }
 
                 {/* Content */}
                 <div className="p-6 pt-4 overflow-y-auto">
-                    <div className="space-y-6">
-                        {/* First Row */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    نام و نام خانوادگی
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.fullName}
-                                    onChange={(e) => handleInputChange('fullName', e.target.value)}
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.fullName ? 'border-red-500' : 'border-gray-300'
-                                        }`}
-                                />
-                                {errors.fullName && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
-                                )}
+                    {currentStep === 'form' && (
+                        <div className="space-y-4">
+                            {/* Name Fields */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        نام
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.fname}
+                                        onChange={(e) => handleInputChange('fname', e.target.value)}
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.fname ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                    />
+                                    {errors.fname && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.fname}</p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        نام خانوادگی
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.lname}
+                                        onChange={(e) => handleInputChange('lname', e.target.value)}
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.lname ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                    />
+                                    {errors.lname && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.lname}</p>
+                                    )}
+                                </div>
                             </div>
+
+                            {/* Birthdate */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     تاریخ تولد
                                 </label>
                                 <input
                                     type="text"
-                                    value={formData.dateOfBirth ? formData.dateOfBirth.toLocaleDateString('fa-IR') : ''}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-
-                                        // Simple date parsing - you can enhance this based on your needs
-                                        const date = value ? new Date(value) : null;
-                                        handleInputChange('dateOfBirth', date);
-                                    }}
-                                    placeholder="مثال: 1375/01/15"
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                                    value={formData.birthdate}
+                                    onChange={(e) => handleInputChange('birthdate', e.target.value)}
+                                    placeholder="1377/10/29"
+                                    maxLength={10}
+                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.birthdate ? 'border-red-500' : 'border-gray-300'
                                         }`}
                                 />
-                                {errors.dateOfBirth && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>
+                                {errors.birthdate && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.birthdate}</p>
                                 )}
                             </div>
 
+                            {/* Phone and National Code */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        شماره تماس
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={formData.phoneNumber}
+                                        onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                                        placeholder="09123456789"
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                    />
+                                    {errors.phoneNumber && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        کدملی
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.nationalCode}
+                                        onChange={(e) => handleInputChange('nationalCode', e.target.value)}
+                                        placeholder="1234567890"
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.nationalCode ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                    />
+                                    {errors.nationalCode && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.nationalCode}</p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
+                    )}
 
-                        {/* Second Row */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    شماره تماس
-                                </label>
-                                <input
-                                    type="tel"
-                                    value={formData.phoneNumber}
-                                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                                    placeholder="09123456789"
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
-                                        }`}
-                                />
-                                {errors.phoneNumber && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+                    {currentStep === 'otp' && (
+                        <div className="space-y-4 text-center">
+                            <p className="text-sm text-gray-600">
+                                کد ارسال شده به شماره {formData.phoneNumber} را وارد کنید
+                            </p>
+
+                            <CustomOtpInput
+                                value={otpToken}
+                                onChange={(e) => setOtpToken(e)}
+                                hasError={false}
+                            />
+
+                            <div className="mt-2">
+                                {timer > 0 ? (
+                                    <p className="text-sm text-gray-600">
+                                        {timer} ثانیه تا ارسال مجدد
+                                    </p>
+                                ) : (
+                                    <button
+                                        onClick={handleResendOTP}
+                                        disabled={isLoading}
+                                        className={`text-[#6A8358] underline ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:text-[#5a7350]'
+                                            }`}
+                                    >
+                                        ارسال مجدد کد تایید
+                                    </button>
                                 )}
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    کدملی
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.nationalId}
-                                    onChange={(e) => handleInputChange('nationalId', e.target.value)}
-                                    placeholder="1234567890"
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.nationalId ? 'border-red-500' : 'border-gray-300'
-                                        }`}
-                                />
-                                {errors.nationalId && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.nationalId}</p>
-                                )}
-                            </div>
-                        </div>
 
-                        {/* Warning Section */}
-                        <div className="mt-4">
-                            <div className="flex items-start space-x-3">
-                                <input
-                                    type="checkbox"
-                                    id="acknowledgeWarning"
-                                    checked={formData.acknowledgeWarning}
-                                    onChange={(e) => handleInputChange('acknowledgeWarning', e.target.checked)}
-                                    className={`mt-1 h-4 w-4 text-[#6A8358] focus:ring-[#6A8358] border-gray-300 rounded ${errors.acknowledgeWarning ? 'border-red-500' : ''
-                                        }`}
-                                />
-                                <label htmlFor="acknowledgeWarning" className="text-sm text-gray-700 leading-relaxed">
-                                    کاربر گرامی در صورتی که نمیدانید{' '}
-                                    <span className="text-red-600 font-bold">
-                                        چه تعداد ایمپلنت
-                                    </span>{' '}
-                                    نیاز دارید لطفا در وهله اول از قسمت{' '}
-                                    <span className="text-red-600 font-bold">
-                                        دریافت نوبت
-                                    </span>{' '}
-                                    با کارشناسان روشا در ارتباط باشید. در غیر این صورت خرید شما دچار مشکل خواهد شد و تیم جی جی مسئولیتی بابت این امر ندارد.
-                                </label>
-                            </div>
-                            {errors.acknowledgeWarning && (
-                                <p className="text-red-500 text-sm mt-1">{errors.acknowledgeWarning}</p>
-                            )}
+                            <button
+                                onClick={() => setCurrentStep('form')}
+                                disabled={isLoading}
+                                className={`w-full py-2 px-4 rounded-lg font-medium border transition-colors ${isLoading
+                                    ? 'border-gray-300 text-gray-500 cursor-not-allowed'
+                                    : 'border-[#6A8358] text-[#6A8358] hover:bg-gray-50'
+                                    }`}
+                            >
+                                تغییر شماره موبایل
+                            </button>
                         </div>
-                    </div>
+                    )}
+
+                    {currentStep === 'success' && (
+                        <div className="space-y-4 text-center">
+                            <div className="text-green-600 text-6xl">✓</div>
+                            <p className="text-lg font-medium text-gray-900">
+                                سفارش شما با موفقیت ثبت شد
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                در حال انتقال به درگاه پرداخت...
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Footer */}
                 <div className="p-6 pt-4 border-t border-gray-200">
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full bg-[#6A8358] hover:bg-[#5a7350] text-white font-bold py-3 px-4 rounded-md transition-colors duration-200"
-                    >
-                        خرید
-                    </button>
+                    {currentStep === 'form' && (
+                        <button
+                            onClick={handleFormSubmit}
+                            disabled={isLoading}
+                            className={`w-full py-3 px-4 rounded-md font-medium transition-colors ${isLoading
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-[#6A8358] hover:bg-[#5a7350] text-white'
+                                }`}
+                        >
+                            {isLoading ? 'در حال پردازش...' : 'ادامه'}
+                        </button>
+                    )}
+
+                    {currentStep === 'otp' && (
+                        <button
+                            onClick={handleOtpVerify}
+                            disabled={!otpToken || otpToken.toString().length !== 4 || isLoading}
+                            className={`w-full py-3 px-4 rounded-md font-medium transition-colors ${!otpToken || otpToken.toString().length !== 4 || isLoading
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-[#6A8358] hover:bg-[#5a7350] text-white'
+                                }`}
+                        >
+                            {isLoading ? 'در حال تایید...' : 'تایید و خرید'}
+                        </button>
+                    )}
+
+                    {currentStep === 'success' && (
+                        <button
+                            onClick={handleClose}
+                            className="w-full bg-[#6A8358] hover:bg-[#5a7350] text-white font-medium py-3 px-4 rounded-md transition-colors"
+                        >
+                            بستن
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

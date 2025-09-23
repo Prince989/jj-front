@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CreditRequestModal from './CreditRequestModal';
 
 const CreditSection = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
+    // Function to convert English numbers to Persian
+    const toPersianNumbers = (num: number): string => {
+        const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+        return num.toString().replace(/\d/g, (digit) => persianNumbers[parseInt(digit)]);
+    };
     const creditItems = [
         {
             id: 1,
@@ -26,8 +36,43 @@ const CreditSection = () => {
             id: 5,
             title: "ایمپلنت",
             description: "با انتخاب بهترین روش درمان، ماندگاری و زیبایی لبخند بیماران را تضمین میکند."
-        }
+        },
+        {
+            id: 6,
+            title: "ایمپلنت",
+            description: "با انتخاب بهترین روش درمان، ماندگاری و زیبایی لبخند بیماران را تضمین میکند."
+        },
+        {
+            id: 7,
+            title: "ایمپلنت",
+            description: "با انتخاب بهترین روش درمان، ماندگاری و زیبایی لبخند بیماران را تضمین میکند."
+        },
+        {
+            id: 8,
+            title: "ایمپلنت",
+            description: "با انتخاب بهترین روش درمان، ماندگاری و زیبایی لبخند بیماران را تضمین میکند."
+        },
+        {
+            id: 9,
+            title: "ایمپلنت",
+            description: "با انتخاب بهترین روش درمان، ماندگاری و زیبایی لبخند بیماران را تضمین میکند."
+        },
+        {
+            id: 10,
+            title: "ایمپلنت",
+            description: "با انتخاب بهترین روش درمان، ماندگاری و زیبایی لبخند بیماران را تضمین میکند."
+        },
     ];
+
+    const handleCreditItemClick = (productId: number) => {
+        setSelectedProductId(productId);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedProductId(null);
+    };
 
     return (
         <section className="w-full bg-white py-12 lg:py-16">
@@ -50,7 +95,8 @@ const CreditSection = () => {
                     {creditItems.map((item) => (
                         <div
                             key={item.id}
-                            className="relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-cover bg-center bg-no-repeat"
+                            onClick={() => handleCreditItemClick(item.id)}
+                            className="relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-cover bg-center bg-no-repeat cursor-pointer"
                             style={{
                                 backgroundImage: 'url(/images/rosha/barg.svg)'
                             }}
@@ -60,7 +106,7 @@ const CreditSection = () => {
                                 {/* Number */}
                                 <div className="mb-4">
                                     <span className="text-4xl lg:text-5xl font-bold text-[#6A8358]">
-                                        {item.id}
+                                        {toPersianNumbers(item.id)}
                                     </span>
                                 </div>
 
@@ -78,6 +124,13 @@ const CreditSection = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Credit Request Modal */}
+            <CreditRequestModal
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                productId={selectedProductId}
+            />
         </section>
     );
 };

@@ -1,9 +1,6 @@
-import Button from '@mui/material/Button';
-import React, { useState } from 'react';
-import CreditRequestModal from './CreditRequestModal';
+import React from 'react';
 
 const AboutSection = () => {
-    const [modalOpen, setModalOpen] = useState(false);
 
     const creditPlans = [
         {
@@ -24,7 +21,7 @@ const AboutSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden">
+        <section id="about-section" className="w-full bg-white relative overflow-hidden">
             {/* Main Content Container */}
             <div className="max-w-[1440px] mx-auto px-4 lg:px-24 py-8 lg:py-16">
                 {/* Section Title */}
@@ -63,18 +60,6 @@ const AboutSection = () => {
                                 تمامی طرح ها شامل مشاوره رایگان معاینات تخصصی و استفاده از متریال استاندارد و با کیفیت هستند. هدف ما ایجاد تجربه ای مطمئن و لبخندی ماندگار با شرایط مالی آسان برای شماست.
                             </p>
                         </div>
-
-                        {/* Call to Action Button */}
-                        <div className="pt-4">
-                            <Button
-                                variant="contained"
-                                className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-2 px-8 text-base font-medium normal-case shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                                size="large"
-                                onClick={() => setModalOpen(true)}
-                            >
-                                دریافت اعتبار
-                            </Button>
-                        </div>
                     </div>
                     {/* Right Side - Text Content */}
                     <div className="w-full lg:w-1/2 relative order-1 lg:order-2">
@@ -94,12 +79,6 @@ const AboutSection = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Credit Request Modal */}
-            <CreditRequestModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-            />
         </section>
     );
 };

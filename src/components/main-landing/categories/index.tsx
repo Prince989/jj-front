@@ -24,10 +24,10 @@ const categories: CategoryItemProps[] = [
         badge: ""
     },
     {
-        title: 'لوازم خانگی',
-        image: '/images/main-landing/zarf.png',
-        href: '',
-        badge: "به زودی"
+        title: 'کلینیک دندان پزشکی روشا',
+        image: '/images/rosha/logo.svg',
+        href: '/services/rosha',
+        badge: ""
     },
     {
         title: 'مد و پوشاک',

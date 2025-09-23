@@ -2,6 +2,13 @@ import Button from '@mui/material/Button';
 import React from 'react';
 
 const BenefitsSection = () => {
+    const handleWhatsAppClick = () => {
+        const phoneNumber = '09390614113';
+        const message = 'سلام، می‌خواهم مشاوره رایگان دریافت کنم.';
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    };
+
     const benefits = [
         {
             title: "ظاهر طبیعی",
@@ -88,6 +95,7 @@ const BenefitsSection = () => {
                                 variant="contained"
                                 className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-3 px-8 text-base font-medium normal-case shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                                 size="large"
+                                onClick={handleWhatsAppClick}
                             >
                                 دریافت مشاوره رایگان
                             </Button>

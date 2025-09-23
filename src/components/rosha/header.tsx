@@ -108,15 +108,6 @@ const RoshaHeader = () => {
 
             {/* Desktop: Action Button */}
             <div className="hidden lg:flex items-center gap-6">
-                <Button
-                    variant="contained"
-                    className="border border-solid border-[#6A8358] text-[#6A8358] rounded-lg py-3 px-6 normal-case text-sm hover:bg-[#fff] hover:text-[#6A8358] font-medium h-[40px]"
-                    onClick={() => router.push('/services/rosha/postal-info')}
-                    startIcon={<img src="/images/rosha/cart.svg" className='w-[20px] h-[20px]' />}
-                >
-                    سبد خرید
-                </Button>
-
                 {isLoggedIn ? (
                     <div className="relative" ref={profileMenuRef}>
                         <IconButton
@@ -129,12 +120,6 @@ const RoshaHeader = () => {
                         {profileMenuOpen && (
                             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                                 <div className="py-2">
-                                    <button
-                                        onClick={() => { router.push('/services/rosha/orders'); setProfileMenuOpen(false); }}
-                                        className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                                    >
-                                        سفارشات
-                                    </button>
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -159,9 +144,6 @@ const RoshaHeader = () => {
 
             {/* Mobile: Action Button */}
             <div className="flex lg:hidden items-center gap-1">
-                <IconButton onClick={() => router.push('/services/rosha/postal-info')} className='border border-solid border-[#6A8358] rounded-[3px] w-[24px] h-[24px] p-0'>
-                    <img src="/images/rosha/cart.svg" className='w-[20px] h-[20px]' />
-                </IconButton>
                 {isLoggedIn ? (
                     <div className="relative bg-[#6A8358] rounded-[3px] w-[24px] h-[24px] p-0 flex justify-center items-center" >
                         <img src="/images/rosha/profile.svg" className='w-[20px] h-[20px]' />
@@ -206,25 +188,8 @@ const RoshaHeader = () => {
                         </nav>
                     </div>
                     <div className="mt-8">
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            className="bg-[#6A8358] text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-[#5a6f4a] h-[40px]"
-                            onClick={() => { router.push('/services/rosha/postal-info'); setDrawerOpen(false); }}
-                        >
-                            سبد خرید
-                        </Button>
-
                         {isLoggedIn ? (
                             <div className="mt-3 space-y-2">
-                                <Button
-                                    fullWidth
-                                    variant="outlined"
-                                    className="border-[#6A8358] text-[#6A8358] rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-[#6A8358] hover:text-white h-[40px]"
-                                    onClick={() => { router.push('/services/rosha/orders'); setDrawerOpen(false); }}
-                                >
-                                    سفارشات
-                                </Button>
                                 <Button
                                     fullWidth
                                     variant="outlined"
