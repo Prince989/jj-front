@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'src/@core/components/icon';
 import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/router';
 import CustomOtpInput from 'src/components/validation/validation/CustomOTPInput';
-import { roshaSignup, roshaOrder } from 'src/services/rosha';
+import { roshaSignup } from 'src/services/rosha';
 import { requestOtp } from 'src/services/auth';
 import { handleApiError } from 'src/utils/errorHandler';
 import { useAuth } from 'src/hooks/useAuth';
 
-interface CreditRequestModalProps {
+interface AuthModalProps {
     open: boolean;
     onClose: () => void;
-    productId?: number | null;
+    onSuccess?: () => void;
+    canClose?: boolean;
 }
 
 interface FormData {
@@ -20,7 +20,6 @@ interface FormData {
     birthdate: string;
     phoneNumber: string;
     nationalCode: string;
-    acceptTerms: boolean;
 }
 
 interface FormErrors {
@@ -29,13 +28,11 @@ interface FormErrors {
     birthdate?: string;
     phoneNumber?: string;
     nationalCode?: string;
-    acceptTerms?: string;
 }
 
 type Step = 'form' | 'otp' | 'success';
 
-const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, productId }) => {
-    const router = useRouter();
+const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, onSuccess, canClose = true }) => {
     const { otpLogin } = useAuth();
     const [currentStep, setCurrentStep] = useState<Step>('form');
     const [otpToken, setOtpToken] = useState<number | null>(null);
@@ -47,8 +44,7 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
         lname: '',
         birthdate: '',
         phoneNumber: '',
-        nationalCode: '',
-        acceptTerms: false
+        nationalCode: ''
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -129,8 +125,7 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
             lname: '',
             birthdate: '',
             phoneNumber: '',
-            nationalCode: '',
-            acceptTerms: false
+            nationalCode: ''
         });
         setErrors({});
         setCurrentStep('form');
@@ -165,10 +160,6 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
             newErrors.nationalCode = 'کد ملی الزامی است';
         } else if (!/^\d{10}$/.test(formData.nationalCode)) {
             newErrors.nationalCode = 'کد ملی باید 10 رقم باشد';
-        }
-
-        if (!formData.acceptTerms) {
-            newErrors.acceptTerms = 'لطفا شرایط و قوانین را بپذیرید';
         }
 
         setErrors(newErrors);
@@ -233,12 +224,6 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
             return;
         }
 
-        if (!productId) {
-            toast.error('شناسه محصول یافت نشد');
-
-            return;
-        }
-
         try {
             setIsLoading(true);
 
@@ -249,28 +234,14 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                     token: otpToken.toString()
                 },
                 () => {
-                    // On successful login, create order
-                    roshaOrder({ productId })
-                        .then((orderResponse) => {
-                            toast.success('سفارش با موفقیت ثبت شد');
+                    toast.success('ورود با موفقیت انجام شد');
+                    setCurrentStep('success');
 
-                            // Navigate to payment gateway if URL exists
-                            if (orderResponse?.data?.data?.url) {
-                                const gatewayUrl = orderResponse.data.data.url;
-                                window.location.href = gatewayUrl;
-                            } else {
-                                // Fallback: navigate to rosha services page
-                                router.push('/services/rosha');
-                            }
-
-                            setCurrentStep('success');
-                        })
-                        .catch((error: any) => {
-                            handleApiError(error, 'خطا در ایجاد سفارش', toast);
-                        })
-                        .finally(() => {
-                            setIsLoading(false);
-                        });
+                    // Call onSuccess callback after a short delay
+                    setTimeout(() => {
+                        onSuccess?.();
+                        handleClose();
+                    }, 1500);
                 },
                 (error: any) => {
                     handleApiError(error, 'کد تایید اشتباه است', toast);
@@ -297,6 +268,9 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
     };
 
     const handleClose = () => {
+        if (!canClose) {
+            return;
+        }
         resetForm();
         onClose();
     };
@@ -308,7 +282,7 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black bg-opacity-50"
-                onClick={handleClose}
+                onClick={canClose ? handleClose : undefined}
             />
 
             {/* Modal */}
@@ -316,25 +290,42 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 pb-4 border-b border-gray-200">
                     <h2 className="text-xl font-bold text-[#6A8358]">
-                        {currentStep === 'form' ? 'اطلاعات ثبت نام' :
+                        {currentStep === 'form' ? 'ورود به روشا' :
                             currentStep === 'otp' ? 'تایید شماره موبایل' :
-                                'سفارش ثبت شد'}
+                                'ورود موفق'}
                     </h2>
-                    <button
-                        onClick={handleClose}
-                        className="text-[#6A8358] hover:text-[#5a7350] transition-colors"
-                        aria-label="close"
-                    >
-                        <Icon icon='tabler:x' />
-                    </button>
+                    {canClose ? (
+                        <button
+                            onClick={handleClose}
+                            className="text-[#6A8358] hover:text-[#5a7350] transition-colors"
+                            aria-label="close"
+                        >
+                            <Icon icon='tabler:x' />
+                        </button>
+                    ) : (
+                        <div className="w-6 h-6 flex items-center justify-center">
+                            <Icon icon='tabler:lock' className="text-gray-400" />
+                        </div>
+                    )}
                 </div>
 
                 {/* Content */}
                 <div className="p-6 pt-4 overflow-y-auto">
+                    {!canClose && (
+                        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                                <Icon icon='tabler:info-circle' className="text-blue-600" />
+                                <p className="text-sm text-blue-800">
+                                    برای دسترسی به خدمات روشا، لطفا ابتدا وارد شوید یا ثبت نام کنید.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
                     {currentStep === 'form' && (
                         <div className="space-y-4">
                             {/* Name Fields */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         نام
@@ -368,40 +359,22 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                             </div>
 
                             {/* Birthdate */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    تاریخ تولد
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.birthdate}
-                                    onChange={(e) => handleInputChange('birthdate', e.target.value)}
-                                    placeholder="1377/10/29"
-                                    maxLength={10}
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.birthdate ? 'border-red-500' : 'border-gray-300'
-                                        }`}
-                                />
-                                {errors.birthdate && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.birthdate}</p>
-                                )}
-                            </div>
-
-                            {/* Phone and National Code */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        شماره تماس
+                                        تاریخ تولد
                                     </label>
                                     <input
-                                        type="tel"
-                                        value={formData.phoneNumber}
-                                        onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                                        placeholder="09123456789"
-                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                                        type="text"
+                                        value={formData.birthdate}
+                                        onChange={(e) => handleInputChange('birthdate', e.target.value)}
+                                        placeholder="1377/10/29"
+                                        maxLength={10}
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.birthdate ? 'border-red-500' : 'border-gray-300'
                                             }`}
                                     />
-                                    {errors.phoneNumber && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+                                    {errors.birthdate && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.birthdate}</p>
                                     )}
                                 </div>
                                 <div>
@@ -422,26 +395,26 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                                 </div>
                             </div>
 
-                            {/* Terms and Conditions */}
-                            <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                                    <input
-                                        type="checkbox"
-                                        id="acceptTerms"
-                                        checked={formData.acceptTerms}
-                                        onChange={(e) => handleInputChange('acceptTerms', e.target.checked)}
-                                        className="mt-1 h-4 w-4 text-[#6A8358] border-gray-300 rounded focus:ring-[#6A8358]"
-                                    />
-                                    <label htmlFor="acceptTerms" className="text-sm text-gray-700 leading-relaxed">
-                                        <span className="font-medium text-gray-900">کاربر گرامی</span> در صورتی که نمیدانید
-                                        <span className="text-red-600 font-medium"> چه تعداد ایمپلنت</span> نیاز دارید لطفا در وهله اول از قسمت
-                                        <span className="text-red-600 font-medium"> دریافت نوبت</span> با کارشناسان روشا در ارتباط باشید در غیر این صورت خرید شما دچار مشکل خواهد شد و تیم جی جی مسئولیتی بابت این امر ندارد.
+                            {/* Phone and National Code */}
+                            <div className="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        شماره تماس
                                     </label>
+                                    <input
+                                        type="tel"
+                                        value={formData.phoneNumber}
+                                        onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                                        placeholder="09123456789"
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                    />
+                                    {errors.phoneNumber && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+                                    )}
                                 </div>
-                                {errors.acceptTerms && (
-                                    <p className="text-red-500 text-sm mt-2">{errors.acceptTerms}</p>
-                                )}
                             </div>
+
                         </div>
                     )}
 
@@ -491,10 +464,10 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                         <div className="space-y-4 text-center">
                             <div className="text-green-600 text-6xl">✓</div>
                             <p className="text-lg font-medium text-gray-900">
-                                سفارش شما با موفقیت ثبت شد
+                                ورود با موفقیت انجام شد
                             </p>
                             <p className="text-sm text-gray-600">
-                                در حال انتقال به درگاه پرداخت...
+                                در حال انتقال به صفحه روشا...
                             </p>
                         </div>
                     )}
@@ -524,7 +497,7 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                                 : 'bg-[#6A8358] hover:bg-[#5a7350] text-white'
                                 }`}
                         >
-                            {isLoading ? 'در حال تایید...' : 'تایید و خرید'}
+                            {isLoading ? 'در حال تایید...' : 'تایید و ورود'}
                         </button>
                     )}
 
@@ -542,4 +515,4 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
     );
 };
 
-export default CreditRequestModal;
+export default AuthModal;

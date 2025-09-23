@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import CreditRequestModal from './CreditRequestModal';
+import ProductConfirmationModal from './ProductConfirmationModal';
 
 const CreditSection = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+    const [selectedProductTitle, setSelectedProductTitle] = useState<string>('');
 
     // Function to convert English numbers to Persian
     const toPersianNumbers = (num: number): string => {
@@ -64,14 +65,16 @@ const CreditSection = () => {
         },
     ];
 
-    const handleCreditItemClick = (productId: number) => {
+    const handleCreditItemClick = (productId: number, productTitle: string) => {
         setSelectedProductId(productId);
+        setSelectedProductTitle(productTitle);
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedProductId(null);
+        setSelectedProductTitle('');
     };
 
     return (
@@ -95,7 +98,7 @@ const CreditSection = () => {
                     {creditItems.map((item) => (
                         <div
                             key={item.id}
-                            onClick={() => handleCreditItemClick(item.id)}
+                            onClick={() => handleCreditItemClick(item.id, item.title)}
                             className="relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-cover bg-center bg-no-repeat cursor-pointer"
                             style={{
                                 backgroundImage: 'url(/images/rosha/barg.svg)'
@@ -125,11 +128,12 @@ const CreditSection = () => {
                 </div>
             </div>
 
-            {/* Credit Request Modal */}
-            <CreditRequestModal
+            {/* Product Confirmation Modal */}
+            <ProductConfirmationModal
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 productId={selectedProductId}
+                productTitle={selectedProductTitle}
             />
         </section>
     );

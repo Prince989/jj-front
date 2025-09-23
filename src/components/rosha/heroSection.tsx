@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 
 const RoshaHeroSection = () => {
     const handleWhatsAppClick = () => {
-        const phoneNumber = '09390614113';
+        const phoneNumber = '989390614113';
         const message = 'سلام، می‌خواهم نوبت دریافت کنم.';
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
