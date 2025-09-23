@@ -134,7 +134,10 @@ const Cart: React.FC = () => {
                                             <div>
                                                 <span className="text-[#666]">نوع پرداخت:</span>
                                                 <p className="text-[#222]">
-                                                    {order.isInstallment ? 'اقساطی' : 'آنلاین'}
+                                                    {
+                                                        order.isDestPay ? 'درب منزل' :
+                                                            order.isInstallment ? 'اقساطی' : 'آنلاین'
+                                                    }
                                                 </p>
                                             </div>
                                         </div>

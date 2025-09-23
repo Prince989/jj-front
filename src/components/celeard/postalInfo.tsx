@@ -88,8 +88,8 @@ const PostalInfo: React.FC = () => {
             nationalCode: '',
             phone: '',
             password: '',
-            postalCode: hasJjSid ? '' : getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE),
-            address: hasJjSid ? '' : getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS),
+            postalCode: getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE),
+            address: getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS),
             paymentType: paymentType,
         },
     });
@@ -100,31 +100,28 @@ const PostalInfo: React.FC = () => {
 
     // Save postal code and address to local storage when they change (only if not jj-sid mode)
     useEffect(() => {
-        if (!hasJjSid && watchedPostalCode) {
+        if (watchedPostalCode) {
             saveToLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE, watchedPostalCode);
         }
-    }, [watchedPostalCode, hasJjSid]);
+    }, [watchedPostalCode]);
 
     useEffect(() => {
-        if (!hasJjSid && watchedAddress) {
+        if (watchedAddress)
             saveToLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS, watchedAddress);
-        }
-    }, [watchedAddress, hasJjSid]);
+    }, [watchedAddress]);
 
     // Load saved data from local storage on component mount (only if not jj-sid mode)
     useEffect(() => {
-        if (!hasJjSid) {
-            const savedPostalCode = getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE);
-            const savedAddress = getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS);
+        const savedPostalCode = getFromLocalStorage(LOCAL_STORAGE_KEYS.POSTAL_CODE);
+        const savedAddress = getFromLocalStorage(LOCAL_STORAGE_KEYS.ADDRESS);
 
-            if (savedPostalCode) {
-                setValue('postalCode', savedPostalCode);
-            }
-            if (savedAddress) {
-                setValue('address', savedAddress);
-            }
+        if (savedPostalCode) {
+            setValue('postalCode', savedPostalCode);
         }
-    }, [setValue, hasJjSid]);
+        if (savedAddress) {
+            setValue('address', savedAddress);
+        }
+    }, [setValue]);
 
     // Invoice calculation method
     const calculateInvoice = (): InvoiceCalculation => {
@@ -475,27 +472,65 @@ const PostalInfo: React.FC = () => {
 
                     {/* Show phone field separately if jj-sid mode */}
                     {hasJjSid && (
-                        <div className="w-full flex flex-col gap-2">
-                            <label className="text-right font-semibold">
-                                شماره تماس:
-                                {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
-                            </label>
-                            <Controller
-                                name="phone"
-                                control={control}
-                                rules={{ required: 'شماره تماس الزامی است' }}
-                                render={({ field }) => (
-                                    <CustomTextField
-                                        {...field}
-                                        fullWidth
-                                        placeholder="شماره تماس"
-                                        error={!!errors.phone}
-                                        helperText={errors.phone?.message}
-                                        disabled={shouldDisableFields}
-                                    />
-                                )}
-                            />
-                        </div>
+                        <>
+                            <div className="w-full flex flex-col gap-2">
+                                <label className="text-right font-semibold">
+                                    شماره تماس:
+                                    {shouldDisableFields && <span className="text-xs text-green-600 mr-1">(تکمیل شده)</span>}
+                                </label>
+                                <Controller
+                                    name="phone"
+                                    control={control}
+                                    rules={{ required: 'شماره تماس الزامی است' }}
+                                    render={({ field }) => (
+                                        <CustomTextField
+                                            {...field}
+                                            fullWidth
+                                            placeholder="شماره تماس"
+                                            error={!!errors.phone}
+                                            helperText={errors.phone?.message}
+                                            disabled={shouldDisableFields}
+                                        />
+                                    )}
+                                />
+
+                                <label className="text-right font-semibold">کد پستی:</label>
+                                <Controller
+                                    name="postalCode"
+                                    control={control}
+                                    rules={{ required: 'کد پستی الزامی است' }}
+                                    render={({ field }) => (
+                                        <CustomTextField
+                                            {...field}
+                                            fullWidth
+                                            placeholder="کدپستی"
+                                            error={!!errors.postalCode}
+                                            helperText={errors.postalCode?.message}
+                                        />
+                                    )}
+                                />
+                            </div>
+                            {/* Address Row */}
+                            <div className="w-full flex flex-col gap-2">
+                                <label className="text-right font-semibold">آدرس:</label>
+                                <Controller
+                                    name="address"
+                                    control={control}
+                                    rules={{ required: 'آدرس الزامی است' }}
+                                    render={({ field }) => (
+                                        <CustomTextField
+                                            {...field}
+                                            fullWidth
+                                            multiline
+                                            minRows={2}
+                                            placeholder="آدرس"
+                                            error={!!errors.address}
+                                            helperText={errors.address?.message}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </>
                     )}
 
                     {/* Third Row */}
