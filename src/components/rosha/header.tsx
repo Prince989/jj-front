@@ -20,7 +20,7 @@ const RoshaHeader = () => {
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const profileMenuRef = useRef<HTMLDivElement>(null);
 
     const handleMenuClick = (item: typeof menuItems[0]) => {
@@ -72,6 +72,12 @@ const RoshaHeader = () => {
         router.push('/');
     };
 
+    const handleAdminDashboard = () => {
+        router.push('/rosha-dashboard');
+        setProfileMenuOpen(false);
+        setDrawerOpen(false);
+    };
+
     return (
         <header className="w-full flex items-center justify-between px-3 lg:px-24 py-4 rtl bg-white shadow-sm sticky top-0 z-50">
             {/* Mobile: Hamburger Menu */}
@@ -120,6 +126,14 @@ const RoshaHeader = () => {
                         {profileMenuOpen && (
                             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                                 <div className="py-2">
+                                    {user?.role?.name === 'roshaOp' && (
+                                        <button
+                                            onClick={handleAdminDashboard}
+                                            className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                                        >
+                                            داشبورد مدیریت
+                                        </button>
+                                    )}
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -190,6 +204,16 @@ const RoshaHeader = () => {
                     <div className="mt-8">
                         {isLoggedIn ? (
                             <div className="mt-3 space-y-2">
+                                {user?.role?.name === 'roshaOp' && (
+                                    <Button
+                                        fullWidth
+                                        variant="outlined"
+                                        className="border-gray-300 text-gray-700 rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-gray-100 h-[40px]"
+                                        onClick={handleAdminDashboard}
+                                    >
+                                        داشبورد مدیریت
+                                    </Button>
+                                )}
                                 <Button
                                     fullWidth
                                     variant="outlined"

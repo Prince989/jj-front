@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CustomOtpInput from 'src/components/validation/validation/CustomOTPInput'
 import { requestOtp } from 'src/services/auth'
+import { roshaValidate, roshaUse } from 'src/services/rosha'
 import { toast } from 'react-hot-toast'
 import { handleApiError } from 'src/utils/errorHandler'
+import { useAuth } from 'src/hooks/useAuth'
+import { format } from 'date-fns-jalali'
 
 type Step = 'phone' | 'otp' | 'patientCode' | 'validation' | 'success' | 'error'
 
 interface PatientInfo {
-    name: string
-    nationalId: string
+    id: number
+    fName: string
+    lName: string
+    phoneNumber: string
+    nationalCode: string
     birthDate: string
-    mobile: string
+    isRoshaValid: boolean
+}
+
+// Utility function to convert ISO date to Jalali format
+const convertToJalali = (dateString: string): string => {
+    try {
+        const date = new Date(dateString)
+
+        return format(date, 'yyyy/MM/dd')
+    } catch (error) {
+        console.error('Error converting date to Jalali:', error)
+
+        return dateString // Return original string if conversion fails
+    }
 }
 
 const RoshaDashboardComponent = () => {
@@ -22,6 +41,20 @@ const RoshaDashboardComponent = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [timer, setTimer] = useState<number>(0)
     const [errorMessage, setErrorMessage] = useState<string>('')
+
+    // Initialize auth hook
+    const { user, loading: authLoading, otpLogin } = useAuth()
+
+    // Check if user is already logged in and skip phone/OTP steps
+    useEffect(() => {
+        if (!authLoading && user) {
+            // User is already logged in, skip to patientCode step
+            setCurrentStep('patientCode')
+        } else if (!authLoading && !user) {
+            // User is not logged in, start with phone step
+            setCurrentStep('phone')
+        }
+    }, [user, authLoading])
 
     // Timer effect
     React.useEffect(() => {
@@ -67,44 +100,48 @@ const RoshaDashboardComponent = () => {
 
         setIsLoading(true)
         setErrorMessage('')
-        try {
-            // TODO: Add OTP verification API call here
-            // For now, simulate the API call
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            setCurrentStep('patientCode')
-            toast.success('کد تایید با موفقیت تایید شد')
-        } catch (error: any) {
-            handleApiError(error, 'کد تایید اشتباه است', toast)
-            setErrorMessage('کد تایید اشتباه است')
-        } finally {
-            setIsLoading(false)
-        }
+
+        // Use real OTP login service
+        otpLogin(
+            {
+                phoneNumber,
+                token: otpCode.toString()
+            },
+            () => {
+                // Success callback
+                setCurrentStep('patientCode')
+                toast.success('کد تایید با موفقیت تایید شد')
+                setIsLoading(false)
+            },
+            (error: any) => {
+                // Error callback
+                handleApiError(error, 'کد تایید اشتباه است', toast)
+                setErrorMessage('کد تایید اشتباه است')
+                setIsLoading(false)
+            }
+        )
     }
 
     const handlePatientCodeSubmit = async () => {
-        if (!patientCode || patientCode.length < 5) {
+        if (!patientCode || patientCode.length < 4) {
             setErrorMessage('لطفا کد بیمار را وارد کنید')
 
             return
         }
 
         setIsLoading(true)
+        setErrorMessage('')
         try {
-            // Simulate API call to fetch patient info
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            // Call real API to validate patient code
+            const response = await roshaValidate({ code: patientCode })
 
-            // Mock patient data
-            const mockPatientInfo: PatientInfo = {
-                name: 'علی محمدی',
-                nationalId: '۰۰۲۳۴۵۵۴۳۲',
-                birthDate: '۱۳۴۵/۰۹/۱۹',
-                mobile: '۰۹۱۲۳۴۵۶۷۸۸'
-            }
-
-            setPatientInfo(mockPatientInfo)
+            // Extract patient data from nested response structure
+            const patientInfo = response.data.data
+            setPatientInfo(patientInfo)
             setCurrentStep('validation')
-            setErrorMessage('')
-        } catch (error) {
+            toast.success('اطلاعات بیمار با موفقیت دریافت شد')
+        } catch (error: any) {
+            handleApiError(error, 'کد بیمار یافت نشد', toast)
             setErrorMessage('کد بیمار یافت نشد')
         } finally {
             setIsLoading(false)
@@ -113,14 +150,16 @@ const RoshaDashboardComponent = () => {
 
     const handleValidationSubmit = async () => {
         setIsLoading(true)
+        setErrorMessage('')
         try {
-            // Simulate API call for validation
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            // Call real API to use/consume the patient code
+            await roshaUse({ code: patientCode })
             setCurrentStep('success')
-            setErrorMessage('')
-        } catch (error) {
+            toast.success('کد بیمار با موفقیت ابطال شد')
+        } catch (error: any) {
+            handleApiError(error, 'خطا در ابطال کد بیمار', toast)
             setCurrentStep('error')
-            setErrorMessage('خطا در تایید اطلاعات')
+            setErrorMessage('خطا در ابطال کد بیمار')
         } finally {
             setIsLoading(false)
         }
@@ -148,7 +187,8 @@ const RoshaDashboardComponent = () => {
     }
 
     const resetFlow = () => {
-        setCurrentStep('phone')
+        // If user is logged in, reset to patientCode step, otherwise to phone step
+        setCurrentStep(user ? 'patientCode' : 'phone')
         setPhoneNumber('')
         setOtpCode(null)
         setPatientCode('')
@@ -318,7 +358,7 @@ const RoshaDashboardComponent = () => {
                                             type="text"
                                             placeholder="کد بیمار"
                                             value={patientCode}
-                                            onChange={(e) => setPatientCode(e.target.value.toUpperCase())}
+                                            onChange={(e) => setPatientCode(e.target.value)}
                                             className="w-full px-3 py-3 border border-[#6A8358] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A8358] focus:border-transparent"
                                         />
                                     </div>
@@ -363,7 +403,7 @@ const RoshaDashboardComponent = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            value={patientInfo?.name || ''}
+                                            value={patientInfo ? `${patientInfo.fName} ${patientInfo.lName}` : ''}
                                             disabled
                                             className="w-full px-3 py-3 bg-gray-100 border border-[#6A8358] rounded-lg text-gray-500 cursor-not-allowed"
                                         />
@@ -374,7 +414,7 @@ const RoshaDashboardComponent = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            value={patientInfo?.nationalId || ''}
+                                            value={patientInfo?.nationalCode || ''}
                                             disabled
                                             className="w-full px-3 py-3 bg-gray-100 border border-[#6A8358] rounded-lg text-gray-500 cursor-not-allowed"
                                         />
@@ -387,7 +427,7 @@ const RoshaDashboardComponent = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            value={patientInfo?.birthDate || ''}
+                                            value={patientInfo?.birthDate ? convertToJalali(patientInfo.birthDate) : ''}
                                             disabled
                                             className="w-full px-3 py-3 bg-gray-100 border border-[#6A8358] rounded-lg text-gray-500 cursor-not-allowed"
                                         />
@@ -398,7 +438,7 @@ const RoshaDashboardComponent = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            value={patientInfo?.mobile || ''}
+                                            value={patientInfo?.phoneNumber || ''}
                                             disabled
                                             className="w-full px-3 py-3 bg-gray-100 border border-[#6A8358] rounded-lg text-gray-500 cursor-not-allowed"
                                         />
@@ -460,6 +500,20 @@ const RoshaDashboardComponent = () => {
     }
 
     const { title, subtitle } = getStepTitleAndSubtitle()
+
+    // Show loading state while checking authentication
+    if (authLoading) {
+        return (
+            <div className="flex items-center justify-center">
+                <div className="w-full bg-white rounded-lg shadow-lg px-8 pt-8 pb-16">
+                    <div className="text-center">
+                        <div className="w-8 h-8 border-4 border-[#6A8358] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p className="text-gray-600">در حال بررسی احراز هویت...</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="flex items-center justify-center">

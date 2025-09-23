@@ -103,7 +103,7 @@ const useNavigation = (): VerticalNavItemsType => {
     },
   ]
 
-  const roshaAdminMenuItems = [
+  const roshaOpMenuItems = [
     {
       title: 'داشبورد روشا',
       icon: <ChartIcon />,
@@ -118,8 +118,8 @@ const useNavigation = (): VerticalNavItemsType => {
     return [...commonMenuItems, ...userBusinessMenuItems]
   } else if (userRole === 'sponserUser') {
     return [...commonMenuItems, ...sponserUserMenuItems]
-  } else if (userRole === 'roshaAdmin') {
-    return [...commonMenuItems, ...roshaAdminMenuItems]
+  } else if (userRole === 'roshaOp') {
+    return [...commonMenuItems, ...roshaOpMenuItems]
   }
 
   // Return common items as fallback
