@@ -22,7 +22,7 @@ export default function RoshaFooter() {
                     <div className="w-full lg:w-[35%] flex flex-col lg:items-start text-center lg:text-right">
                         {/* Logo */}
                         <div className="mb-4 flex justify-start">
-                            <img src="/images/rosha/logo.svg" alt="Rosha Logo" className="h-5 w-auto lg:mx-0 cursor-pointer" onClick={() => router.push('/services/clrd')} />
+                            <img src="/images/rosha/logo.jpeg" alt="Rosha Logo" className="h-7 w-auto lg:mx-0 cursor-pointer" onClick={() => router.push('/services/rosha')} />
                         </div>
                         {/* Description */}
                         <p className="text-sm text-justify lg:text-right lg:text-base text-black mb-6 leading-7">

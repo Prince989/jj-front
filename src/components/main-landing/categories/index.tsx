@@ -25,7 +25,7 @@ const categories: CategoryItemProps[] = [
     },
     {
         title: 'کلینیک دندان پزشکی روشا',
-        image: '/images/rosha/logo.svg',
+        image: '/images/rosha/logo.jpeg',
         href: '/services/rosha',
         badge: ""
     },

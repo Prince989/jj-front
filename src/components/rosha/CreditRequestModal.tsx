@@ -20,6 +20,7 @@ interface FormData {
     birthdate: string;
     phoneNumber: string;
     nationalCode: string;
+    acceptTerms: boolean;
 }
 
 interface FormErrors {
@@ -28,6 +29,7 @@ interface FormErrors {
     birthdate?: string;
     phoneNumber?: string;
     nationalCode?: string;
+    acceptTerms?: string;
 }
 
 type Step = 'form' | 'otp' | 'success';
@@ -45,7 +47,8 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
         lname: '',
         birthdate: '',
         phoneNumber: '',
-        nationalCode: ''
+        nationalCode: '',
+        acceptTerms: false
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -126,7 +129,8 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
             lname: '',
             birthdate: '',
             phoneNumber: '',
-            nationalCode: ''
+            nationalCode: '',
+            acceptTerms: false
         });
         setErrors({});
         setCurrentStep('form');
@@ -163,18 +167,22 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
             newErrors.nationalCode = 'کد ملی باید 10 رقم باشد';
         }
 
+        if (!formData.acceptTerms) {
+            newErrors.acceptTerms = 'لطفا شرایط و قوانین را بپذیرید';
+        }
+
         setErrors(newErrors);
 
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleInputChange = (field: keyof FormData, value: string) => {
+    const handleInputChange = (field: keyof FormData, value: string | boolean) => {
         // Convert Persian numbers to English for phone number, national code, and birthdate
-        if (field === 'phoneNumber') {
+        if (field === 'phoneNumber' && typeof value === 'string') {
             value = convertToEnglishNumbers(value);
-        } else if (field === 'nationalCode') {
+        } else if (field === 'nationalCode' && typeof value === 'string') {
             value = convertToEnglishNumbers(value);
-        } else if (field === 'birthdate') {
+        } else if (field === 'birthdate' && typeof value === 'string') {
             value = convertToEnglishNumbers(value);
         }
 
@@ -412,6 +420,27 @@ const CreditRequestModal: React.FC<CreditRequestModalProps> = ({ open, onClose, 
                                         <p className="text-red-500 text-sm mt-1">{errors.nationalCode}</p>
                                     )}
                                 </div>
+                            </div>
+
+                            {/* Terms and Conditions */}
+                            <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <div className="flex items-start space-x-3 rtl:space-x-reverse">
+                                    <input
+                                        type="checkbox"
+                                        id="acceptTerms"
+                                        checked={formData.acceptTerms}
+                                        onChange={(e) => handleInputChange('acceptTerms', e.target.checked)}
+                                        className="mt-1 h-4 w-4 text-[#6A8358] border-gray-300 rounded focus:ring-[#6A8358]"
+                                    />
+                                    <label htmlFor="acceptTerms" className="text-sm text-gray-700 leading-relaxed">
+                                        <span className="font-medium text-gray-900">کاربر گرامی</span> در صورتی که نمیدانید
+                                        <span className="text-red-600 font-medium"> چه تعداد ایمپلنت</span> نیاز دارید لطفا در وهله اول از قسمت
+                                        <span className="text-red-600 font-medium"> دریافت نوبت</span> با کارشناسان روشا در ارتباط باشید در غیر این صورت خرید شما دچار مشکل خواهد شد و تیم جی جی مسئولیتی بابت این امر ندارد.
+                                    </label>
+                                </div>
+                                {errors.acceptTerms && (
+                                    <p className="text-red-500 text-sm mt-2">{errors.acceptTerms}</p>
+                                )}
                             </div>
                         </div>
                     )}

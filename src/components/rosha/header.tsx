@@ -105,8 +105,8 @@ const RoshaHeader = () => {
                 </nav>
             </div>
             <img
-                src="/images/rosha/logo.svg"
-                alt="Celeard Logo"
+                src="/images/rosha/logo.jpeg"
+                alt="Rosha Logo"
                 className="w-[88px] h-[30px] object-contain cursor-pointer"
                 onClick={() => router.push('/services/rosha')}
             />
@@ -181,7 +181,7 @@ const RoshaHeader = () => {
                     <div>
                         <div className="flex items-center mb-8">
                             <img
-                                src="/images/rosha/logo.svg"
+                                src="/images/rosha/logo.jpeg"
                                 alt="Rosha Logo"
                                 className="w-[80px] h-[30px] object-contain cursor-pointer"
                                 onClick={() => { router.push('/services/rosha'); setDrawerOpen(false); }}
