@@ -13,7 +13,7 @@ import BenefitsSection from 'src/components/rosha/benefitsSection'
 import AuthModal from 'src/components/rosha/AuthModal'
 
 
-const CeleardPanel = () => {
+const RoshaPanel = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -27,8 +27,7 @@ const CeleardPanel = () => {
 
             // If not authenticated, show auth modal
             if (!isLoggedIn) {
-                // setIsAuthModalOpen(true); TODO
-                setIsAuthModalOpen(false);
+                setIsAuthModalOpen(true);
             }
 
             setIsLoading(false);
@@ -99,10 +98,10 @@ const CeleardPanel = () => {
     )
 }
 
-CeleardPanel.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+RoshaPanel.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-CeleardPanel.authGuard = false
-CeleardPanel.guestGuard = false
+RoshaPanel.authGuard = false
+RoshaPanel.guestGuard = false
 
-export default CeleardPanel
+export default RoshaPanel
 

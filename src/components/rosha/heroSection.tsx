@@ -1,8 +1,14 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/router';
 import { handleWhatsAppClick } from '../../utils/whatsapp';
 
 const RoshaHeroSection = () => {
+    const router = useRouter();
+
+    const handleGuideClick = () => {
+        router.push('/services/rosha-guide');
+    };
 
     return (
         <section className="w-full bg-white relative overflow-hidden">
@@ -43,8 +49,8 @@ const RoshaHeroSection = () => {
                             />
                         </div>
 
-                        {/* Call to Action Button */}
-                        <div className="pt-4">
+                        {/* Call to Action Buttons */}
+                        <div className="pt-4 flex flex-col sm:flex-row gap-4">
                             <Button
                                 variant="contained"
                                 className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-lg py-2 px-8 text-lg font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -52,6 +58,14 @@ const RoshaHeroSection = () => {
                                 onClick={handleWhatsAppClick}
                             >
                                 دریافت نوبت
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                className="border-2 border-[#6A8358] text-[#6A8358] hover:border-[#5a7350] hover:text-[#5a7350] hover:bg-[#6A8358]/5 rounded-lg py-2 px-8 text-lg font-medium normal-case transition-all duration-300 transform hover:scale-105"
+                                size="large"
+                                onClick={handleGuideClick}
+                            >
+                                راهنمایی گام به گام
                             </Button>
                         </div>
                     </div>
