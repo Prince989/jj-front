@@ -27,7 +27,8 @@ const CeleardPanel = () => {
 
             // If not authenticated, show auth modal
             if (!isLoggedIn) {
-                setIsAuthModalOpen(true);
+                // setIsAuthModalOpen(true); TODO
+                setIsAuthModalOpen(false);
             }
 
             setIsLoading(false);

@@ -1,17 +1,8 @@
 import Button from '@mui/material/Button';
 import React from 'react';
-import { useAuth } from 'src/hooks/useAuth';
+import { handleWhatsAppClick } from '../../utils/whatsapp';
 
 const BenefitsSection = () => {
-    const { user } = useAuth();
-
-    const handleWhatsAppClick = () => {
-        const phoneNumber = '989390614113';
-        const userName = user?.name || 'کاربر گرامی';
-        const message = `سلام ${userName} هستم، می‌خواهم مشاوره رایگان دریافت نمایم.`;
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-    };
 
     const benefits = [
         {
