@@ -58,43 +58,65 @@ const RoshaGuide = () => {
     const steps = [
         {
             number: 1,
-            title: 'مشاوره اولیه و رزرو نوبت',
-            description: 'با کلیک روی دکمه "دریافت نوبت" یا تماس با کلینیک، نوبت مشاوره رایگان خود را رزرو کنید. تیم ما در اسرع وقت با شما تماس خواهد گرفت تا زمان مناسب برای ویزیت هماهنگ شود.',
+            title: 'ورود به سایت جی‌جی لاین و انتخاب خدمات دندانپزشکی روشا',
+            description: 'ابتدا وارد سایت جی‌جی لاین شوید و از میان خدمات موجود، خدمات دندانپزشکی روشا را انتخاب کنید تا به صفحه مخصوص این خدمات دسترسی پیدا کنید.',
         },
         {
             number: 2,
-            title: 'ویزیت و معاینه تخصصی',
-            description: 'در اولین جلسه، دکتر متخصص دهان و دندان معاینه کاملی انجام می‌دهد و با استفاده از تصویربرداری‌های پیشرفته، وضعیت دندان‌های شما را بررسی می‌کند. این مرحله شامل عکسبرداری رادیوگرافی و اسکن سه‌بعدی است.',
+            title: 'انتخاب دکمه «مشاوره و نوبت‌دهی»',
+            description: 'در صفحه خدمات دندانپزشکی روشا، دکمه "مشاوره و نوبت‌دهی" را انتخاب کنید تا وارد فرآیند دریافت مشاوره و تعیین نوبت شوید.',
         },
         {
             number: 3,
-            title: 'ارائه پلن درمانی',
-            description: 'پس از بررسی‌های لازم، دکتر پلن درمانی جامعی برای شما تهیه می‌کند که شامل مراحل درمان، زمان‌بندی جلسات و هزینه‌های مربوطه است. در این مرحله تمامی سوالات شما پاسخ داده می‌شود.',
+            title: 'ورود به واتساپ مشاوران',
+            description: 'پس از انتخاب دکمه مشاوره، به واتساپ مشاوران متخصص ما متصل خواهید شد تا بتوانید با تیم مشاوره در ارتباط باشید.',
         },
         {
             number: 4,
-            title: 'انتخاب و پرداخت',
-            description: 'پس از تایید پلن درمانی، می‌توانید از میان گزینه‌های پرداخت نقدی یا اقساطی انتخاب کنید. کلینیک روشا امکان پرداخت اقساط بدون بهره با شرایط مناسب را برای راحتی شما فراهم کرده است.',
+            title: 'ارسال عکس OPG به مشاور در واتساپ و دریافت مشاوره در خصوص تعداد ایمپلنت لازم',
+            description: 'عکس OPG (رادیوگرافی کامل دهان و دندان) خود را برای مشاور ارسال کنید. مشاور متخصص ما بر اساس این عکس، مشاوره تخصصی در مورد تعداد ایمپلنت مورد نیاز شما ارائه خواهد داد.',
         },
         {
             number: 5,
-            title: 'شروع درمان',
-            description: 'درمان شما طبق برنامه زمان‌بندی شده آغاز می‌شود. در هر جلسه، تیم متخصص کلینیک با استفاده از تجهیزات پیشرفته و استاندارد جهانی، مراحل کاشت ایمپلنت را با دقت انجام می‌دهند.',
+            title: 'خرید ایمپلنت از طریق دکمه <خرید ایمپلنت>',
+            description: 'پس از دریافت مشاوره و مشخص شدن تعداد ایمپلنت مورد نیاز، دکمه "خرید ایمپلنت" را انتخاب کنید تا وارد فرآیند خرید شوید.',
         },
         {
             number: 6,
-            title: 'پیگیری و مراقبت پس از درمان',
-            description: 'پس از اتمام درمان، جلسات پیگیری منظم برای اطمینان از موفقیت درمان برگزار می‌شود. تیم کلینیک راهنمایی‌های لازم برای مراقبت از ایمپلنت‌ها و حفظ سلامت دهان و دندان را به شما ارائه می‌دهند.',
+            title: 'انتخاب تعداد ایمپلنت مطابق با مشاوره دریافت شده',
+            description: 'بر اساس مشاوره دریافت شده از مشاور متخصص، تعداد ایمپلنت مورد نیاز خود را انتخاب کنید و به مرحله پرداخت بروید.',
+        },
+        {
+            number: 7,
+            title: 'پرداخت آنلاین مبلغ پیش‌پرداخت از طریق دکمه <پیش‌پرداخت>',
+            description: 'مبلغ پیش‌پرداخت را به صورت آنلاین و امن از طریق دکمه "پیش‌پرداخت" پرداخت کنید. سیستم پرداخت ما کاملاً امن و قابل اعتماد است.',
+        },
+        {
+            number: 8,
+            title: 'دریافت پیامک تأیید پرداخت',
+            description: 'پس از تکمیل پرداخت، پیامکی حاوی شماره پیگیری و تأیید پرداخت برای شما ارسال خواهد شد. این پیامک را نگه دارید.',
+        },
+        {
+            number: 9,
+            title: 'ارسال شماره پیگیری به مشاور',
+            description: 'پس از دریافت پیامک، مجدداً به لینک "دریافت نوبت" مراجعه کنید و شماره پیگیری دریافتی را به مشاور ارسال نمایید.',
+        },
+        {
+            number: 10,
+            title: 'دریافت اطلاعات نوبت و درمان',
+            description: 'مشاور متخصص ما تاریخ نوبت، جزئیات درمان و سایر اطلاعات لازم جهت مراجعه به کلینیک را به شما اطلاع خواهد داد.',
         },
     ];
 
     const benefits = [
-        'مشاوره رایگان با دکتر متخصص',
-        'استفاده از تجهیزات پیشرفته و استریل',
-        'امکان پرداخت اقساطی بدون بهره',
-        'گارانتی کتبی ایمپلنت‌های اصل',
-        'پیگیری رایگان پس از درمان',
-        'قیمت‌گذاری شفاف و قابل اعتماد',
+        'مشاوره رایگان با متخصصان دندانپزشکی',
+        'ارسال عکس OPG و دریافت مشاوره تخصصی',
+        'خرید ایمپلنت با قیمت مناسب و شفاف',
+        'پرداخت آنلاین امن و آسان',
+        'پیگیری کامل فرآیند از طریق واتساپ',
+        'دریافت نوبت و اطلاعات درمانی دقیق',
+        'پشتیبانی ۲۴ ساعته در تمامی مراحل',
+        'گارانتی کیفیت و خدمات پس از فروش',
     ];
 
     // Show loading state while checking authentication
@@ -128,21 +150,27 @@ const RoshaGuide = () => {
                                 بازگشت
                             </Button>
                             <h1 className="text-3xl md:text-5xl font-bold mb-4">
-                                راهنمای گام به گام خرید خدمات
+                                راهنمای گام به گام دریافت خدمات اعتباری و دندانپزشکی روشا
                             </h1>
                             <p className="text-lg md:text-xl opacity-90 max-w-3xl">
-                                در کلینیک فوق تخصصی روشا، ما شما را در تمامی مراحل درمان همراهی می‌کنیم. این راهنما به شما کمک می‌کند تا با فرآیند خرید و دریافت خدمات آشنا شوید.
+                                این راهنمای کامل تمامی مراحل دریافت خدمات اعتباری و دندانپزشکی روشا را به صورت گام به گام شرح می‌دهد تا بتوانید به راحتی از خدمات ما بهره‌مند شوید.
                             </p>
                         </div>
                     </div>
 
                     {/* Steps Section */}
                     <div className="max-w-[1200px] mx-auto px-4 py-12">
-                        <div className="space-y-8">
-                            {steps.map((step) => (
+                        <div className="mb-8 text-center">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                                مراحل دریافت خدمات
+                            </h2>
+                            <div className="w-24 h-1 bg-[#6A8358] mx-auto rounded-full"></div>
+                        </div>
+                        <div className="space-y-6">
+                            {steps.map((step, index) => (
                                 <Card
                                     key={step.number}
-                                    className="shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                                    className="shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
                                     sx={{
                                         borderRight: '6px solid #6A8358',
                                         '&:hover': {
@@ -155,17 +183,22 @@ const RoshaGuide = () => {
                                         <div className="flex flex-col md:flex-row gap-6">
                                             {/* Step Number */}
                                             <div className="flex-shrink-0">
-                                                <div className="w-16 h-16 rounded-full bg-[#6A8358] text-white flex items-center justify-center text-2xl font-bold shadow-md">
-                                                    {step.number}
+                                                <div className="relative">
+                                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#6A8358] to-[#5a7350] text-white flex items-center justify-center text-2xl font-bold shadow-lg">
+                                                        {step.number}
+                                                    </div>
+                                                    {index < steps.length - 1 && (
+                                                        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gradient-to-b from-[#6A8358] to-transparent hidden md:block"></div>
+                                                    )}
                                                 </div>
                                             </div>
 
                                             {/* Step Content */}
                                             <div className="flex-1">
-                                                <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                                                <h3 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
                                                     {step.title}
                                                 </h3>
-                                                <p className="text-gray-600 text-lg leading-relaxed">
+                                                <p className="text-gray-600 text-base leading-relaxed">
                                                     {step.description}
                                                 </p>
                                             </div>
@@ -176,47 +209,49 @@ const RoshaGuide = () => {
                         </div>
 
                         {/* Benefits Section */}
-                        <div className="mt-16 bg-gradient-to-br from-[#6A8358]/10 to-[#6A8358]/5 rounded-2xl p-8 md:p-12">
+                        <div className="mt-16 bg-gradient-to-br from-[#6A8358]/10 to-[#6A8358]/5 rounded-2xl p-8 md:p-12 border border-[#6A8358]/20">
                             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-                                مزایای انتخاب کلینیک روشا
+                                مزایای دریافت خدمات اعتباری و دندانپزشکی روشا
                             </h2>
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {benefits.map((benefit, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-start gap-4 bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                                        className="flex flex-col items-center text-center bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
                                     >
-                                        <CheckCircleIcon className="text-[#6A8358] flex-shrink-0 mt-1" sx={{ fontSize: 28 }} />
-                                        <p className="text-gray-700 text-lg">{benefit}</p>
+                                        <div className="w-12 h-12 bg-[#6A8358] rounded-full flex items-center justify-center mb-4">
+                                            <CheckCircleIcon className="text-white" sx={{ fontSize: 24 }} />
+                                        </div>
+                                        <p className="text-gray-700 text-sm font-medium leading-relaxed">{benefit}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
                         {/* Call to Action Section */}
-                        <div className="mt-16 text-center bg-white rounded-2xl shadow-xl p-8 md:p-12">
+                        <div className="mt-16 text-center bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-8 md:p-12 border border-[#6A8358]/10">
                             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                                آماده‌اید که اولین قدم را بردارید؟
+                                آماده شروع فرآیند دریافت خدمات اعتباری و دندانپزشکی؟
                             </h2>
-                            <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-                                همین الان نوبت مشاوره رایگان خود را رزرو کنید و اولین گام به سوی لبخندی زیبا و سالم را بردارید.
+                            <p className="text-gray-600 text-lg mb-8 max-w-3xl mx-auto leading-relaxed">
+                                با دنبال کردن مراحل بالا، می‌توانید به راحتی از خدمات اعتباری و دندانپزشکی روشا بهره‌مند شوید. مشاوران متخصص ما در تمامی مراحل همراه شما خواهند بود.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Button
                                     variant="contained"
                                     size="large"
-                                    className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-lg py-3 px-10 text-lg font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                                    className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-4 px-12 text-lg font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                                     onClick={handleWhatsAppClick}
                                 >
-                                    دریافت نوبت رایگان
+                                    شروع مشاوره و نوبت‌دهی
                                 </Button>
                                 <Button
                                     variant="outlined"
                                     size="large"
-                                    className="border-2 border-[#6A8358] text-[#6A8358] hover:border-[#5a7350] hover:bg-[#6A8358]/5 rounded-lg py-3 px-10 text-lg font-medium normal-case transition-all duration-300"
+                                    className="border-2 border-[#6A8358] text-[#6A8358] hover:border-[#5a7350] hover:bg-[#6A8358]/5 rounded-xl py-4 px-12 text-lg font-medium normal-case transition-all duration-300"
                                     onClick={() => router.push('/services/rosha')}
                                 >
-                                    بازگشت به صفحه اصلی
+                                    بازگشت به صفحه خدمات
                                 </Button>
                             </div>
                         </div>
