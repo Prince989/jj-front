@@ -100,7 +100,7 @@ const CreditSection = () => {
     const calculatePaymentDetails = (creditId: number) => {
         const totalAmount = creditId * 22000000;
         const downPayment = totalAmount * 0.2;
-        const installmentCount = (creditId === 1 || creditId === 2 || creditId === 3) ? 6 : 9;
+        const installmentCount = 10;
         const monthlyPayment = (totalAmount - downPayment) / installmentCount;
 
         return {
