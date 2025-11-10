@@ -1,4 +1,7 @@
 import React from 'react';
+import { handleWhatsAppClick } from '../../utils/whatsapp';
+import Button from '@mui/material/Button';
+
 
 const AboutSection = () => {
 
@@ -60,6 +63,14 @@ const AboutSection = () => {
                                 تمامی طرح ها شامل مشاوره رایگان معاینات تخصصی و استفاده از متریال استاندارد و با کیفیت هستند. هدف ما ایجاد تجربه ای مطمئن و لبخندی ماندگار با شرایط مالی آسان برای شماست.
                             </p>
                         </div>
+                        <Button
+                            variant="contained"
+                            className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-lg py-2 px-8 text-lg font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                            size="large"
+                            onClick={handleWhatsAppClick}
+                        >
+                            دریافت نوبت
+                        </Button>
                     </div>
                     {/* Right Side - Text Content */}
                     <div className="w-full lg:w-1/2 relative order-1 lg:order-2">

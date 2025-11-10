@@ -75,7 +75,9 @@ const RoshaPanel = () => {
                 </div>
                 <div className="flex flex-col">
                     <RoshaHeroSection />
-                    <CreditSection />
+                    <div id="credit-section">
+                        <CreditSection />
+                    </div>
                     <AboutSection />
                     <BenefitsSection />
                 </div>

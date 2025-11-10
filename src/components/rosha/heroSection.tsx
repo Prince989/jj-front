@@ -1,10 +1,16 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
-import { handleWhatsAppClick } from '../../utils/whatsapp';
 
 const RoshaHeroSection = () => {
     const router = useRouter();
+    const handleScrollToCredit = () => {
+        if (typeof window === 'undefined') return;
+        const target = document.getElementById('credit-section');
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     const handleGuideClick = () => {
         router.push('/services/rosha-guide');
@@ -55,9 +61,9 @@ const RoshaHeroSection = () => {
                                 variant="contained"
                                 className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-lg py-2 px-8 text-lg font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                                 size="large"
-                                onClick={handleWhatsAppClick}
+                                onClick={handleScrollToCredit}
                             >
-                                دریافت نوبت
+                                خرید اعتبار
                             </Button>
                             <Button
                                 variant="outlined"
