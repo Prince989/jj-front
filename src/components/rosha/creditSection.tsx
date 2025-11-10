@@ -98,14 +98,12 @@ const CreditSection = () => {
 
     // Calculate payment details
     const calculatePaymentDetails = (creditId: number) => {
-        const totalAmount = creditId * 22000000;
-        const downPayment = totalAmount * 0.2;
         const installmentCount = 10;
-        const monthlyPayment = (totalAmount - downPayment) / installmentCount;
+        const totalAmount = creditId * 22000000;
+        const monthlyPayment = totalAmount / installmentCount;
 
         return {
             totalAmount,
-            downPayment,
             installmentCount,
             monthlyPayment
         };
@@ -234,25 +232,7 @@ const CreditSection = () => {
                                 </div>
 
                                 {/* Payment Details Grid */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    {/* Down Payment */}
-                                    <div className="bg-white bg-opacity-90 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200 border-2 border-[#6A8358] border-opacity-30">
-                                        <div className="text-center">
-                                            <div className="mb-3">
-                                                <svg className="w-12 h-12 mx-auto text-[#6A8358]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                </svg>
-                                            </div>
-                                            <h4 className="text-[#6A8358] font-bold text-lg mb-3">
-                                                مبلغ پیش پرداخت
-                                            </h4>
-                                            <p className="text-2xl font-bold text-gray-800">
-                                                {formatCurrency(paymentDetails.downPayment)}
-                                            </p>
-                                            <p className="text-sm text-gray-600 mt-1">تومان</p>
-                                        </div>
-                                    </div>
-
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Number of Installments */}
                                     <div className="bg-white bg-opacity-90 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200 border-2 border-[#6A8358] border-opacity-30">
                                         <div className="text-center">
