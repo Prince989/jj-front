@@ -8,9 +8,9 @@ import RoshaHeader from 'src/components/rosha/header'
 import RoshaFooter from 'src/components/rosha/footer'
 import RoshaHeroSection from 'src/components/rosha/heroSection'
 import CreditSection from 'src/components/rosha/creditSection'
-import AboutSection from 'src/components/rosha/aboutSection'
-import BenefitsSection from 'src/components/rosha/benefitsSection'
 import AuthModal from 'src/components/rosha/AuthModal'
+import OfferSection from 'src/components/rosha/offerSection'
+import GuideSection from 'src/components/rosha/guideSection'
 
 
 const RoshaPanel = () => {
@@ -75,11 +75,11 @@ const RoshaPanel = () => {
                 </div>
                 <div className="flex flex-col">
                     <RoshaHeroSection />
+                    <OfferSection />
+                    <GuideSection />
                     <div id="credit-section">
                         <CreditSection />
                     </div>
-                    <AboutSection />
-                    <BenefitsSection />
                 </div>
                 <RoshaFooter />
             </div>

@@ -1,9 +1,8 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/router';
+import Icon from 'src/@core/components/icon';
 
 const RoshaHeroSection = () => {
-    const router = useRouter();
     const handleScrollToCredit = () => {
         if (typeof window === 'undefined') return;
         const target = document.getElementById('credit-section');
@@ -12,9 +11,14 @@ const RoshaHeroSection = () => {
         }
     };
 
-    const handleGuideClick = () => {
-        router.push('/services/rosha-guide');
-    };
+    const toPersianDigits = (input: string) => input.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
+
+    const stats = [
+        { value: '33', label: 'متخصص', icon: 'mdi:account-star-outline' },
+        { value: '2000', label: 'وسعت', icon: 'mdi:map-marker-outline' },
+        { value: '6987', label: 'کامپوزیت و لمینت موفق', icon: 'mdi:tooth-outline' },
+        { value: '30987', label: 'ایمپلنت موفق', icon: 'mdi:tooth' }
+    ];
 
     return (
         <section className="w-full bg-white relative overflow-hidden">
@@ -23,21 +27,37 @@ const RoshaHeroSection = () => {
                 <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-8 lg:gap-16">
 
                     {/* Left Side - Image Collage */}
-                    <div className="relative w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start space-y-6 order-2 lg:order-1">
+                    <div className="relative w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start space-y-4 sm:space-y-6 order-2 lg:order-1">
                         {/* Main Headline */}
-                        <div className="space-y-2">
-                            <h1 className="text-2xl lg:text-4xl font-bold text-gray-900 leading-tight">
-                                سلامت دهان و دندان شما در
-                            </h1>
-                            <h1 className="text-2xl lg:text-4xl font-bold text-[#6A8358] leading-tight">
-                                کلینیک فوق تخصصی روشا
+                        <div className="space-y-2 text-center lg:text-right">
+                            <div className="flex items-end text-xl sm:text-2xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                                <span>کلینیک تخصصی روشا</span>
+                                <span className="block text-base sm:text-lg lg:text-xl font-normal mt-2 text-black">(سعادت آباد)</span>
+                            </div>
+                            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-[#6A8358] leading-tight">
+                                بزرگترین مرکز ایمپلنت دیجیتال کشور
                             </h1>
                         </div>
 
-                        {/* Description Text */}
-                        <p className="text-base lg:text-lg text-gray-700 leading-relaxed max-w-lg text-center lg:text-right">
-                            کلینیک تخصصی ایمپلنت دندان با استفاده از تجهیزات پیشرفته و تیمی مجرب خدمات کاشت دندان را به صورت حرفه ای و ایمن ارائه میدهد و با انتخاب بهترین روش درمان ماندگاری و زیبایی لبخند بیماران را تضمین میکند.
-                        </p>
+                        {/* Stats Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full sm:max-w-lg lg:max-w-xl">
+                            {stats.map((item, i) => (
+                                <div
+                                    key={i}
+                                    className="relative rounded-2xl bg-white p-4 sm:p-6 lg:p-8 shadow-[0_0_60px_-20px_rgba(106,131,88,0.35)] ring-1 ring-[#6A8358]/10"
+                                >
+                                    <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-700 text-center">
+                                        {toPersianDigits(item.value)}
+                                    </div>
+                                    <div className="mt-4 sm:mt-6 flex items-center justify-start gap-2 text-gray-700">
+                                        <span className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#6A8358]/10 text-[#6A8358]">
+                                            <Icon icon={item.icon} fontSize="1.4rem" />
+                                        </span>
+                                        <span className="text-xs sm:text-sm lg:text-base lg:whitespace-nowrap">{item.label}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
                         <div className="absolute -bottom-2 -right-4 w-[57px] h-[117px]">
                             <img
@@ -64,14 +84,6 @@ const RoshaHeroSection = () => {
                                 onClick={handleScrollToCredit}
                             >
                                 خرید اعتبار
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                className="border-2 border-[#6A8358] text-[#6A8358] hover:border-[#5a7350] hover:text-[#5a7350] hover:bg-[#6A8358]/5 rounded-lg py-2 px-8 text-lg font-medium normal-case transition-all duration-300 transform hover:scale-105"
-                                size="large"
-                                onClick={handleGuideClick}
-                            >
-                                راهنمایی گام به گام
                             </Button>
                         </div>
                     </div>
