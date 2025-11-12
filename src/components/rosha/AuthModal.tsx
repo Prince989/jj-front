@@ -6,6 +6,11 @@ import { roshaSignup } from 'src/services/rosha';
 import { requestOtp } from 'src/services/auth';
 import { handleApiError } from 'src/utils/errorHandler';
 import { useAuth } from 'src/hooks/useAuth';
+import DatePicker from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+import DateObject from 'react-date-object';
+import gregorian from 'react-date-object/calendars/gregorian';
 
 interface AuthModalProps {
     open: boolean;
@@ -70,42 +75,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, onSuccess, canClos
         return result;
     };
 
-    // Utility function to validate Jalali date format (YYYY/MM/DD)
-    const isValidJalaliDate = (dateString: string): boolean => {
-        const jalaliDateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
-        if (!jalaliDateRegex.test(dateString)) {
-            return false;
-        }
+    // Utility: convert Jalali YYYY/MM/DD to Gregorian ISO using react-date-object
+    const jalaliToIso = (jalaliYmd: string): string => {
+        const j = new DateObject({
+            date: jalaliYmd,
+            format: 'YYYY/MM/DD',
+            calendar: persian
+        });
+        const g = j.convert(gregorian).toDate();
 
-        const [year, month, day] = dateString.split('/').map(Number);
-
-        // Basic validation
-        if (year < 1300 || year > 1400) return false; // Reasonable year range
-        if (month < 1 || month > 12) return false;
-        if (day < 1 || day > 31) return false;
-
-        // Month-specific day validation
-        if (month <= 6 && day > 31) return false;
-        if (month > 6 && day > 30) return false;
-        if (month === 12 && day > 29) return false; // Leap year not handled for simplicity
-
-        return true;
-    };
-
-    // Utility function to convert Jalali date to Gregorian date (ISO format)
-    const jalaliToGregorian = (jalaliDate: string): string => {
-        // This is a simplified conversion - for production use a proper Jalali library
-        const [year, month, day] = jalaliDate.split('/').map(Number);
-
-        // Approximate conversion (not 100% accurate but sufficient for most cases)
-        const gregorianYear = year + 621;
-        const gregorianMonth = month + 3; // Approximate month offset
-        const gregorianDay = day;
-
-        // Create a date object and return ISO string
-        const date = new Date(gregorianYear, gregorianMonth - 1, gregorianDay);
-
-        return date.toISOString();
+        return g.toISOString();
     };
 
     // Timer effect
@@ -146,8 +125,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, onSuccess, canClos
 
         if (!formData.birthdate.trim()) {
             newErrors.birthdate = 'تاریخ تولد الزامی است';
-        } else if (!isValidJalaliDate(formData.birthdate)) {
-            newErrors.birthdate = 'فرمت تاریخ تولد صحیح نیست. مثال: 1377/10/29';
         }
 
         if (!formData.phoneNumber.trim()) {
@@ -203,7 +180,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, onSuccess, canClos
             await roshaSignup({
                 fname: formData.fname,
                 lname: formData.lname,
-                birthdate: jalaliToGregorian(formData.birthdate),
+                birthdate: jalaliToIso(formData.birthdate),
                 nationalCode: formData.nationalCode,
                 phoneNumber: formData.phoneNumber
             });
@@ -364,14 +341,30 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, onSuccess, canClos
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         تاریخ تولد
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={formData.birthdate}
-                                        onChange={(e) => handleInputChange('birthdate', e.target.value)}
-                                        placeholder="1377/10/29"
-                                        maxLength={10}
-                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.birthdate ? 'border-red-500' : 'border-gray-300'
-                                            }`}
+                                    <DatePicker
+                                        value={
+                                            formData.birthdate
+                                                ? new DateObject({
+                                                    date: formData.birthdate,
+                                                    format: 'YYYY/MM/DD',
+                                                    calendar: persian
+                                                })
+                                                : null
+                                        }
+                                        onChange={(val) => {
+                                            const dateObj = Array.isArray(val) ? (val[0] as DateObject | undefined) : (val as DateObject | null);
+                                            const formatted = dateObj ? dateObj.format('YYYY/MM/DD') : '';
+                                            handleInputChange('birthdate', formatted);
+                                        }}
+                                        format="YYYY/MM/DD"
+                                        calendar={persian}
+                                        locale={persian_fa}
+                                        editable={false}
+                                        calendarPosition="bottom-right"
+                                        className="w-full"
+                                        inputClass={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A8358] ${errors.birthdate ? 'border-red-500' : 'border-gray-300'}`}
+                                        maxDate={new DateObject({ calendar: persian })}
+                                        portal
                                     />
                                     {errors.birthdate && (
                                         <p className="text-red-500 text-sm mt-1">{errors.birthdate}</p>
