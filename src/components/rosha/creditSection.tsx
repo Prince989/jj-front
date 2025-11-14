@@ -227,7 +227,7 @@ const CreditSection = () => {
                                         </span>
                                     </div>
                                     <p className="text-gray-700 text-sm">
-                                        جزئیات پرداخت و اقساط
+                                        قیمت کل: {formatCurrency(paymentDetails.totalAmount)} <span>تومان</span>
                                     </p>
                                 </div>
 
