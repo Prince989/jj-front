@@ -3,7 +3,7 @@ import React from 'react';
 
 const quickLinks1 = [
     { label: 'درباره روشا', href: '#' },
-    { label: 'ارتباط با ما', href: '#' },
+    { label: 'ارتباط با ما', href: '/services/rosha-contact' },
 ];
 const quickLinks2 = [
     { label: 'فواید روشا', href: '#' },

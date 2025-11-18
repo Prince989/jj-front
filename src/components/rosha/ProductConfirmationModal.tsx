@@ -18,18 +18,10 @@ const ProductConfirmationModal: React.FC<ProductConfirmationModalProps> = ({
     productTitle
 }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [acceptTerms, setAcceptTerms] = useState(false);
-    const [termsError, setTermsError] = useState('');
 
     const handleConfirm = async () => {
         if (!productId) {
             toast.error('شناسه محصول یافت نشد');
-
-            return;
-        }
-
-        if (!acceptTerms) {
-            setTermsError('لطفا شرایط و قوانین را بپذیرید');
 
             return;
         }
@@ -57,16 +49,7 @@ const ProductConfirmationModal: React.FC<ProductConfirmationModalProps> = ({
 
     const handleClose = () => {
         if (!isLoading) {
-            setAcceptTerms(false);
-            setTermsError('');
             onClose();
-        }
-    };
-
-    const handleTermsChange = (checked: boolean) => {
-        setAcceptTerms(checked);
-        if (checked && termsError) {
-            setTermsError('');
         }
     };
 
@@ -114,27 +97,6 @@ const ProductConfirmationModal: React.FC<ProductConfirmationModalProps> = ({
                             <p className="text-sm text-gray-600">
                                 آیا مطمئن هستید که می‌خواهید این محصول را خریداری کنید؟
                             </p>
-                        </div>
-
-                        {/* Terms and Conditions */}
-                        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                            <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                                <input
-                                    type="checkbox"
-                                    id="acceptTerms"
-                                    checked={acceptTerms}
-                                    onChange={(e) => handleTermsChange(e.target.checked)}
-                                    className="mt-1 h-4 w-4 text-[#6A8358] border-gray-300 rounded focus:ring-[#6A8358]"
-                                />
-                                <label htmlFor="acceptTerms" className="text-sm text-gray-700 leading-relaxed">
-                                    <span className="font-medium text-gray-900">کاربر گرامی</span> در صورتی که نمیدانید
-                                    <span className="text-red-600 font-medium"> چه تعداد ایمپلنت</span> نیاز دارید لطفا در وهله اول از قسمت
-                                    <span className="text-red-600 font-medium"> دریافت نوبت</span> با کارشناسان روشا در ارتباط باشید در غیر این صورت خرید شما دچار مشکل خواهد شد و تیم جی جی مسئولیتی بابت این امر ندارد.
-                                </label>
-                            </div>
-                            {termsError && (
-                                <p className="text-red-500 text-sm mt-2">{termsError}</p>
-                            )}
                         </div>
                     </div>
                 </div>

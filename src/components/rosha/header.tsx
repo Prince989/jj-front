@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 const menuItems = [
     { label: 'خانه', key: 'home', href: '/services/rosha' },
     { label: 'درباره روشا', key: 'about', href: '/services/rosha' },
-    { label: 'تماس باما', key: 'contact', href: '/services/rosha' },
+    { label: 'تماس باما', key: 'contact', href: '/services/rosha-contact' },
     { label: 'مقالات', key: 'articles', href: '/services/rosha' },
 ];
 
