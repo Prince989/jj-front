@@ -4,8 +4,10 @@ import CardContent from '@mui/material/CardContent';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Button } from '@mui/material';
 import { handleWhatsAppClick } from 'src/utils/whatsapp';
+import useHasRoshaCompletedPayment from 'src/hooks/useHasRoshaCompletedPayment';
 
 const OfferSection = () => {
+    const { hasCompletedRoshaPayment } = useHasRoshaCompletedPayment();
 
     const items: string[] = [
         'انجام خدمات ایمپلنت کامل (فیکسچرکره‌ای درجه یک، اباتمنت و متعلقات، کشیدن دندان، سینوس لیفت، پودر استخوان، روکش نهایی) به قیمت میانگین 37 میلیون تومان تنها با 22 میلیون تومان و بدون هیچ هزینه مازاد.',
@@ -48,14 +50,17 @@ const OfferSection = () => {
                                 ))}
                             </div>
                         </div>
-                        <Button
-                            variant="contained"
-                            className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-3 px-10 font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] mt-8"
-                            size="large"
-                            onClick={handleWhatsAppClick}
-                        >
-                            دریافت نوبت
-                        </Button>
+
+                        {hasCompletedRoshaPayment && (
+                            <Button
+                                variant="contained"
+                                className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-3 px-10 font-medium normal-case hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] mt-8"
+                                size="large"
+                                onClick={handleWhatsAppClick}
+                            >
+                                دریافت نوبت
+                            </Button>
+                        )}
                     </CardContent>
                 </Card>
             </div>

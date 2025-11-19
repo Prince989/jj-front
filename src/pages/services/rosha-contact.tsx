@@ -38,10 +38,10 @@ const RoshaContact = () => {
                                 <p className="font-semibold text-[#2B3A2A] mb-2">تلفن</p>
                                 <p>
                                     <a
-                                        href="tel:02122338888"
+                                        href="tel:989904808839"
                                         className="text-[#6A8358] hover:text-[#567048] font-semibold transition-colors"
                                     >
-                                        02122338888
+                                        09904808839
                                     </a>
                                 </p>
                             </div>

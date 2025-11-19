@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ProductConfirmationModal from './ProductConfirmationModal';
 import Button from '@mui/material/Button';
 import { handleWhatsAppClick } from '../../utils/whatsapp';
+import { useHasRoshaCompletedPayment } from 'src/hooks/useHasRoshaCompletedPayment';
 
 const CreditSection = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,6 +11,7 @@ const CreditSection = () => {
     const [selectedCreditId, setSelectedCreditId] = useState<number>(1);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { hasCompletedRoshaPayment } = useHasRoshaCompletedPayment();
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -194,14 +196,16 @@ const CreditSection = () => {
 
                         {/* Call to Action Button */}
                         <div className="pt-6 w-full flex justify-center lg:justify-start">
-                            <Button
-                                variant="contained"
-                                className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-3 px-8 text-base font-medium normal-case shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                                size="large"
-                                onClick={handleWhatsAppClick}
-                            >
-                                دریافت مشاوره رایگان
-                            </Button>
+                            {hasCompletedRoshaPayment && (
+                                <Button
+                                    variant="contained"
+                                    className="bg-[#6A8358] hover:bg-[#5a7350] text-white rounded-xl py-3 px-8 text-base font-medium normal-case shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                                    size="large"
+                                    onClick={handleWhatsAppClick}
+                                >
+                                    دریافت مشاوره رایگان
+                                </Button>
+                            )}
                         </div>
                     </div>
 
