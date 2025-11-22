@@ -20,7 +20,7 @@ const HeaderBanner: React.FC = () => {
                     variant="text"
                     className="text-white hover:text-gray-200 text-xs font-medium p-0 min-w-0 border-l border-white"
                 >
-                    همراه اعتباری
+                    همواره اعتبار
                 </Button>
             </div>
             <div className="flex items-center gap-2">

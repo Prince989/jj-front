@@ -64,7 +64,7 @@ const FeaturedBox: React.FC<CreditPlanProps> = ({ title, features, subTitle }) =
 const FeaturedSection = () => {
     const creditPlans = [
         {
-            title: 'بدون چک و ضامن',
+            title: 'خرید اقساطی برای همه',
             subTitle: 'فقط با احراز هویت و اعتبارسنجی، بدون نیاز به مراجعه حضوری',
             features: [
                 'فرآیند کاملا آنلاین',
@@ -73,10 +73,10 @@ const FeaturedSection = () => {
             ],
         },
         {
-            title: 'بدون بهره و سود',
+            title: 'بدون هیچ هزینه اضافی',
             subTitle: 'پرداخت اقساطی بدون هیچ هزینه اضافی، فقط اصل مبلغ',
             features: [
-                'اقساط ۶ تا ۱۲ ماهه',
+                'کارمزد صفر درصد',
                 'بدون پیش پرداخت'
             ],
         },
@@ -94,7 +94,7 @@ const FeaturedSection = () => {
         <section className="w-full bg-white">
 
             <ColoredText
-                firstText="ویژگی های اعتبار جی"
+                firstText="ویژگی های جی"
                 middleText="جی"
                 lastText="لاین"
                 className="mb-5 justify-center"

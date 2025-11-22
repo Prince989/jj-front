@@ -20,7 +20,7 @@ const Banner = () => {
                 {/* Left Column - Image */}
                 <div className="space-y-6">
                     <Typography variant="h2" component="h1" className="text-white font-[900] text-center lg:text-right">
-                        کیف پول اعتباری برای تمام نیازهای شما
+                        خرید اقساطی برای تمام نیازهای شما
                     </Typography>
 
                     <Typography variant="subtitle1" className="text-gray-200 text-center lg:text-right">
@@ -34,7 +34,7 @@ const Banner = () => {
                             endIcon={<ArrowBackIcon />}
                             className="bg-primary-orange hover:bg-primary-orange-1 text-white rounded-md py-2 lg:px-6 px-3 text-sm w-full lg:w-auto"
                         >
-                            دریافت اعتبار
+                            خرید اقساطی
                         </Button>
 
                         <Button

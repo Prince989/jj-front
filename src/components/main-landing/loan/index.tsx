@@ -23,7 +23,7 @@ const LoanBox = () => {
             <div className="flex-1 flex flex-col justify-between gap-0 bg-white p-4 lg:p-6 shadow-lg rounded-lg">
                 <div className="flex justify-between items-center mb-4">
                     <Typography variant="h6" className="text-primary-blue text-md lg:text-xl font-bold mb-4">
-                        وام درخواستی
+                        سقف خرید اقساطی شما
                     </Typography>
                     <Typography variant="h6" className="text-primary-blue text-md lg:text-lg font-bold mb-4">
                         {loanAmount.toLocaleString()} <span className="text-sm font-normal">تومان</span>

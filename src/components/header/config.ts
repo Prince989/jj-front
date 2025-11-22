@@ -6,7 +6,7 @@ export const menuItems: MenuItem[] = [
         href: '#',
         hasSubmenu: false
     },
-    { text: 'راهنمای دریافت وام', href: '#' },
+    { text: 'راهنمای خرید اقساطی', href: '#' },
 
     // { text: 'خدمات', href: '#' },
     { text: 'خبرنامه ها', href: '#' },

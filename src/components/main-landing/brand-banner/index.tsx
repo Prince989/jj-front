@@ -16,10 +16,10 @@ const BrandBanner: React.FC = () => {
                 {/* Right Column - Images */}
                 <div className="text-right">
                     <h1 className="text-primary-blue text-center lg:text-right text-3xl lg:text-4xl font-[900] mb-4">
-                        یک اعتبار بی پایان...
+                        یک خرید بی پایان...
                     </h1>
                     <p className="text-primary-blue text-center lg:text-right text-xl md:text-2xl">
-                        بدون چک و ضامن
+                        در کمترین زمان ممکن خرید کن!
                     </p>
                 </div>
             </div>
