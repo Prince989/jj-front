@@ -142,8 +142,6 @@ const useNavigation = (): VerticalNavItemsType => {
   ]
 
   // Return navigation items based on user role
-  console.log("1", userRole)
-  console.log("2", userRole === 'roshaOp')
   if (userRole === 'user') {
     return [...commonMenuItems, ...userMenuItems]
   } else if (userRole === 'businessUser') {
