@@ -96,7 +96,7 @@ const FeaturedSection = () => {
             <ColoredText
                 firstText="ویژگی های جی"
                 middleText="جی"
-                lastText="لاین"
+                lastText="دکتر"
                 className="mb-5 justify-center"
                 textClassName="lg:text-3xl text-2xl font-[700]"
             />

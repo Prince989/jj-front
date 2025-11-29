@@ -86,7 +86,7 @@ export default function CeleardFooter() {
             </footer >
             <div className='w-full flex justify-center items-center py-2 bg-[#F2FCF5]'>
                 <p className='text-center text-xs lg:text-sm text-black'>
-                    کلیه حقوق این وبسایت متعلق به جی جی لاین میباشد.
+                    کلیه حقوق این وبسایت متعلق به جی جی دکتر میباشد.
                 </p>
             </div>
         </>

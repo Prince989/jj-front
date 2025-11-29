@@ -76,7 +76,7 @@ const FinalCreditDialog = ({ open, onClose }: FinalCreditDialogProps) => {
                     >
                         کاربر گرامی!
                         <br />
-                        مبلغ {formatCurrency(creditAmount || 0)} تومان به حساب شما برای خرید کالا یا خدمات جی جی لاین نشست.
+                        مبلغ {formatCurrency(creditAmount || 0)} تومان به حساب شما برای خرید کالا یا خدمات جی جی دکتر نشست.
                     </Typography>
                 </MessageBox>
             </DialogContent>

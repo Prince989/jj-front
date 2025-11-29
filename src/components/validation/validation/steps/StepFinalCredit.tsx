@@ -88,17 +88,17 @@ const StepFinalCredit = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                 <CreditAmount>{formatCurrency(creditAmount || 0)} تومان</CreditAmount>
                 <Description2>
-                    اعتبار تخصیص یافته به شما برای خدمات درمانی جی جی لاین میباشد.
+                    اعتبار تخصیص یافته به شما برای خدمات درمانی جی جی دکتر میباشد.
                 </Description2>
             </Box>
             <Description>
-                کاربر گرامی! با تایید اعتبار, مبلغ به حساب جی جی لاین شما مینشیند.
+                کاربر گرامی! با تایید اعتبار, مبلغ به حساب جی جی دکتر شما مینشیند.
             </Description>
 
             <InfoBox>
                 <CheckCircleIcon sx={{ color: '#129D00' }} />
                 <Typography sx={{ color: '#6F6B7D', fontSize: '15px' }}>
-                    کاربر گرامی جی جی لاین!
+                    کاربر گرامی جی جی دکتر!
                     این مبلغ طبق اعتبارسنجی شما بررسی شده شده است و اقساط شما پس از خرید خدمات و کالاها محاسبه میشود. چنانچه مبلغ خرجکرد شما از اعتبارتان کمتر شده باشد سیسم فقط برای مبلغ خرجکزد شما اقساط را لحاظ میکند.
                 </Typography>
             </InfoBox>
@@ -122,7 +122,7 @@ const StepFinalCredit = () => {
                         disabled={loading}
                         className="bg-primary-orange text-white rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-primary-orange-1"
                     >
-                        {loading ? 'در حال ثبت درخواست...' : 'درخواست نهایی کسب اعتبار جی جی لاین'}
+                        {loading ? 'در حال ثبت درخواست...' : 'درخواست نهایی کسب اعتبار جی جی دکتر'}
                     </Button>
                 </Grid>
             </CreditDetailsBox>

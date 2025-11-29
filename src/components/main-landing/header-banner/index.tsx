@@ -11,7 +11,7 @@ const HeaderBanner: React.FC = () => {
                     variant="text"
                     className="text-white hover:text-gray-200 text-xs font-medium p-0 min-w-0"
                 >
-                    جی جی لند
+                    جی جی دکتر
                 </Button>
 
                 <div className="bg-white h-[20px] w-[1px]"></div>
@@ -25,7 +25,7 @@ const HeaderBanner: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
                 <Typography variant="body2" className="text-white text-xs font-medium">
-                    ۰۲۱-۴۳۶۵۶۵۲۳
+                    ۰۹۳۸۴۹۲۳۷۴۴
                 </Typography>
                 <Phone fontSize="small" sx={{ fontSize: '15px' }} />
             </div>
