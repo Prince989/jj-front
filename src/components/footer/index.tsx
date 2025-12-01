@@ -5,6 +5,7 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import ColoredText from 'src/components/dentistry-panel/ColoredText'
+import Link from 'next/link'
 
 const Footer = () => {
     const customerServices = [
@@ -22,11 +23,11 @@ const Footer = () => {
     ]
 
     const generalIcons = [
-        // {
-        //     children: <Link href='https://trustseal.enamad.ir/?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' target='_blank' referrerPolicy='origin'>
-        //         <img src='https://trustseal.enamad.ir/logo.aspx?id=623943&Code=snidtK5uQgyZQ2pXRM3yqmz2P8JYGNgS' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
-        //     </Link>
-        // },
+        {
+            children: <Link href='https://trustseal.enamad.ir/?id=680105&Code=Xusl2HwZ40YqERWlkAu6LlyCJ5nW0IYi' target='_blank' referrerPolicy='origin'>
+                <img src='https://trustseal.enamad.ir/logo.aspx?id=680105&Code=Xusl2HwZ40YqERWlkAu6LlyCJ5nW0IYi' style={{ cursor: 'pointer' }} alt='eNamad' width={70} height={70} />
+            </Link>
+        },
         { children: null },
         { children: null },
         { children: null },
@@ -40,7 +41,7 @@ const Footer = () => {
                 <div className="flex flex-col gap-3 items-center lg:items-start mb-5 lg:mb-0">
 
                     <ColoredText
-                        firstText="Line"
+                        firstText="Dr"
                         middleText="Jey"
                         lastText="Jey"
                         className="mb-2"

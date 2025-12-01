@@ -83,7 +83,7 @@ const Cart: React.FC = () => {
                                         value="installment"
                                         color="primary"
                                     />
-                                    <span className="text-sm">پرداخت اقساطی با اعتبار <span className="text-[#002B8A] font-bold">Jey <span className="text-[#FF6A00]">Jey</span> Line</span></span>
+                                    <span className="text-sm">پرداخت اقساطی با اعتبار <span className="text-[#002B8A] font-bold">Jey <span className="text-[#FF6A00]">Jey</span> Dr</span></span>
                                 </label>
                                 {/* {paymentType === 'installment' && ( */}
                                 <div className="bg-white rounded-lg p-3 text-xs text-[#222] mt-1">

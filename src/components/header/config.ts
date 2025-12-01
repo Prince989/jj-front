@@ -11,5 +11,5 @@ export const menuItems: MenuItem[] = [
     // { text: 'خدمات', href: '#' },
     { text: 'خبرنامه ها', href: '#' },
     { text: 'درباره ما', href: '#' },
-    { text: 'تماس با ما', href: '#' },
+    { text: 'تماس با ما', href: '/contact-us' },
 ]; 

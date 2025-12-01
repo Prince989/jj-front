@@ -556,7 +556,7 @@ const PostalInfo: React.FC = () => {
                                                 />
                                             )}
                                         />
-                                        <span className="text-sm">پرداخت اقساطی با اعتبار <span className="text-[#002B8A] font-bold">Jey <span className="text-[#FF6A00]">Jey</span> Line</span></span>
+                                        <span className="text-sm">پرداخت اقساطی با اعتبار <span className="text-[#002B8A] font-bold">Jey <span className="text-[#FF6A00]">Jey</span> Dr</span></span>
                                     </label>
                                     <div className="bg-[#F9FBFD] rounded-lg p-3 text-xs text-[#222] mt-1">
                                         ۴ قسط <span className="text-[#008EFF] font-bold">۲۴۶/۵۰۰</span> تومانی (بازپرداخت اولین قسط ۳۱ تیرماه)

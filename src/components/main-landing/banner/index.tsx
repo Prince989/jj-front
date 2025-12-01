@@ -24,7 +24,7 @@ const Banner = () => {
                     </Typography>
 
                     <Typography variant="subtitle1" className="text-gray-200 text-center lg:text-right">
-                        با جی <span className="text-primary-orange">جی</span> لاین، خدمات و کالای مورد نیاز خود را به صورت اقساطی و بدون بهره دریافت کنید. تا سقف ۲۰۰ میلیون تومان اعتبار، بدون نیاز به ضامن.
+                        با جی <span className="text-primary-orange">جی</span> دکتر، خدمات و کالای مورد نیاز خود را به صورت اقساطی و بدون بهره دریافت کنید. تا سقف ۲۰۰ میلیون تومان اعتبار، بدون نیاز به ضامن.
                     </Typography>
 
 

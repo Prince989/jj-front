@@ -20,7 +20,7 @@ const DesktopMenu: React.FC = () => {
             <div className="flex items-center gap-9">
                 <Link href="/">
                     <ColoredText
-                        firstText="Line"
+                        firstText="Dr"
                         middleText="Jey"
                         lastText="Jey"
                         className=""

@@ -57,7 +57,7 @@ const ContactUs = () => {
                         {/* Description */}
                         <div className="flex-1 text-right flex flex-col justify-center w-[75%]">
                             <p className="text-xs lg:text-sm text-[#222] leading-8 text-center lg:text-right">
-                                تهران , شهرک غرب, بلوار دادمان ,برج کنتراست , طبقه ۴ , واحد ۴۵۶ , شرکت جی جی لاین.
+                                تهران , شهرک غرب, بلوار دادمان ,برج کنتراست , طبقه ۴ , واحد ۴۵۶ , شرکت جی جی دکتر.
                             </p>
                         </div>
                     </div>

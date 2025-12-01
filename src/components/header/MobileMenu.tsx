@@ -19,9 +19,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ open, onOpen, onClose }) => {
         <div className="lg:hidden flex justify-between items-center">
             <Link href="/">
                 <ColoredText
-                    firstText="Jey"
+                    firstText="Dr"
                     middleText="Jey"
-                    lastText="Line"
+                    lastText="Jey"
                     className="mb-2"
                     textClassName="text-2xl font-[900]"
                 />
@@ -47,7 +47,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ open, onOpen, onClose }) => {
                         <ColoredText
                             firstText="Jey"
                             middleText="Jey"
-                            lastText="Line"
+                            lastText="Dr"
                             className="mb-0"
                             textClassName="text-2xl font-[900]"
                         />
