@@ -1,43 +1,28 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Chip, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { format } from 'date-fns-jalali';
 import mAxios from 'src/configs/axios';
 import { IResponse } from 'src/types/api';
 import formatCurrency from 'src/utils/formatCurrency';
 
 interface InstallmentItem {
-    id: number,
-    credit: {
+    id: number
+    createdAt: string
+    installment: {
         amount: number
+        repaymentMonths: number
     }
     transactions: {
-        id: number,
+        id: number
         status: 'pending' | 'completed' | 'failed'
-    }[],
-    installments: {
-        id: number,
-        amount: number,
-        status: 'pending' | 'paid' | 'overdue',
-        dueDate: string,
-        serviceType: 'medical' | 'beauty',
-        repaymentMonths: number,
-        paymentMode: 'promissoryNote' | 'installmentCheque' | 'guaranteeCheque',
-        creditId: number,
-        createdAt: string,
-        updatedAt: string,
-        services: {
-            id: number,
-            title: string,
-            business: {
-                id: number,
-                title: string,
-            }
-        }[]
     }[]
+    amount: number
 }
 
 interface InvoiceResponse {
     invoices: InstallmentItem[]
-    usableCredit: number
 }
 
 interface RepayResponse {
@@ -45,37 +30,37 @@ interface RepayResponse {
     url: string
 }
 
+// Utility function to convert ISO date to Jalali format
+const convertToJalali = (dateString: string): string => {
+    try {
+        const date = new Date(dateString);
+
+        return format(date, 'yyyy/MM/dd');
+    } catch (error) {
+        console.error('Error converting date to Jalali:', error);
+
+        return dateString; // Return original string if conversion fails
+    }
+};
+
 const InvoiceCard = (props: { invoice: InstallmentItem }) => {
     const { invoice: i } = props;
     const [pending, setPending] = useState<boolean>(false);
 
     const status = useMemo(() => {
-        return i.transactions.filter(t => t.status === 'completed').length > 0 ? 'paid' : 'notpaid';
-    }, [i]);
+        // Handle edge cases: null, undefined, or empty transactions array
+        if (!i.transactions || i.transactions.length === 0) {
 
-    const calculateTotalAmount = (): string => {
-        const convertPersianToEnglish = (str: string): number => {
-            const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-            let result = str;
-            for (let idx = 0; idx < 10; idx++) {
-                result = result.replace(new RegExp(persianNumbers[idx], 'g'), idx.toString());
-            }
+            return 'notpaid';
+        }
 
-            return parseInt(result.replace(/[^0-9]/g, ''), 10);
-        };
-
-        const temp = i.installments.reduce((sum, item) => {
-            return sum + Math.round(convertPersianToEnglish(item.amount.toString()) / item.repaymentMonths);
-        }, 0);
-
-        const total = Math.round(temp / 10);
-
-        return total.toLocaleString('fa-IR');
-    };
+        // Check if any transaction has completed status
+        return i.transactions.some(t => t.status === 'completed') ? 'paid' : 'notpaid';
+    }, [i.transactions]);
 
     const pay = () => {
         setPending(true);
-        mAxios.post<IResponse<RepayResponse>>('/credit/repay', { gatewayId: 1, invoiceId: i.id }).then(res => {
+        mAxios.post<IResponse<RepayResponse>>(`/rosha/pay/invoice/${i.id}`).then(res => {
             const url = res.data.data.url;
             window.location.href = url;
         }).finally(() => {
@@ -83,82 +68,101 @@ const InvoiceCard = (props: { invoice: InstallmentItem }) => {
         });
     };
 
+    const isPaid = status === 'paid';
+
     return (
-        <>
-            <div className="bg-white rounded-2xl p-6 my-6 border-2 border-[#6A8358] border-opacity-20 shadow-sm">
-                <div className="space-y-4">
-                    {i.installments.map(item => (
-                        <div
-                            key={item.id}
-                            className="border border-[#6A8358] border-opacity-20 rounded-xl p-4 transition-shadow shadow-sm"
-                        >
-                            <div className="flex justify-between items-start">
-                                <div className="flex-1">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <Typography className="text-[#6A8358] text-lg font-bold text-right">
-                                            {item.services?.[0]?.business?.title}
-                                        </Typography>
-                                        <Typography className="text-[#6A8358] font-bold text-lg">
-                                            {formatCurrency(item.amount / item.repaymentMonths)} ت
-                                        </Typography>
-                                    </div>
-                                    <div className="flex items-center justify-between mt-3">
-                                        <Typography className="text-gray-500 text-sm text-right">
-                                            نوع خدمت:
-                                            {item.serviceType === 'medical' ? 'درمانی' : 'زیبایی'}
-                                        </Typography>
-                                        <Typography className="text-gray-500 text-sm text-left">
-                                            وضعیت قسط:
-                                            {item.status === 'paid'
-                                                ? 'تسویه شده'
-                                                : item.status === 'pending'
-                                                    ? 'جاری'
-                                                    : 'تاخیر خورده'}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                    <div className="flex justify-between items-center mt-4">
-                        <div className="flex items-center mt-6 mb-4 gap-4">
-                            <Typography className="text-gray-500 text-sm">
-                                {status === 'paid' ? 'مبلغ پرداخت شده' : ' مبلغ قابل پرداخت'}
+        <div className={`bg-white rounded-3xl p-8 my-6 shadow-lg transition-all duration-300 ${isPaid
+            ? 'border-2 border-green-200 bg-gradient-to-br from-white to-green-50'
+            : 'border-2 border-orange-200 bg-gradient-to-br from-white to-orange-50'
+            }`}>
+            {/* Header with Status Badge */}
+            <div className="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                <Typography className="text-[#6A8358] text-xl font-bold text-right">
+                    فاکتور قسط ماهانه
+                </Typography>
+                <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${isPaid
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-orange-100 text-orange-700'
+                    }`}>
+                    {isPaid ? (
+                        <>
+                            <CheckCircleIcon className="text-green-600" fontSize="small" />
+                            <Typography className="text-sm font-semibold">
+                                پرداخت شده
                             </Typography>
-                            <Typography className="text-[#6A8358] text-lg font-bold">
-                                {calculateTotalAmount()} تومان
+                        </>
+                    ) : (
+                        <>
+                            <ErrorOutlineIcon className="text-orange-600" fontSize="small" />
+                            <Typography className="text-sm font-semibold">
+                                پرداخت نشده
                             </Typography>
-                        </div>
-                        {status === 'paid' ? (
-                            <Chip label="پرداخت شده" color="success" />
-                        ) : (
-                            <Button
-                                variant="contained"
-                                disabled={pending}
-                                onClick={pay}
-                                className="bg-[#6A8358] hover:bg-[#5a7350] normal-case px-6 rounded-xl"
-                            >
-                                پرداخت
-                            </Button>
-                        )}
-                    </div>
+                        </>
+                    )}
                 </div>
             </div>
-        </>
+
+            {/* Main Amount Display */}
+            <div className="text-center mb-6">
+                <Typography className="text-gray-500 text-sm mb-2">
+                    {isPaid ? 'مبلغ پرداخت شده' : 'مبلغ قابل پرداخت'}
+                </Typography>
+                <Typography className={`text-4xl font-bold mb-2 ${isPaid ? 'text-green-600' : 'text-[#6A8358]'
+                    }`}>
+                    {formatCurrency(i.installment.amount)}
+                </Typography>
+                <Typography className="text-gray-400 text-lg">
+                    تومان
+                </Typography>
+            </div>
+
+            {/* Installment Details */}
+            <div className="bg-gray-50 rounded-2xl p-4 mb-6 space-y-3">
+                <div className="flex justify-between items-center">
+                    <Typography className="text-gray-600 text-sm">
+                        تعداد اقساط
+                    </Typography>
+                    <Typography className="text-[#6A8358] font-semibold">
+                        {i.installment.repaymentMonths} ماه
+                    </Typography>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+                    <Typography className="text-gray-600 text-sm">
+                        تاریخ ایجاد
+                    </Typography>
+                    <Typography className="text-[#6A8358] font-semibold">
+                        {convertToJalali(i.createdAt)}
+                    </Typography>
+                </div>
+            </div>
+
+            {/* Action Button */}
+            {!isPaid && (
+                <div className="flex justify-center">
+                    <Button
+                        variant="contained"
+                        disabled={pending}
+                        onClick={pay}
+                        className="bg-[#6A8358] hover:bg-[#5a7350] normal-case px-8 py-3 rounded-xl text-base font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                        fullWidth
+                    >
+                        {pending ? 'در حال پردازش...' : 'پرداخت قسط'}
+                    </Button>
+                </div>
+            )}
+        </div>
     );
 };
 
 const RoshaInstallmentPage = (props: { isAuthenticated?: boolean }) => {
     const { isAuthenticated } = props;
     const [invoices, setInvoices] = useState<InstallmentItem[]>([]);
-    const [credit, setCredit] = useState<number>(0);
 
     useEffect(() => {
         if (!isAuthenticated) return;
-        mAxios.get<IResponse<InvoiceResponse>>('/credit/invoices')
+        mAxios.get<IResponse<InvoiceResponse>>('/rosha/invoices')
             .then(res => {
                 setInvoices(res.data.data.invoices);
-                setCredit(res.data.data.usableCredit);
             })
             .catch(() => {
                 // Silently ignore errors when not authenticated or forbidden
@@ -171,17 +175,6 @@ const RoshaInstallmentPage = (props: { isAuthenticated?: boolean }) => {
                 <Typography className="text-[#6A8358] my-5 text-xl font-bold">
                     فاکتور های اقساط
                 </Typography>
-
-                <div className="flex items-center justify-between gap-3 my-4">
-                    <div className="flex items-center gap-4">
-                        <Typography className="text-gray-600 text-sm">
-                            موجودی اعتبار باقی مانده:
-                        </Typography>
-                        <Typography className="text-[#6A8358] text-xl font-bold">
-                            {formatCurrency(credit)} تومان
-                        </Typography>
-                    </div>
-                </div>
             </div>
             {isAuthenticated && invoices.map(i => (
                 <InvoiceCard key={i.id} invoice={i} />

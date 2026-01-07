@@ -77,6 +77,12 @@ const RoshaHeader = () => {
         setDrawerOpen(false);
     };
 
+    const handleInstallmentClick = () => {
+        router.push('/services/rosha-installment/');
+        setProfileMenuOpen(false);
+        setDrawerOpen(false);
+    };
+
     return (
         <header className="w-full flex items-center justify-between px-3 lg:px-24 py-4 rtl bg-white shadow-sm sticky top-0 z-50">
             {/* Mobile: Hamburger Menu */}
@@ -133,6 +139,12 @@ const RoshaHeader = () => {
                                             داشبورد مدیریت
                                         </button>
                                     )}
+                                    <button
+                                        onClick={handleInstallmentClick}
+                                        className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                                    >
+                                        صفحه اقساط
+                                    </button>
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -213,6 +225,14 @@ const RoshaHeader = () => {
                                         داشبورد مدیریت
                                     </Button>
                                 )}
+                                <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    className="border-gray-300 text-gray-700 rounded-lg py-3 px-6 normal-case text-sm font-medium hover:bg-gray-100 h-[40px]"
+                                    onClick={() => { handleInstallmentClick(); setDrawerOpen(false); }}
+                                >
+                                    صفحه اقساط
+                                </Button>
                                 <Button
                                     fullWidth
                                     variant="outlined"
